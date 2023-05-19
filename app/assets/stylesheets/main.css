@@ -1,0 +1,56 @@
+.navbar-menu {
+  background-color: #056839;
+}
+
+.navbar {
+  background-color: #056839;
+}
+
+.navbar-item img {
+  max-height: fit-content;
+
+}
+.navbar-item {
+  flex-shrink: 1;
+}
+
+.navbar-burger {
+  color: white;
+}
+
+.navbar-brand .navbar-item {
+  color: white;
+}
+
+.navbar-item {
+  color: #b7d98c;
+}
+
+.card-rounded {
+ /* top-left | top-right | bottom-right | bottom-left */
+  border-radius: 1rem ;
+}
+
+table.mini {
+  font-size: smaller;
+}
+table.mini th {
+  color: grey;
+}
+.footer {
+  background-color: #0f74b2;
+}
+.footer a {
+  padding-left: 1rem;
+  color: #b7d98c;
+}
+.footer .copy {
+  color: white;
+}
+
+
+@media screen and (max-width: 768px) {
+    .hero.is-medium .hero-body {
+        padding-bottom: 12rem;
+        padding-top: 12rem;
+    }
