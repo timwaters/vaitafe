@@ -1,0 +1,9 @@
+<h1>Surveys</h1>
+
+<ul>
+  <% @surveys.each do |survey| %>
+    <li>
+      <%= survey.river %>,  <%= survey.temperature %>
+    </li>
+  <% end %>
+</ul>

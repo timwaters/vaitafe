@@ -1,0 +1,117 @@
+<main>
+
+  <section class="section">
+    <div class="has-text-centered">
+      Choose from either <%= link_to "Chemical" , subtype_survey_path(subtype: "chemical")  %> , <%= link_to "Physical" , subtype_survey_path(subtype: "physical")  %>
+          or  <%= link_to "Biological" , subtype_survey_path(subtype: "biological")  %> to start entering data.
+    </div>
+  </section>
+
+  <div class="columns is-centered">
+    <div class="column is-two-thirds">
+
+
+      <section class="top-card box">
+        <div class="columns is-mobile">
+
+          <div class="column is-narrow">
+            <figure class="">
+              <%= link_to (image_tag "measure.jpg" , width: 128, height: 128, class: "card-rounded" ), subtype_survey_path(subtype: "physical") %>
+            </figure>
+          </div>
+
+          <div class="column  ">
+            <div class="top-hero">
+              <h1 class="title is-5">
+                <%= link_to "Physical" , subtype_survey_path(subtype: "physical") %>
+              </h1>
+              <p>Choose this for collecting data about the physical characteristics of the waterway. <br />
+                e.g. water temperature, clarity, flow, pH, turbidity, conductivity.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <section class="top-card box">
+        <div class="columns  is-mobile">
+
+          <div class="column is-narrow">
+            <figure class="">
+              <%= link_to (image_tag "kit2.jpg" , width: 128, height: 128, class: "card-rounded" ), subtype_survey_path(subtype: "chemical") %>
+            </figure>
+          </div>
+
+          <div class="column  ">
+            <div class="top-hero">
+              <h1 class="title is-5">
+                <%= link_to "Chemical" ,  subtype_survey_path(subtype: "chemical") %>
+              </h1>
+              <p> pH (Acidity) Nitrates, Phosphates, Total dissolved solids (TDS) <br />
+                Hardness: Use a hardness test kit to measure the hardness of the water.<br />
+                Chlorine: Use a chlorine test kit to measure the chlorine levels in the water.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+
+      <section class="top-card box">
+        <div class="columns  is-mobile">
+
+          <div class="column is-narrow">
+            <figure class="">
+              <%= link_to (image_tag "stream.jpeg" , width: 128, height: 128, class: "card-rounded" ),  subtype_survey_path(subtype: "biological") %>
+            </figure>
+          </div>
+
+          <div class="column  ">
+            <div class="top-hero">
+              <h1 class="title is-5">
+                <%= link_to "Biological" ,  subtype_survey_path(subtype: "biological")  %>
+              </h1>
+              <p>Water quality: Observe the water quality by looking for signs of pollution, such as oil, trash, or dead fish. <br />
+                Water organisms: Collect water samples and identify the organisms present.<br />
+                Water plants: Identify the water plants present.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+
+  <div class="box">
+    Tips:
+    <ul class="">
+      <li>
+        Be sure to collect data from the same location and time each time.
+      </li>
+      <li>
+        Collect data over a period of time to see how the water quality changes.
+      </li>
+      <li>
+        Be careful not to contaminate the water sample.
+      </li>
+      <li>
+        Be sure to clean and sanitize your equipment after each use.
+      </li>
+      <li>
+        Have fun!
+      </li>
+    </ul>
+
+  </div>
+
+
+
+
+
+
+</main>

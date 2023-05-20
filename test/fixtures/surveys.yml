@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lonlat: 
+  river: MyString
+  comment: MyText
+  surveyed_at: 2023-05-20 12:22:58
+  temperature: 9.99
+
+two:
+  lonlat: 
+  river: MyString
+  comment: MyText
+  surveyed_at: 2023-05-20 12:22:58
+  temperature: 9.99

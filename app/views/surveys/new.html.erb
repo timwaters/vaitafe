@@ -1,0 +1,143 @@
+<main class="margin">
+  <section class="container column is-half  ">
+  <h2 class="title is-3"><%= "New #{@survey.subtype} Survey" %> </h2>
+ 
+    <%= form_with model: @survey do | form | %>
+
+      <!-- COMMON FIELDS--->
+
+      <%= form.hidden_field :subtype %>
+
+      <div class="field">
+        <%= form.label(:surveyed_at,  class: "label")%>
+        <div class="control">
+          <%= form.datetime_field :surveyed_at, class:"input" %>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= form.label(:river,  "River", class: "label")%>
+        <div class="control">
+          <%= form.text_field :river, class:"input" %>
+        </div>
+      </div>
+
+
+      <div>
+        map widget
+      </div>
+
+      <hr>
+
+      <% if  @survey.subtype == "chemical" %> 
+
+        <!-- CHEMICAL --->
+        <div class="field">
+          <%= form.label(:ph, class: "label")%>
+          <div class="control">
+            <%= form.number_field :ph, class:"input" %>
+          </div>
+        </div>
+
+        <div class="field">
+          <%= form.label(:temperature, class: "label")%>
+          <div class="control">
+            <%= form.number_field :temperature, class:"input" %>
+          </div>
+        </div>
+
+        <div class="field">
+          <%= form.label(:conductivity, class: "label")%>
+          <div class="control">
+            <%= form.number_field :conductivity, class:"input" %>
+          </div>
+        </div>
+
+        <div class="field">
+          <%= form.label(:nitrogen, class: "label")%>
+          <div class="control">
+            <%= form.number_field :nitrogen, class:"input" %>
+          </div>
+        </div>
+
+        <div class="field">
+          <%= form.label(:phosphorus, class: "label")%>
+          <div class="control">
+            <%= form.number_field :phosphorus, class:"input" %>
+          </div>
+        </div>
+
+      
+      <% elsif  @survey.subtype == "physical" %> 
+        <!-- PHYSICAL --->
+
+        <div class="field">
+          <%= form.label(:width, class: "label")%>
+          <div class="control">
+            <%= form.number_field :width, class:"input" %>
+          </div>
+        </div>
+
+        <div class="field">
+          <%= form.label(:depth, class: "label")%>
+          <div class="control">
+            <%= form.number_field :depth, class:"input" %>
+          </div>
+        </div>
+
+        <fieldset class="field">
+          <%= form.label(:manmade_structures, class: "label")%>
+          <%= form.text_area :manmade_structures, class:"textarea" %>
+        </fieldset>
+
+        <fieldset class="field">
+          <%= form.label(:flow_regime, class: "label")%>
+          <%= form.text_area :flow_regime, class:"textarea" %>
+        </fieldset>
+
+        <fieldset class="field">
+          <%= form.label(:bank_description, class: "label")%>
+          <%= form.text_area :bank_description, class:"textarea" %>
+        </fieldset>
+
+
+
+      <% elsif  @survey.subtype == "biological" %> 
+
+        <!-- BIOLOGICAL --->
+
+        <fieldset class="field">
+          <%= form.label(:riparian_description, class: "label")%>
+          <%= form.text_area :riparian_description, class:"textarea" %>
+        </fieldset>
+
+        <fieldset class="field">
+          <%= form.label(:abiotic_substrate, class: "label")%>
+          <%= form.text_area :abiotic_substrate, class:"textarea" %>
+        </fieldset>
+
+        <fieldset class="field">
+          <%= form.label(:biotic_substrate, class: "label")%>
+          <%= form.text_area :biotic_substrate, class:"textarea" %>
+        </fieldset>
+
+        <fieldset class="field">
+          <%= form.label(:macroinvertebrates, class: "label")%>
+          <%= form.text_area :macroinvertebrates, class:"textarea" %>
+        </fieldset>
+
+
+      <% end %>
+
+      <fieldset class="field">
+        <%= form.label(:comment, "Additional comments", class: "label")%>
+        <%= form.text_area :comment, class:"textarea" %>
+      </fieldset>
+
+
+      <div>
+        <%= form.submit %>
+      </div>
+      <% end %>
+  </section>
+</main>
