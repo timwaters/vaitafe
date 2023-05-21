@@ -10,37 +10,44 @@
 
       <div class="field">
         <%= form.label(:surveyed_at,  class: "label")%>
+        <p class="help">When was this taken? (defaults to now)</p>
         <div class="control">
           <%= form.datetime_field :surveyed_at, class:"input" %>
         </div>
       </div>
 
-      <div class="field">
+      <fieldset disabled class="field">
         <%= form.label(:river,  "River", class: "label")%>
+        <p class="help">Which river is this survey about?</p>
         <div class="control">
           <%= form.text_field :river, class:"input" %>
         </div>
-      </div>
+       
+      </fieldset>
 
 
       <div>
         map widget
       </div>
 
-      <hr>
-
+      <hr> 
+     
       <% if  @survey.subtype == "chemical" %> 
 
         <!-- CHEMICAL --->
+        <div class="field is-grouped is-grouped-multiline ">
+
         <div class="field">
-          <%= form.label(:ph, class: "label")%>
+          <%= form.label(:ph, "Water acidity", class: "label")%>
+          <p class="help">(pH level)</p>
           <div class="control">
             <%= form.number_field :ph, class:"input" %>
           </div>
         </div>
 
         <div class="field">
-          <%= form.label(:temperature, class: "label")%>
+          <%= form.label(:temperature, "Water temperature", class: "label")%>
+          <p class="help">Water temperature (Centrigade?) </p>
           <div class="control">
             <%= form.number_field :temperature, class:"input" %>
           </div>
@@ -48,6 +55,7 @@
 
         <div class="field">
           <%= form.label(:conductivity, class: "label")%>
+          <p class="help">units? </p>
           <div class="control">
             <%= form.number_field :conductivity, class:"input" %>
           </div>
@@ -55,6 +63,7 @@
 
         <div class="field">
           <%= form.label(:nitrogen, class: "label")%>
+          <p class="help">units? </p>
           <div class="control">
             <%= form.number_field :nitrogen, class:"input" %>
           </div>
@@ -62,9 +71,11 @@
 
         <div class="field">
           <%= form.label(:phosphorus, class: "label")%>
+          <p class="help">units? </p>
           <div class="control">
             <%= form.number_field :phosphorus, class:"input" %>
           </div>
+        </div>
         </div>
 
       
@@ -72,32 +83,45 @@
         <!-- PHYSICAL --->
 
         <div class="field">
-          <%= form.label(:width, class: "label")%>
+          <%= form.label(:width, "River width (m)", class: "label")%>
+          <p class="help"> What is the average width of the river? (Estimate in meters)</p>
           <div class="control">
             <%= form.number_field :width, class:"input" %>
           </div>
+          
         </div>
 
+      
+
         <div class="field">
-          <%= form.label(:depth, class: "label")%>
+          <%= form.label(:depth, "River depth (m)", class: "label")%>
+          <p class="help"> What is the average depth of the river? (Estimate in meters)</p>
           <div class="control">
             <%= form.number_field :depth, class:"input" %>
           </div>
+        
         </div>
+
+
 
         <fieldset class="field">
           <%= form.label(:manmade_structures, class: "label")%>
-          <%= form.text_area :manmade_structures, class:"textarea" %>
+          <p class="help">Are there any man-made structures present in the river or along its banks within close proximity of the sampling site? If yes, which and how many?</p>
+          <%= form.text_area :manmade_structures, class:"textarea", placeholder: "E.g. modified river banks, weirs, dams, bypass channels, wells, water catchments/derivations, livestock, agriculture, towns, litter" %>
         </fieldset>
-
+    
+        
+      
         <fieldset class="field">
           <%= form.label(:flow_regime, class: "label")%>
-          <%= form.text_area :flow_regime, class:"textarea" %>
+          <p class="help">What flow regimes can you identify?</p>
+          <%= form.text_area :flow_regime, class:"textarea", placeholder: "E.g. pools, ripples, waterfalls, rapids" %>
         </fieldset>
 
         <fieldset class="field">
           <%= form.label(:bank_description, class: "label")%>
-          <%= form.text_area :bank_description, class:"textarea" %>
+          <p class="help">Please briefly describe the river bank</p>
+          <%= form.text_area :bank_description, class:"textarea", placeholder: "E.g. steep or flat; eroding etc" %>
         </fieldset>
 
 
@@ -108,17 +132,20 @@
 
         <fieldset class="field">
           <%= form.label(:riparian_description, class: "label")%>
-          <%= form.text_area :riparian_description, class:"textarea" %>
+          <p class="help"> Please briefly describe the riparian vegetation. What proportion of the river is shaded?</p>
+          <%= form.text_area :riparian_description, class:"textarea", placeholder: "E.g. trees, shrubs, reeds" %>
         </fieldset>
 
         <fieldset class="field">
           <%= form.label(:abiotic_substrate, class: "label")%>
-          <%= form.text_area :abiotic_substrate, class:"textarea" %>
+          <p class="help">What type of abiotic substrate can you identify?</p>
+          <%= form.text_area :abiotic_substrate, class:"textarea", placeholder:"E.g. Boulders, stones, gravel, clay, cemented bed" %>
         </fieldset>
 
         <fieldset class="field">
           <%= form.label(:biotic_substrate, class: "label")%>
-          <%= form.text_area :biotic_substrate, class:"textarea" %>
+          <p class="help">What type of biotic substrate can you identify?</p>
+          <%= form.text_area :biotic_substrate, class:"textarea", placeholder:"E.g. algae, moss, leaf litter, submerged plants, dead wood" %>
         </fieldset>
 
         <fieldset class="field">
@@ -131,12 +158,13 @@
 
       <fieldset class="field">
         <%= form.label(:comment, "Additional comments", class: "label")%>
+        <p class="help">Would you like to note anything that caught your eye?</p>
         <%= form.text_area :comment, class:"textarea" %>
       </fieldset>
 
 
       <div>
-        <%= form.submit %>
+        <%= form.submit   class: 'button is-primary', value: 'Save Observations' %>
       </div>
       <% end %>
   </section>

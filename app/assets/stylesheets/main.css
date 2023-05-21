@@ -18,6 +18,11 @@
 .navbar-burger {
   color: white;
 }
+.navbar-brand{
+  font-family: 'Skranji', cursive;
+  text-transform: uppercase;
+  letter-spacing: 1pt;
+}
 
 .navbar-brand .navbar-item {
   color: white;
@@ -62,4 +67,8 @@ table.mini th {
 main.margin {
   margin-left: 0.2rem;
   margin-right: 0.2rem;
+}
+
+.is-grouped-multiline .field {
+  margin-right: 1rem;
 }

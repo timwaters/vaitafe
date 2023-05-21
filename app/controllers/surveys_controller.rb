@@ -17,7 +17,7 @@ class SurveysController < ApplicationController
 
   #new form with subtype
   def new
-    @survey = Survey.new(surveyed_at: Time.now)
+    @survey = Survey.new(surveyed_at: Time.now, river: "Vaisigano")
     if ["chemical", "physical", "biological"].include? params[:subtype]
       @survey.subtype = params[:subtype]
     else
