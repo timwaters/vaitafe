@@ -188,7 +188,15 @@ crossorigin=""/>
 
         <fieldset class="field">
           <%= form.label(:macroinvertebrates, class: "label")%>
-          <%= form.text_area :macroinvertebrates, class:"textarea" %>
+          <p class="help">Add which insects were found and the count (NOTE: Demo functionality)</p>
+          <div id="macroitems" class=" is-grouped control">
+            <div class="field is-horizontal">
+              <input class="input mr-2" type="text" placeholder="e.g. insect name" >   <input class="number" type="number" placeholder="count"> 
+            </div>
+          </div>
+        
+          <a type="button" class="button is-link" id="addmacrobutton">Add Another Macroinverbrate</a>
+          <%= form.hidden_field :macroinvertebrates, class:"textarea" %>
         </fieldset>
 
 
@@ -233,7 +241,8 @@ crossorigin=""/>
     L.circle(e.latlng, radius).addTo(map);
     var lonlat = "POINT("+e.latlng.lng+ " " + e.latlng.lat+")";
     document.getElementById("survey_lonlat").value = lonlat;
-    updateProgress();
+
+    updateProgress();  // for progress bar
   }
 
   map.on('locationfound', onLocationFound);
@@ -271,15 +280,51 @@ crossorigin=""/>
   }
 
   // Call the updateProgress function when the form is loaded
-  document.addEventListener("DOMContentLoaded", function() {
-    updateProgress();
-  });
+  // document.addEventListener("DOMContentLoaded", function() {
+  //   updateProgress();
+  // });
 
   // Call the updateProgress function whenever an input or textarea value changes
   var formInputs = form.querySelectorAll("input, textarea");
   formInputs.forEach(function(input) {
     input.addEventListener("input", function() {
       updateProgress();
+    });
+  });
+
+
+  document.addEventListener("DOMContentLoaded", function() {
+    updateProgress(); // for progress bar
+
+
+    var addInputButton = document.getElementById("addmacrobutton");
+    var inputItemsContainer = document.getElementById("macroitems");
+    var inputIndex = 0;
+
+    //<input class="input mr-2" type="text" placeholder="e.g. insect name" >   <input class="number" type="number" placeholder="count"> 
+    addInputButton.addEventListener("click", function() {
+
+      var div =  document.createElement("div");
+     // <div class="field is-horizontal">
+      div.setAttribute("class", "field is-horizontal");
+
+      var inputItem = document.createElement("input");
+      inputItem.setAttribute("type", "text");
+      inputItem.setAttribute("class", "input mr-2");
+      inputItem.setAttribute("placeholder", "e.g. insect name");
+    //  inputItem.setAttribute("name", "dynamic_input_items[" + inputIndex + "]");
+     // inputItem.setAttribute("id", "dynamic_input_items_" + inputIndex);
+
+      var inputNum = document.createElement("input"); 
+      inputNum.setAttribute("type", "number");
+      inputNum.setAttribute("class", "number");
+      inputNum.setAttribute("placeholder", "count");
+
+      inputIndex++;
+      div.append(inputItem,inputNum)
+      inputItemsContainer.appendChild(div);
+    
+ 
     });
   });
 

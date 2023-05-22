@@ -78,3 +78,7 @@ main.margin {
 .placebuttons {
   margin-bottom: 0pt !important;
 }
+
+.number::placeholder {
+  color: lightgray;
+}
