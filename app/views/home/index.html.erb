@@ -37,31 +37,22 @@
           <thead>
             <tr>
               <th>Date</th>
-              <th>Location</th>
-              <th>Quality</th>
+              <th>River</th>
+              <th>User</th>
+              <th>Observations</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>5 May 2023</td>
-              <td>Lorem River</td>
-              <td>80</td>
-            </tr>
-            <tr>
-              <td>3 May 2023</td>
-              <td>Lorem River</td>
-              <td>75</td>
-            </tr>
-            <tr>
-              <td>1 May 2023</td>
-              <td>Lorem River</td>
-              <td>89</td>
-            </tr>
-            <tr>
-              <td>29 April 2023</td>
-              <td>Lorem River</td>
-              <td>89</td>
-            </tr>
+            <% @latest_surveys.each do | survey | %>
+              <tr>
+                <td><%= survey.surveyed_at.to_fs(:short) %> </td>
+                <td><%= survey.river %></td>
+                <td><%= survey.fake_username %></td>
+                <td><%= survey.observation_count %></td>
+              </tr>
+            <% end %>
+    
+
           </tbody>
         </table>
       </div>
@@ -72,18 +63,20 @@
           <thead>
             <tr>
               <th width=100>User</th>
-              <th>Score</th>
+              <th>Observations</th>
             </tr>
           </thead>
           <tbody>
+            <% fake_score = rand(80..100)
+              @latest_surveys.each do | survey | 
+              
+            %>
             <tr>
-              <td>Malcolm Lockyer</td>
-              <td>23</td>
+              <td><%= survey.fake_username %></td>
+              <td><%= fake_score = fake_score - rand(0..25) %> </td>
             </tr>
-            <tr>
-              <td>Charles Windsor</td>
-              <td>23</td>
-            </tr>
+            <% end %>
+
           </tbody>
         </table>
       </div>
