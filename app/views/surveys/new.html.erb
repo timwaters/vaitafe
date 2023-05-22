@@ -5,11 +5,34 @@ crossorigin=""/>
  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
  crossorigin=""></script>
 
+
 <main class="margin">
   <section class="container column is-half  ">
   <h2 class="title is-3"><%= "New #{@survey.subtype.titlecase} Survey" %> </h2>
- 
-    <%= form_with model: @survey do | form | %>
+  
+  <%
+    num_questions = 0
+
+    case @survey.subtype 
+    when "chemical"
+      num_questions = 5
+    when "physical"
+      num_questions = 5 
+    when "biological"
+      num_questions = 4
+    end
+
+    # 4 common questions (time, river, comment, location)
+    num_questions = num_questions + 4 
+  %>
+
+  <div class="field">
+    <label id="progress-label" for="progress-bar"></label>
+    <progress id="progress-bar" class="progress is-info" value="2" max="<%= num_questions %>"></progress>
+  </div>
+
+
+    <%= form_with id: "surveyform", model: @survey do | form | %>
 
       <!-- COMMON FIELDS--->
 
@@ -43,30 +66,7 @@ crossorigin=""/>
         <%= form.hidden_field :lonlat %>
         <div id="formmap"></div>
       </div>
-      <script>
-        var map = L.map('formmap').setView([-13.8586, -171.7539], 13);
-          L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 19,
-          attribution: 'Map Tiles &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
-        map.attributionControl.setPrefix(false);
 
-        //TODO
-        // allow this to update on mobile
-        // default to manual on desktop
-        // handle manual choosing
-        map.locate({setView: true, maxZoom: 16});
-
-        function onLocationFound(e) {
-          var radius = e.accuracy;
-          L.marker(e.latlng).addTo(map);
-          L.circle(e.latlng, radius).addTo(map);
-          var lonlat = "POINT("+e.latlng.lng+ " " + e.latlng.lat+")";
-          document.getElementById("survey_lonlat").value = lonlat;
-        }
-
-        map.on('locationfound', onLocationFound);
-      </script>
 
       <hr> 
      
@@ -199,7 +199,12 @@ crossorigin=""/>
         <p class="help">Would you like to note anything that caught your eye?</p>
         <%= form.text_area :comment, class:"textarea" %>
       </fieldset>
-
+      
+      <div class="field">
+        <label id="progress-label2" for="progress-bar"></label>
+        <progress id="progress-bar2" class="progress is-info" value="2" max="<%= num_questions %>"></progress>
+      </div>
+    
 
       <div>
         <%= form.submit   class: 'button is-primary', value: 'Save Observations' %>
@@ -207,3 +212,76 @@ crossorigin=""/>
       <% end %>
   </section>
 </main>
+
+<script>
+  var map = L.map('formmap').setView([-13.8586, -171.7539], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: 'Map Tiles &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+  map.attributionControl.setPrefix(false);
+
+  //TODO
+  // allow this to update on mobile
+  // default to manual on desktop
+  // handle manual choosing
+  map.locate({setView: true, maxZoom: 16});
+
+  function onLocationFound(e) {
+    var radius = e.accuracy;
+    L.marker(e.latlng).addTo(map);
+    L.circle(e.latlng, radius).addTo(map);
+    var lonlat = "POINT("+e.latlng.lng+ " " + e.latlng.lat+")";
+    document.getElementById("survey_lonlat").value = lonlat;
+    updateProgress();
+  }
+
+  map.on('locationfound', onLocationFound);
+
+   
+
+  var progressBar1 = document.getElementById("progress-bar");
+  var progressBar2 = document.getElementById("progress-bar2");
+  var progressLabel1 = document.getElementById("progress-label");
+  var progressLabel2 = document.getElementById("progress-label2");
+  var form = document.getElementById("surveyform");
+  
+  // Function to update the progress bars and labels
+  function updateProgress() {
+    // Get all form inputs
+   
+    var inputs = form.querySelectorAll("input, textarea");
+
+    // Count the number of inputs with a value
+    var count = 0;
+    inputs.forEach(function(input) {
+     if (input.id !== "survey_subtype" && input.id.startsWith("survey_") && input.value !== "" ){
+       count++;
+      }
+    });
+
+    // Update the first progress bar and label
+    var totalInputs = inputs.length - 3;  // minus authenticity, submit and subtype 
+    progressBar1.value =  count;
+    var label = count  + "/" + totalInputs + " Completed";
+    progressLabel1.textContent = label;
+
+    progressBar2.value =  count;
+    progressLabel2.textContent = label;
+  }
+
+  // Call the updateProgress function when the form is loaded
+  document.addEventListener("DOMContentLoaded", function() {
+    updateProgress();
+  });
+
+  // Call the updateProgress function whenever an input or textarea value changes
+  var formInputs = form.querySelectorAll("input, textarea");
+  formInputs.forEach(function(input) {
+    input.addEventListener("input", function() {
+      updateProgress();
+    });
+  });
+
+
+</script>
