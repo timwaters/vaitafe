@@ -72,3 +72,9 @@ main.margin {
 .is-grouped-multiline .field {
   margin-right: 1rem;
 }
+
+#formmap { height: 250px; }
+
+.placebuttons {
+  margin-bottom: 0pt !important;
+}

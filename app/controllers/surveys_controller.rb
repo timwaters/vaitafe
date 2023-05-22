@@ -6,7 +6,7 @@ class SurveysController < ApplicationController
 
   #show a completed survey
   def show
-
+    @survey = Survey.find(params[:id])
   end
 
 
@@ -17,7 +17,7 @@ class SurveysController < ApplicationController
 
   #new form with subtype
   def new
-    @survey = Survey.new(surveyed_at: Time.now, river: "Vaisigano")
+    @survey = Survey.new(surveyed_at: Time.now, river: "Vaisigano River")
     if ["chemical", "physical", "biological"].include? params[:subtype]
       @survey.subtype = params[:subtype]
     else
@@ -43,7 +43,7 @@ class SurveysController < ApplicationController
   #save a completed survey
   def create
 
-    @survey = Survey.new(title: "...", body: "...")
+    @survey = Survey.new(survey_params)
 
     if @survey.save
       redirect_to @survey
@@ -51,6 +51,13 @@ class SurveysController < ApplicationController
       render :new, status: :unprocessable_entity
     end
 
+  end
+
+  private
+  def survey_params
+    params.require(:survey).permit(:lonlat, :river, :subtype, :comment, :surveyed_at, 
+      :ph,:conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth,
+      :manmade_structures,  :flow_regime, :bank_description ,:riparian_description,:abiotic_substrate, :biotic_substrate ,:macroinvertebrates  )
   end
 
 end
