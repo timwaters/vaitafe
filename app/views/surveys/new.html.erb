@@ -189,9 +189,9 @@ crossorigin=""/>
         <fieldset class="field">
           <%= form.label(:macroinvertebrates, class: "label")%>
           <p class="help">Add which insects were found and the count (NOTE: Demo functionality)</p>
-          <div id="macroitems" class=" is-grouped control">
-            <div class="field is-horizontal">
-              <input class="input mr-2" type="text" placeholder="e.g. insect name" >   <input class="number" type="number" placeholder="count"> 
+          <div id="macroitems" class=" block control">
+            <div class="field  is-grouped  is-horizontal">
+              <input class="input mr-2 "  type="text" placeholder="e.g. insect name" >   <input style="width:5em;" class="text" type="number" placeholder="count"> 
             </div>
           </div>
         
@@ -296,34 +296,35 @@ crossorigin=""/>
   document.addEventListener("DOMContentLoaded", function() {
     updateProgress(); // for progress bar
 
+    <% if @survey.subtype == "biological" %>
+      var addInputButton = document.getElementById("addmacrobutton");
+      var inputItemsContainer = document.getElementById("macroitems");
+      var inputIndex = 0;
 
-    var addInputButton = document.getElementById("addmacrobutton");
-    var inputItemsContainer = document.getElementById("macroitems");
-    var inputIndex = 0;
+      //<input class="input mr-2 "  type="text" placeholder="e.g. insect name" >   <input style="width:5em;" class="text" type="number" placeholder="count">  
+      addInputButton.addEventListener("click", function() {
 
-    //<input class="input mr-2" type="text" placeholder="e.g. insect name" >   <input class="number" type="number" placeholder="count"> 
-    addInputButton.addEventListener("click", function() {
+        var div =  document.createElement("div");
+   
+        div.setAttribute("class", "field  is-grouped  is-horizontal");
 
-      var div =  document.createElement("div");
-     // <div class="field is-horizontal">
-      div.setAttribute("class", "field is-horizontal");
+        var inputItem = document.createElement("input");
+        inputItem.setAttribute("type", "text");
+        inputItem.setAttribute("class", "input mr-2");
+        inputItem.setAttribute("placeholder", "e.g. insect name");
+      //  inputItem.setAttribute("name", "dynamic_input_items[" + inputIndex + "]");
+      // inputItem.setAttribute("id", "dynamic_input_items_" + inputIndex);
 
-      var inputItem = document.createElement("input");
-      inputItem.setAttribute("type", "text");
-      inputItem.setAttribute("class", "input mr-2");
-      inputItem.setAttribute("placeholder", "e.g. insect name");
-    //  inputItem.setAttribute("name", "dynamic_input_items[" + inputIndex + "]");
-     // inputItem.setAttribute("id", "dynamic_input_items_" + inputIndex);
+        var inputNum = document.createElement("input"); 
+        inputNum.setAttribute("type", "number");
+        inputNum.setAttribute("class", "text");
+        inputNum.setAttribute("style", "width:5em;");
+        inputNum.setAttribute("placeholder", "count");
 
-      var inputNum = document.createElement("input"); 
-      inputNum.setAttribute("type", "number");
-      inputNum.setAttribute("class", "number");
-      inputNum.setAttribute("placeholder", "count");
-
-      inputIndex++;
-      div.append(inputItem,inputNum)
-      inputItemsContainer.appendChild(div);
-    
+        inputIndex++;
+        div.append(inputItem,inputNum)
+        inputItemsContainer.appendChild(div);
+      <% end %>
  
     });
   });
