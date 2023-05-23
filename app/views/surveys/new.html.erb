@@ -190,8 +190,8 @@ crossorigin=""/>
           <%= form.label(:macroinvertebrates, class: "label")%>
           <p class="help">Add which insects were found and the count (NOTE: Demo functionality)</p>
           <div id="macroitems" class=" block control">
-            <div class="field  is-grouped  is-horizontal">
-              <input class="input mr-2 "  type="text" placeholder="e.g. insect name" >   <input style="width:5em;" class="text" type="number" placeholder="count"> 
+            <div class="field  is-grouped is-horizontal">
+              <input class="input mr-2"  id="macrotype_1" type="text" placeholder="e.g. insect name" >   <input style="width:5em;" id="macronum_1"  class="text" type="number" placeholder="count"> 
             </div>
           </div>
         
@@ -263,14 +263,20 @@ crossorigin=""/>
 
     // Count the number of inputs with a value
     var count = 0;
+    var totalInputs  = 0;
     inputs.forEach(function(input) {
-     if (input.id !== "survey_subtype" && input.id.startsWith("survey_") && input.value !== "" ){
+     if (input.id !== "survey_subtype" && input.id.startsWith("survey_") && input.value !== "" && !input.id.startsWith("macro")){
        count++;
+      }
+      if (input.id !== "survey_subtype" && input.id.startsWith("survey_")  && !input.id.startsWith("macro")){
+        totalInputs++;
       }
     });
 
+    
+
     // Update the first progress bar and label
-    var totalInputs = inputs.length - 3;  // minus authenticity, submit and subtype 
+    //totalInputs = totalInputs ;  // minus authenticity, submit and subtype 
     progressBar1.value =  count;
     var label = count  + "/" + totalInputs + " Completed";
     progressLabel1.textContent = label;
@@ -304,19 +310,26 @@ crossorigin=""/>
       //<input class="input mr-2 "  type="text" placeholder="e.g. insect name" >   <input style="width:5em;" class="text" type="number" placeholder="count">  
       addInputButton.addEventListener("click", function() {
 
+
+        var characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        var randomString = "";
+        for (var i = 0; i < 5; i++) {
+          randomString += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+
         var div =  document.createElement("div");
    
         div.setAttribute("class", "field  is-grouped  is-horizontal");
 
         var inputItem = document.createElement("input");
         inputItem.setAttribute("type", "text");
+        inputItem.setAttribute("id", "macrotype_"+randomString);
         inputItem.setAttribute("class", "input mr-2");
         inputItem.setAttribute("placeholder", "e.g. insect name");
-      //  inputItem.setAttribute("name", "dynamic_input_items[" + inputIndex + "]");
-      // inputItem.setAttribute("id", "dynamic_input_items_" + inputIndex);
 
         var inputNum = document.createElement("input"); 
         inputNum.setAttribute("type", "number");
+        inputItem.setAttribute("id", "macronum_"+randomString);
         inputNum.setAttribute("class", "text");
         inputNum.setAttribute("style", "width:5em;");
         inputNum.setAttribute("placeholder", "count");
@@ -324,9 +337,9 @@ crossorigin=""/>
         inputIndex++;
         div.append(inputItem,inputNum)
         inputItemsContainer.appendChild(div);
-      <% end %>
  
-    });
+      });
+    <% end %>
   });
 
 

@@ -6,7 +6,10 @@
 .navbar {
   background-color: #056839;
 }
+a.navbar-item:hover {
+  color: #23a9e1;
 
+}
 .navbar-item img {
   max-height: fit-content;
 
@@ -82,3 +85,13 @@ main.margin {
 .number::placeholder {
   color: lightgray;
 }
+
+.is-primary {
+  background-color: #0f74b2 !important;
+}
+
+.is-primary:hover {
+  background-color: #23a9e1 !important;
+  
+}
+
