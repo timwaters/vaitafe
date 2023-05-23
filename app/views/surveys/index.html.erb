@@ -1,9 +1,27 @@
-<h1>Surveys</h1>
+<h2 class="title is-3">All Surveys</h2>
 
-<ul>
-  <% @surveys.each do |survey| %>
-    <li>
-      <%= survey.river %>,  <%= survey.temperature %>
-    </li>
+<table class="table is-hoverable is-fullwidth ">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>River</th>
+      <th>User</th>
+      <th>Subtype</th>
+      <th>Observations</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @surveys.each do | survey | %>
+    <tr>
+      <td><%= survey.surveyed_at.to_fs(:short)  if survey.surveyed_at %> </td>
+      <td><%= survey.river %></td>
+      <td><%= survey.fake_username %></td>
+      <td><%= survey.subtype %></td>
+      <td><%= survey.observation_count %></td>
+      <td><%= link_to "view", survey %></td>
+    </tr>
   <% end %>
-</ul>
+  </tbody>
+</table>
+  

@@ -45,7 +45,7 @@
           <tbody>
             <% @latest_surveys.each do | survey | %>
               <tr>
-                <td><%= survey.surveyed_at.to_fs(:short) %> </td>
+                <td><%= survey.surveyed_at.to_fs(:short) if survey.surveyed_at %> </td>
                 <td><%= survey.river %></td>
                 <td><%= survey.fake_username %></td>
                 <td><%= survey.observation_count %></td>

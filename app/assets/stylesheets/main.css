@@ -73,7 +73,7 @@ main.margin {
   margin-right: 1rem;
 }
 
-#formmap { height: 250px; }
+#formmap, #map { height: 250px; }
 
 .placebuttons {
   margin-bottom: 0pt !important;

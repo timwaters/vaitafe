@@ -1,6 +1,6 @@
 class SurveysController < ApplicationController
   def index
-    @surveys = Survey.all
+    @surveys = Survey.all.order("surveyed_at desc NULLS LAST" )
   end
 
 
