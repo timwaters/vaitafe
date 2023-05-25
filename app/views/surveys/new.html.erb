@@ -56,9 +56,12 @@
 
       <div class="field">
         <%= form.label(:lonlat,  "Survey Location", class: "label")%> 
-        <div class="buttons has-addons placebuttons">
-          <a class="button is-success is-selected">Automatic</a>
-          <a class="button " disabled>Choose from map</a>
+
+        <div class="tabs is-toggle is-toggle-rounded placebuttons">
+          <ul>
+            <li id="auto-tab" class="is-active" onclick="toggleGeolocation('auto-tab');" ><a>Automatic</a></li>
+            <li id="man-tab" class="" onclick="toggleGeolocation('man-tab');"> <a>Click on map</a> </li>
+          </ul>
         </div>
         
         <%= form.hidden_field :lonlat %>
@@ -227,18 +230,24 @@
   }).addTo(map);
   map.attributionControl.setPrefix(false);
 
-  //TODO
-  // allow this to update on mobile
-  // default to manual on desktop
-  // handle manual choosing
-  map.locate({setView: true, maxZoom: 16});
+  var marker = new L.marker();
+  var circle = new L.marker();
 
   function onLocationFound(e) {
+    console.log("of", e)
     var radius = e.accuracy;
 
+    if(map.hasLayer(circle) && map.hasLayer(marker)) {
+      map.removeLayer(circle);
+      map.removeLayer(marker);
+    } 
+
     var icon = new L.Icon({iconAnchor:L.Icon.Default.prototype.options.iconAnchor,  iconUrl: '<%= image_path("images/marker-icon.png") %>'});
-    L.marker(e.latlng, {icon: icon}).addTo(map);
-    L.circle(e.latlng, radius).addTo(map);
+    marker = L.marker(e.latlng, {icon: icon})
+    marker.addTo(map);
+    circle = L.circle(e.latlng, radius)
+    circle.addTo(map);
+
     var lonlat = "POINT("+e.latlng.lng+ " " + e.latlng.lat+")";
     document.getElementById("survey_lonlat").value = lonlat;
 
@@ -246,6 +255,43 @@
   }
 
   map.on('locationfound', onLocationFound);
+  map.on('locationerror', onLocationError);
+
+  var manualSelectionEnabled = false;
+  findLocation(); // call this at the beginning
+
+  // watches for tab button change and sets manual selectionenabled. 
+  function toggleGeolocation(tab_id) {
+    var tab = document.getElementById(tab_id);
+
+    var tabs = document.querySelectorAll('.tabs li');
+    tabs.forEach(function (itab) {
+      itab.classList.remove('is-active');
+    });
+
+    tab.classList.add('is-active');
+    if (tab_id == "man-tab"){ manualSelectionEnabled = true;   } else {  manualSelectionEnabled = false;  }
+   
+    findLocation();
+  }
+
+  function findLocation(){
+    map.off('click', onLocationFound);
+    if (navigator.geolocation && !manualSelectionEnabled) {
+        map.locate({watch: true,  enableHighAccuracy:true, setView: true, maxZoom: 18});
+      } else {
+       if (manualSelectionEnabled) {
+          map.on('click', onLocationFound);
+        } else {
+          map.off('click', onLocationFound);
+        }
+    }
+  }
+
+  function onLocationError(error) {
+    console.log('Geolocation error:', error);
+    toggleGeolocation("man-tab");
+  }
 
    
 
@@ -341,6 +387,8 @@
       });
     <% end %>
   });
+  
+
 
 
 </script>

@@ -79,8 +79,8 @@ main.margin {
 #formmap, #map { height: 250px; }
 
 .placebuttons {
-  margin-bottom: 0pt !important;
-}
+  margin-bottom: 2pt !important;
+} 
 
 .number::placeholder {
   color: lightgray;
