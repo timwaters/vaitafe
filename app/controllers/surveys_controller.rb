@@ -1,4 +1,7 @@
 class SurveysController < ApplicationController
+
+  before_action :authenticate_user!
+
   def index
     @surveys = Survey.all.order("surveyed_at desc NULLS LAST" )
   end

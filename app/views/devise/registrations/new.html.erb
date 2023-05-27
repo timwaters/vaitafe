@@ -1,0 +1,35 @@
+<main>
+  <section class="container column is-one-quarter  ">
+
+  <h2 class="title is-3">Sign up</h2>
+
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: false }) do |f| %>
+    <%= render "devise/shared/error_messages" , resource: resource %>
+
+    <div class="field">
+      <%= f.label :email, class: "label" %>
+      <p class="help">Email to login with</p>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email" , class:"input" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :username, class: "label" %>
+      <p class="help">A display name others can see (you can edit this later)</p>
+      <%= f.text_field :username, autocomplete: "nickname" , class:"input" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password, class: "label" %>
+      <p class="help">Password (<%= @minimum_password_length %> characters minimum)</p>
+      <%= f.password_field :password, autocomplete: "new-password" , autocomplete: "email" , class:"input" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Sign up" , class: 'button is-primary' %>
+    </div>
+  <% end %>
+
+  <%= render "devise/shared/links" %>
+
+  </section>
+</main>

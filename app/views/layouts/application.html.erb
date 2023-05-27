@@ -42,13 +42,16 @@
 
         <div class="navbar-end">
           <div class="navbar-item">
+            <% if user_signed_in? %>
+              <span class="mr-2 "> Logged in as: <%= current_user.username %> </span>
+            <% end %>
             <div class="buttons">
-              <a class="button is-primary">
-                <strong>Sign up</strong>
-              </a>
-              <a class="button is-light">
-                Log in
-              </a>
+              <% if user_signed_in? %>
+                <%= link_to "Log out", :destroy_user_session, 'data-turbo-method': :delete,  class: "button is-light" %>
+              <% else %>
+                <%= link_to "Sign up", :new_user_registration, class: "button is-primary" %> 
+                <%= link_to "Log in", :new_user_session, class: "button is-light" %> 
+              <% end %> 
             </div>
           </div>
         </div>
@@ -76,10 +79,26 @@
         });
       });
 
+      //delete button on flash message
+      (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+      const $notification = $delete.parentNode;
+
+      $delete.addEventListener('click', () => {
+        $notification.parentNode.removeChild($notification);
+      });
+      });
+
+
     });
 
   </script>
-
+  <% if notice || alert %>
+    <div class="notification  is-info">
+      <button class="delete"></button>
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
+    </div>
+  <% end %>
   <%= yield %>
 
 
