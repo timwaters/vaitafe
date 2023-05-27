@@ -22,7 +22,7 @@
           Citizen Science Vaisigano
         </a>
 
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onclick="burgerToggle(this);">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -59,42 +59,25 @@
     </nav>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-
-      // Get all "navbar-burger" elements
-      const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-
-      // Add a click event on each of them
-      $navbarBurgers.forEach(el => {
-        el.addEventListener('click', () => {
-
-          // Get the target from the "data-target" attribute
-          const target = el.dataset.target;
-          const $target = document.getElementById(target);
-
-          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-          el.classList.toggle('is-active');
-          $target.classList.toggle('is-active');
-
-        });
-      });
+      //handle burger menu open and close
+      function burgerToggle(e){
+        const target = e.dataset.target;
+        const $target = document.getElementById(target);
+    
+        e.classList.toggle('is-active');
+        $target.classList.toggle('is-active');
+      }
 
       //delete button on flash message
-      (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
-      const $notification = $delete.parentNode;
-
-      $delete.addEventListener('click', () => {
+      function closeNotification(e){
+        const $notification = e.parentNode;
         $notification.parentNode.removeChild($notification);
-      });
-      });
-
-
-    });
-
+      }
   </script>
+  
   <% if notice || alert %>
     <div class="notification  is-info">
-      <button class="delete"></button>
+      <button class="delete" onclick="closeNotification(this);"></button>
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>
     </div>
