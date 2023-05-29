@@ -47,7 +47,7 @@
               <tr>
                 <td><%= survey.surveyed_at.to_fs(:short) if survey.surveyed_at %> </td>
                 <td><%= survey.river %></td>
-                <td><%= survey.fake_username %></td>
+                <td><%= survey.user.username %></td>
                 <td><%= survey.observation_count %></td>
               </tr>
             <% end %>
@@ -67,14 +67,11 @@
             </tr>
           </thead>
           <tbody>
-            <% fake_score = rand(80..100)
-              @latest_surveys.each do | survey | 
-              
-            %>
-            <tr>
-              <td><%= survey.fake_username %></td>
-              <td><%= fake_score = fake_score - rand(0..25) %> </td>
-            </tr>
+            <% @latest_surveys.each do | survey | %>
+              <tr>
+                <td><%= survey.user.username %></td>
+                <td><%= survey.user.surveys.count %> </td>
+              </tr>
             <% end %>
 
           </tbody>

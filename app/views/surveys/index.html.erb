@@ -16,7 +16,7 @@
     <tr>
       <td><%= survey.surveyed_at.to_fs(:short)  if survey.surveyed_at %> </td>
       <td><%= survey.river %></td>
-      <td><%= survey.fake_username %></td>
+      <td><%= survey.user.username %></td>
       <td><%= survey.subtype %></td>
       <td><%= survey.observation_count %></td>
       <td><%= link_to "view", survey %></td>
