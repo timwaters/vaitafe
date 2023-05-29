@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
+  resources :users, only: [:index, :show]
+
   # get 'survey/index'
   # get 'survey/new'
   # get 'survey/show'

@@ -1,0 +1,20 @@
+<main>
+
+  <section class="section ">
+    <div class="box">
+    <h2 class="title is-3"><span class="icon is-left">  <i class="fas fa-user"></i> </span> <%= @user.username %></h2>
+    <% if current_user == @user %>
+      <div class="block">
+        <%= link_to "Edit Profile", :edit_user_registration %>
+      </div>
+    <% end %>
+    <div class="block">
+      Contributed <%= @user.surveys.count %> surveys
+    </div>
+
+    <div class="block">
+      Joined <%= time_ago_in_words(@user.created_at) %> ago
+    </div>
+  </div>
+  </section>
+</main>

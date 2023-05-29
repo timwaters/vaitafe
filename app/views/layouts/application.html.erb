@@ -45,7 +45,7 @@
           <div class="navbar-item">
             <% if user_signed_in? %>    
               <span class="icon-text mr-2 ">
-                <a href="<%= edit_user_registration_path %>" class="profile-link ">
+                <a href="<%= user_path(current_user) %>" class="profile-link ">
                   <span class="icon"><i class="fas fa-user"></i> </span>
                   <span><%= current_user.username %></span>
                 </a>
