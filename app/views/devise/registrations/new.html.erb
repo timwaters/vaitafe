@@ -1,4 +1,4 @@
-<main>
+<main class="margin">
   <section class="container column is-one-quarter  ">
 
   <h2 class="title is-3">Sign up</h2>
@@ -9,19 +9,28 @@
     <div class="field">
       <%= f.label :email, class: "label" %>
       <p class="help">Email to login with</p>
-      <%= f.email_field :email, autofocus: true, autocomplete: "email" , class:"input" %>
+      <div class="control has-icons-left">
+        <%= f.email_field :email, autofocus: true, autocomplete: "email" , class:"input" %>
+        <span class="icon is-small is-left">  <i class="fas fa-user"></i> </span>
+      </div>
     </div>
 
     <div class="field">
       <%= f.label :username, class: "label" %>
       <p class="help">A display name others can see (you can edit this later)</p>
-      <%= f.text_field :username, autocomplete: "nickname" , class:"input" %>
+      <div class="control has-icons-left">
+        <%= f.text_field :username, autocomplete: "nickname" , class:"input" %>
+        <span class="icon is-small is-left">  <i class="fas fa-envelope"></i> </span>
+      </div>
     </div>
 
     <div class="field">
       <%= f.label :password, class: "label" %>
       <p class="help">Password (<%= @minimum_password_length %> characters minimum)</p>
-      <%= f.password_field :password, autocomplete: "new-password" , autocomplete: "email" , class:"input" %>
+      <div class="control has-icons-left">
+        <%= f.password_field :password, autocomplete: "new-password" , autocomplete: "new-password" , class:"input" %>
+        <span class="icon is-small is-left"><i class="fas fa-lock"></i> </span>
+      </div>
     </div>
 
     <div class="actions">
