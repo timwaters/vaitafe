@@ -43,8 +43,13 @@
 
         <div class="navbar-end">
           <div class="navbar-item">
-            <% if user_signed_in? %>
-              <span class="mr-2 "> Logged in as: <%= current_user.username %> </span>
+            <% if user_signed_in? %>    
+              <span class="icon-text mr-2 ">
+                <a href="<%= edit_user_registration_path %>" class="profile-link ">
+                  <span class="icon"><i class="fas fa-user"></i> </span>
+                  <span><%= current_user.username %></span>
+                </a>
+              </span> 
             <% end %>
             <div class="buttons">
               <% if user_signed_in? %>

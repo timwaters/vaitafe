@@ -35,6 +35,14 @@ a.navbar-item:hover {
   color: #b7d98c;
 }
 
+.profile-link {
+  color: #b7d98c;
+}
+
+.profile-link:hover {
+  color: #23a9e1;
+}
+
 .card-rounded {
  /* top-left | top-right | bottom-right | bottom-left */
   border-radius: 1rem ;
