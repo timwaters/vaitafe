@@ -8,25 +8,9 @@
   <section class="container column is-half  ">
   <h2 class="title is-3"><%= "New #{@survey.subtype.titlecase} Survey" %> </h2>
   
-  <%
-    num_questions = 0
-
-    case @survey.subtype 
-    when "chemical"
-      num_questions = 5
-    when "physical"
-      num_questions = 5 
-    when "biological"
-      num_questions = 4
-    end
-
-    # 4 common questions (time, river, comment, location)
-    num_questions = num_questions + 4 
-  %>
-
   <div class="field">
     <label id="progress-label" for="progress-bar"></label>
-    <progress id="progress-bar" class="progress is-info" value="2" max="<%= num_questions %>"></progress>
+    <progress id="progress-bar" class="progress is-info" value="2" max="10"></progress>
   </div>
 
 
@@ -64,7 +48,7 @@
           </ul>
         </div>
         
-        <%= form.hidden_field :lonlat %>
+        <%= form.hidden_field :lonlat, class: "step" %>
         <div id="formmap"></div>
       </div>
 
@@ -80,7 +64,7 @@
           <%= form.label(:ph, "Water acidity", class: "label")%>
           <p class="help">(pH level)</p>
           <div class="control">
-            <%= form.number_field :ph, class:"input" %>
+            <%= form.number_field :ph, class:"input step" %>
           </div>
         </div>
 
@@ -88,7 +72,7 @@
           <%= form.label(:temperature, "Water temperature", class: "label")%>
           <p class="help">Water temperature (Centrigade?) </p>
           <div class="control">
-            <%= form.number_field :temperature, class:"input" %>
+            <%= form.number_field :temperature, class:"input step" %>
           </div>
         </div>
 
@@ -96,7 +80,7 @@
           <%= form.label(:conductivity, class: "label")%>
           <p class="help">units? </p>
           <div class="control">
-            <%= form.number_field :conductivity, class:"input" %>
+            <%= form.number_field :conductivity, class:"input step" %>
           </div>
         </div>
 
@@ -104,15 +88,15 @@
           <%= form.label(:nitrogen, class: "label")%>
           <p class="help">units? </p>
           <div class="control">
-            <%= form.number_field :nitrogen, class:"input" %>
+            <%= form.number_field :nitrogen, class:"input step" %>
           </div>
         </div>
 
         <div class="field">
-          <%= form.label(:phosphorus, class: "label")%>
+          <%= form.label(:phosphorus, class: "label step")%>
           <p class="help">units? </p>
           <div class="control">
-            <%= form.number_field :phosphorus, class:"input" %>
+            <%= form.number_field :phosphorus, class:"input step" %>
           </div>
         </div>
         </div>
@@ -125,45 +109,36 @@
           <%= form.label(:width, "River width (m)", class: "label")%>
           <p class="help"> What is the average width of the river? (Estimate in meters)</p>
           <div class="control">
-            <%= form.number_field :width, class:"input" %>
+            <%= form.number_field :width, class:"input step" %>
           </div>
           
         </div>
-
-      
 
         <div class="field">
           <%= form.label(:depth, "River depth (m)", class: "label")%>
           <p class="help"> What is the average depth of the river? (Estimate in meters)</p>
           <div class="control">
-            <%= form.number_field :depth, class:"input" %>
+            <%= form.number_field :depth, class:"input step" %>
           </div>
-        
         </div>
-
-
 
         <fieldset class="field">
           <%= form.label(:manmade_structures, class: "label")%>
           <p class="help">Are there any man-made structures present in the river or along its banks within close proximity of the sampling site? If yes, which and how many?</p>
-          <%= form.text_area :manmade_structures, class:"textarea", placeholder: "E.g. modified river banks, weirs, dams, bypass channels, wells, water catchments/derivations, livestock, agriculture, towns, litter" %>
-        </fieldset>
-    
-        
+          <%= form.text_area :manmade_structures, class:"textarea step", placeholder: "E.g. modified river banks, weirs, dams, bypass channels, wells, water catchments/derivations, livestock, agriculture, towns, litter" %>
+        </fieldset>       
       
         <fieldset class="field">
           <%= form.label(:flow_regime, class: "label")%>
           <p class="help">What flow regimes can you identify?</p>
-          <%= form.text_area :flow_regime, class:"textarea", placeholder: "E.g. pools, ripples, waterfalls, rapids" %>
+          <%= form.text_area :flow_regime, class:"textarea step", placeholder: "E.g. pools, ripples, waterfalls, rapids" %>
         </fieldset>
 
         <fieldset class="field">
           <%= form.label(:bank_description, class: "label")%>
           <p class="help">Please briefly describe the river bank</p>
-          <%= form.text_area :bank_description, class:"textarea", placeholder: "E.g. steep or flat; eroding etc" %>
+          <%= form.text_area :bank_description, class:"textarea step", placeholder: "E.g. steep or flat; eroding etc" %>
         </fieldset>
-
-
 
       <% elsif  @survey.subtype == "biological" %> 
 
@@ -172,19 +147,19 @@
         <fieldset class="field">
           <%= form.label(:riparian_description, class: "label")%>
           <p class="help"> Please briefly describe the riparian vegetation. What proportion of the river is shaded?</p>
-          <%= form.text_area :riparian_description, class:"textarea", placeholder: "E.g. trees, shrubs, reeds" %>
+          <%= form.text_area :riparian_description, class:"textarea step", placeholder: "E.g. trees, shrubs, reeds" %>
         </fieldset>
 
         <fieldset class="field">
           <%= form.label(:abiotic_substrate, class: "label")%>
           <p class="help">What type of abiotic substrate can you identify?</p>
-          <%= form.text_area :abiotic_substrate, class:"textarea", placeholder:"E.g. Boulders, stones, gravel, clay, cemented bed" %>
+          <%= form.text_area :abiotic_substrate, class:"textarea step", placeholder:"E.g. Boulders, stones, gravel, clay, cemented bed" %>
         </fieldset>
 
         <fieldset class="field">
           <%= form.label(:biotic_substrate, class: "label")%>
           <p class="help">What type of biotic substrate can you identify?</p>
-          <%= form.text_area :biotic_substrate, class:"textarea", placeholder:"E.g. algae, moss, leaf litter, submerged plants, dead wood" %>
+          <%= form.text_area :biotic_substrate, class:"textarea step", placeholder:"E.g. algae, moss, leaf litter, submerged plants, dead wood" %>
         </fieldset>
 
         <fieldset class="field">
@@ -197,7 +172,7 @@
           </div>
         
           <a type="button" class="button is-link" id="addmacrobutton">Add Another Macroinverbrate</a>
-          <%= form.hidden_field :macroinvertebrates, class:"textarea" %>
+          <%= form.hidden_field :macroinvertebrates, class:"textarea step" %>
         </fieldset>
 
 
@@ -206,14 +181,13 @@
       <fieldset class="field">
         <%= form.label(:comment, "Additional comments", class: "label")%>
         <p class="help">Would you like to note anything that caught your eye?</p>
-        <%= form.text_area :comment, class:"textarea" %>
+        <%= form.text_area :comment, class:"textarea step" %>
       </fieldset>
       
       <div class="field">
         <label id="progress-label2" for="progress-bar"></label>
-        <progress id="progress-bar2" class="progress is-info" value="2" max="<%= num_questions %>"></progress>
-      </div>
-    
+        <progress id="progress-bar2" class="progress is-info" value="2" max="10"></progress>
+      </div>  
 
       <div>
         <%= form.submit   class: 'button is-primary', value: 'Save Observations' %>
@@ -234,7 +208,7 @@
   var circle = new L.marker();
 
   function onLocationFound(e) {
-    console.log("of", e)
+   
     var radius = e.accuracy;
 
     if(map.hasLayer(circle) && map.hasLayer(marker)) {
@@ -304,22 +278,16 @@
   // Function to update the progress bars and labels
   function updateProgress() {
     // Get all form inputs
-   
-    var inputs = form.querySelectorAll("input, textarea");
-
-    // Count the number of inputs with a value
+    var totalInputs = form.getElementsByClassName("step").length;
+    var inputs = form.getElementsByClassName("step");
     var count = 0;
-    var totalInputs  = 0;
-    inputs.forEach(function(input) {
-     if (input.id !== "survey_subtype" && input.id.startsWith("survey_") && input.value !== "" && !input.id.startsWith("macro")){
+
+    Array.from(inputs).forEach(function(input) {
+     if (input.value !== ""){
        count++;
-      }
-      if (input.id !== "survey_subtype" && input.id.startsWith("survey_")  && !input.id.startsWith("macro")){
-        totalInputs++;
       }
     });
 
-    
 
     // Update the first progress bar and label
     //totalInputs = totalInputs ;  // minus authenticity, submit and subtype 
@@ -331,10 +299,6 @@
     progressLabel2.textContent = label;
   }
 
-  // Call the updateProgress function when the form is loaded
-  // document.addEventListener("DOMContentLoaded", function() {
-  //   updateProgress();
-  // });
 
   // Call the updateProgress function whenever an input or textarea value changes
   var formInputs = form.querySelectorAll("input, textarea");
