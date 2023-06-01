@@ -130,7 +130,7 @@
       
         <fieldset class="field">
           <%= form.label(:flow_regime, class: "label")%>
-          <p class="help">What flow regimes can you identify?</p>
+          <p class="help">What flow regimes can you identify? (<a class="js-modal-trigger" data-target="modal-flow-regime">more info</a>)</p>
           <%= form.text_area :flow_regime, class:"textarea step", placeholder: "E.g. pools, ripples, waterfalls, rapids" %>
         </fieldset>
 
@@ -353,6 +353,70 @@
   });
   
 
+  document.addEventListener('DOMContentLoaded', () => {
+  // Functions to open and close a modal
+  function openModal($el) {
+    $el.classList.add('is-active');
+  }
 
+  function closeModal($el) {
+    $el.classList.remove('is-active');
+  }
+
+  function closeAllModals() {
+    (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+      closeModal($modal);
+    });
+  }
+
+  // Add a click event on buttons to open a specific modal
+  (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+    const modal = $trigger.dataset.target;
+    const $target = document.getElementById(modal);
+
+    $trigger.addEventListener('click', () => {
+      openModal($target);
+    });
+  });
+
+  // Add a click event on various child elements to close the parent modal
+  (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+    const $target = $close.closest('.modal');
+
+    $close.addEventListener('click', () => {
+      closeModal($target);
+    });
+  });
+
+  // Add a keyboard event to close all modals
+  document.addEventListener('keydown', (event) => {
+    const e = event || window.event;
+
+    if (e.keyCode === 27) { // Escape key
+      closeAllModals();
+    }
+  });
+});
 
 </script>
+<!-- modals for extra help -->
+
+
+
+
+<div id="modal-flow-regime" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">
+      <p class="block">
+      In the context of a stream, the flow regime refers to the characteristic behavior and dynamics of water flow within the stream channel. It describes how water moves, interacts with its surroundings, and the patterns it forms. Flow regime is influenced by various factors such as the stream's slope, channel shape, roughness, and discharge. Different flow regimes can be observed, ranging from laminar flow, where water moves smoothly in parallel layers, to turbulent flow, characterized by chaotic motion with eddies and swirls. The flow regime of a stream impacts its ecological health, sediment transport, and channel morphology, and understanding and studying it is crucial for managing water resources and assessing the overall stream ecosystem.
+      </p>
+      <p class="block">
+      To measure or observe the flow regime of a stream, various methods can be employed. One common approach is through the measurement of water velocity. This can be accomplished using instruments such as current meters, Doppler flow meters, or acoustic Doppler velocimeters. These devices allow for the direct measurement of water velocity at different points within the stream, providing insights into the flow regime. Additionally, visual observations of the stream's surface patterns, such as the presence of ripples, waves, or turbulent eddies, can provide qualitative indications of the flow regime. Other indicators, such as water surface slope, channel roughness, and cross-sectional measurements, can also aid in assessing the flow regime. Combining these techniques and data allows researchers and hydrologists to characterize the flow regime of a stream, understand its dynamics, and make informed decisions regarding water resource management and ecological studies.
+    </p>
+    </div>
+  </div>
+
+  <button class="modal-close is-large" aria-label="close"></button>
+</div>
+
