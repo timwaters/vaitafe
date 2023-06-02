@@ -58,17 +58,24 @@
       <% if  @survey.subtype == "chemical" %> 
 
         <!-- CHEMICAL --->
-        <div class="field is-grouped is-grouped-multiline ">
 
         <div class="field">
+          <input id="kitswitch" type="checkbox" name="kitswitch" class="switch is-rounded" onchange="toggleSwitch(this);">
+          <label for="kitswitch">I have a kit</label>
+        </div>
+
+
+        <div class="field is-grouped is-grouped-multiline ">
+
+        <div class="field is-hidden">
           <%= form.label(:ph, "Water acidity", class: "label")%>
           <p class="help">(pH level)</p>
           <div class="control">
-            <%= form.number_field :ph, class:"input step" %>
+            <%= form.number_field :ph, class:"input step need-kit" %>
           </div>
         </div>
 
-        <div class="field">
+        <div class="field ">
           <%= form.label(:temperature, "Water temperature", class: "label")%>
           <p class="help">Water temperature (Centrigade?) </p>
           <div class="control">
@@ -76,27 +83,27 @@
           </div>
         </div>
 
-        <div class="field">
+        <div class="field is-hidden">
           <%= form.label(:conductivity, class: "label")%>
           <p class="help">units? </p>
           <div class="control">
-            <%= form.number_field :conductivity, class:"input step" %>
+            <%= form.number_field :conductivity, class:"input step  need-kit" %>
           </div>
         </div>
 
-        <div class="field">
+        <div class="field is-hidden">
           <%= form.label(:nitrogen, class: "label")%>
           <p class="help">units? </p>
           <div class="control">
-            <%= form.number_field :nitrogen, class:"input step" %>
+            <%= form.number_field :nitrogen, class:"input step  need-kit" %>
           </div>
         </div>
 
-        <div class="field">
+        <div class="field is-hidden">
           <%= form.label(:phosphorus, class: "label step")%>
           <p class="help">units? </p>
           <div class="control">
-            <%= form.number_field :phosphorus, class:"input step" %>
+            <%= form.number_field :phosphorus, class:"input step  need-kit" %>
           </div>
         </div>
         </div>
@@ -342,6 +349,19 @@
       updateProgress();
     });
   });
+
+  function toggleSwitch(e){
+    var fields = form.getElementsByClassName("need-kit")
+    if (e.checked == true){
+      Array.from(fields).forEach(function(field) {
+        field.closest(".field").classList.remove('is-hidden')
+      });
+    } else {
+      Array.from(fields).forEach(function(field) {
+        field.closest(".field").classList.add('is-hidden')
+      });
+    }
+  }
 
 
   document.addEventListener("DOMContentLoaded", function() {
