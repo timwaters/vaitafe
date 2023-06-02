@@ -4,7 +4,7 @@ class SurveysController < ApplicationController
   before_action :can_edit_survey?, :only => [:edit, :update, :destroy]
 
   def index
-    @surveys = Survey.all.order("surveyed_at desc NULLS LAST" )
+    @surveys = Survey.all.order("surveyed_at desc NULLS LAST")
   end
 
 

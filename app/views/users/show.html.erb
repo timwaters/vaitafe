@@ -17,4 +17,31 @@
     </div>
   </div>
   </section>
+
+  <section>
+    <h3 class="title is-3">User's contributions </h3>
+    <table class="table is-hoverable is-fullwidth ">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>River</th>
+          <th>Subtype</th>
+          <th>Observations</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @surveys.each do | survey | %>
+        <tr>
+          <td><%= survey.surveyed_at.to_fs(:short)  if survey.surveyed_at %> </td>
+          <td><%= survey.river %></td>
+          <td><%= survey.subtype %></td>
+          <td><%= survey.observation_count %></td>
+          <td><%= link_to "view", survey %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </section>
 </main>
