@@ -9,6 +9,16 @@ crossorigin=""/>
  
   <section class="section">
   <h2 class="title is-3">Survey</h2>
+  <% if @survey.user == current_user %>
+    <div class="block">
+      <%= link_to "Edit Survey", edit_survey_path(@survey), class: "button is-primary" %>
+      <%= link_to "Delete", survey_path(@survey), data: {
+        turbo_method: :delete,
+        turbo_confirm: "Are you sure?"
+      }, class: "button is-danger" %>
+
+    </div>
+  <% end %>
 
     <div class="block">
       <table class="table is-hoverable is-fullwidth ">
@@ -59,7 +69,16 @@ crossorigin=""/>
     
     </div>
 
+  <% if @survey.user == current_user %>
+    <div class="block">
+      <%= link_to "Edit Survey", edit_survey_path(@survey), class: "button is-primary" %>
+      <%= link_to "Delete", survey_path(@survey), data: {
+        turbo_method: :delete,
+        turbo_confirm: "Are you sure?"
+      }, class: "button is-danger" %>
 
+    </div>
+  <% end %>
  </section>
   
 <section class="section">

@@ -1,0 +1,473 @@
+
+<script>
+  var map;
+  var circle;
+  var radius;
+  var marker;
+  var manualSelectionEnabled = false;
+  function toggleSwitch(e){
+    var form = document.getElementById("surveyform");
+    var fields = form.getElementsByClassName("need-kit")
+    if (e.checked == true){
+      Array.from(fields).forEach(function(field) {
+        field.closest(".field").classList.remove('is-hidden')
+      });
+    } else {
+      Array.from(fields).forEach(function(field) {
+        field.closest(".field").classList.add('is-hidden')
+      });
+    }
+  }
+
+  function toggleGeolocation(tab_id) {
+    var tab = document.getElementById(tab_id);
+
+    var tabs = document.querySelectorAll('.tabs li');
+    tabs.forEach(function (itab) {
+      itab.classList.remove('is-active');
+    });
+
+    tab.classList.add('is-active');
+    if (tab_id == "man-tab"){ manualSelectionEnabled = true;   } else {  manualSelectionEnabled = false;  }
+   
+    findLocation();
+  }
+
+  function findLocation(){
+    map.off('click', onLocationFound);
+    if (navigator.geolocation && !manualSelectionEnabled) {
+        map.locate({watch: true,  enableHighAccuracy:true, setView: true, maxZoom: 18});
+      } else {
+       if (manualSelectionEnabled) {
+          map.on('click', onLocationFound);
+        } else {
+          map.off('click', onLocationFound);
+        }
+    }
+  }
+
+  function onLocationFound(e) {
+   
+   radius = e.accuracy;
+
+   if(map.hasLayer(circle) && map.hasLayer(marker)) {
+     map.removeLayer(circle);
+     map.removeLayer(marker);
+   } 
+
+   var icon = new L.Icon({iconAnchor:L.Icon.Default.prototype.options.iconAnchor,  iconUrl: '<%= image_path("images/marker-icon.png") %>'});
+   marker = L.marker(e.latlng, {icon: icon})
+   marker.addTo(map);
+   circle = L.circle(e.latlng, radius)
+   circle.addTo(map);
+
+   var lonlat = "POINT("+e.latlng.lng+ " " + e.latlng.lat+")";
+   document.getElementById("survey_lonlat").value = lonlat;
+
+   updateProgress();  // for progress bar
+  }
+
+  function onLocationError(error) {
+    console.log('Geolocation error:', error);
+    toggleGeolocation("man-tab");
+  }
+
+   // Function to update the progress bars and labels
+  function updateProgress() {
+    var progressBar1 = document.getElementById("progress-bar");
+    var progressBar2 = document.getElementById("progress-bar2");
+    var progressLabel1 = document.getElementById("progress-label");
+    var progressLabel2 = document.getElementById("progress-label2");
+    var form = document.getElementById("surveyform");
+
+    // Get all form inputs
+    var totalInputs = form.getElementsByClassName("step").length;
+    var inputs = form.getElementsByClassName("step");
+    var count = 0;
+
+    Array.from(inputs).forEach(function(input) {
+    
+     if (input.value !== ""){
+       count++;
+      }
+    });
+
+
+    // Update the first progress bar and label
+    //totalInputs = totalInputs ;  // minus authenticity, submit and subtype 
+    progressBar1.value =  count;
+    var label = count  + "/" + totalInputs + " Completed";
+    progressLabel1.textContent = label;
+
+    progressBar2.value =  count;
+    progressLabel2.textContent = label;
+  }
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  map = L.map('formmap').setView([-13.8586, -171.7539], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: 'Map Tiles &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+  map.attributionControl.setPrefix(false);
+
+  marker = new L.marker();
+  circle = new L.marker();
+
+  map.on('locationfound', onLocationFound);
+  map.on('locationerror', onLocationError);
+
+
+  findLocation(); // call this at the beginning
+
+  // Call the updateProgress function whenever an input or textarea value changes
+  var form = document.getElementById("surveyform");
+  var formInputs = form.querySelectorAll("input, textarea");
+  formInputs.forEach(function(input) {
+    input.addEventListener("input", function() {
+      updateProgress();
+    });
+  });
+
+  var formSelects = form.querySelectorAll("select");
+  formSelects.forEach(function(select) {
+    select.addEventListener("change", function(){
+      updateProgress();
+    });
+  });
+
+    updateProgress(); // for progress bar
+
+    <% if survey.subtype == "biological" %>
+      var addInputButton = document.getElementById("addmacrobutton");
+      var inputItemsContainer = document.getElementById("macroitems");
+      var inputIndex = 0;
+
+      //<input class="input mr-2 "  type="text" placeholder="e.g. insect name" >   <input style="width:5em;" class="text" type="number" placeholder="count">  
+      addInputButton.addEventListener("click", function() {
+
+
+        var characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        var randomString = "";
+        for (var i = 0; i < 5; i++) {
+          randomString += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+
+        var div =  document.createElement("div");
+   
+        div.setAttribute("class", "field  is-grouped  is-horizontal");
+
+        var inputItem = document.createElement("input");
+        inputItem.setAttribute("type", "text");
+        inputItem.setAttribute("id", "macrotype_"+randomString);
+        inputItem.setAttribute("class", "input mr-2");
+        inputItem.setAttribute("placeholder", "e.g. insect name");
+
+        var inputNum = document.createElement("input"); 
+        inputNum.setAttribute("type", "number");
+        inputItem.setAttribute("id", "macronum_"+randomString);
+        inputNum.setAttribute("class", "text");
+        inputNum.setAttribute("style", "width:5em;");
+        inputNum.setAttribute("placeholder", "count");
+
+        inputIndex++;
+        div.append(inputItem,inputNum)
+        inputItemsContainer.appendChild(div);
+ 
+      });
+    <% end %>
+ 
+  // Functions to open and close a modal
+  function openModal($el) {
+    $el.classList.add('is-active');
+  }
+
+  function closeModal($el) {
+    $el.classList.remove('is-active');
+  }
+
+  function closeAllModals() {
+    (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+      closeModal($modal);
+    });
+  }
+
+  // Add a click event on buttons to open a specific modal
+  (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+    const modal = $trigger.dataset.target;
+    const $target = document.getElementById(modal);
+
+    $trigger.addEventListener('click', () => {
+      openModal($target);
+    });
+  });
+
+  // Add a click event on various child elements to close the parent modal
+  (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+    const $target = $close.closest('.modal');
+
+    $close.addEventListener('click', () => {
+      closeModal($target);
+    });
+  });
+
+  // Add a keyboard event to close all modals
+  document.addEventListener('keydown', (event) => {
+    const e = event || window.event;
+
+    if (e.keyCode === 27) { // Escape key
+      closeAllModals();
+    }
+  });
+});
+
+</script>
+
+
+<div class="field">
+  <label id="progress-label" for="progress-bar"></label>
+  <progress id="progress-bar" class="progress is-info" value="2" max="10"></progress>
+</div>
+
+
+  <%= form_with id: "surveyform", model: survey do | form | %>
+
+    <!-- COMMON FIELDS--->
+
+    <%= form.hidden_field :subtype %>
+
+    <div class="field">
+      <%= form.label(:surveyed_at,  class: "label")%>
+      <p class="help">When was this taken? (defaults to now)</p>
+      <div class="control">
+        <%= form.datetime_field :surveyed_at, class:"input" %>
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <%= form.label(:river,  "River", class: "label")%>
+      <p class="help">Which river is this survey about?</p>
+      <div class="control">
+        <%= form.text_field :river, class:"input", :readonly => true%>
+      </div>
+     
+    </fieldset>
+
+
+    <div class="field">
+      <%= form.label(:lonlat,  "Survey Location", class: "label")%> 
+
+      <div class="tabs is-small is-toggle is-toggle-rounded placebuttons">
+        <ul>
+          <li id="auto-tab" class="is-active" onclick="toggleGeolocation('auto-tab');" ><a>Automatic</a></li>
+          <li id="man-tab" class="" onclick="toggleGeolocation('man-tab');"> <a>Click on map</a> </li>
+        </ul>
+      </div>
+      
+      <%= form.hidden_field :lonlat, class: "step" %>
+      <div id="formmap"></div>
+    </div>
+
+
+    <hr> 
+   
+    <% if  @survey.subtype == "chemical" %> 
+
+      <!-- CHEMICAL --->
+
+      <div class="field">
+        <input id="kitswitch" type="checkbox" name="kitswitch" class="switch is-rounded" onchange="toggleSwitch(this);">
+        <label for="kitswitch">I have a kit</label>
+      </div>
+
+
+      <div class="field is-grouped is-grouped-multiline ">
+
+      <div class="field is-hidden">
+        <%= form.label(:ph, "Water acidity", class: "label")%>
+        <p class="help">(pH level)</p>
+        <div class="control">
+          <%= form.number_field :ph, class:"input step need-kit" %>
+        </div>
+      </div>
+
+      <div class="field ">
+        <%= form.label(:temperature, "Water temperature", class: "label")%>
+        <p class="help">Water temperature (Centrigade?) </p>
+        <div class="control">
+          <%= form.number_field :temperature, class:"input step" %>
+        </div>
+      </div>
+
+      <div class="field is-hidden">
+        <%= form.label(:conductivity, class: "label")%>
+        <p class="help">units? </p>
+        <div class="control">
+          <%= form.number_field :conductivity, class:"input step  need-kit" %>
+        </div>
+      </div>
+
+      <div class="field is-hidden">
+        <%= form.label(:nitrogen, class: "label")%>
+        <p class="help">units? </p>
+        <div class="control">
+          <%= form.number_field :nitrogen, class:"input step  need-kit" %>
+        </div>
+      </div>
+
+      <div class="field is-hidden">
+        <%= form.label(:phosphorus, class: "label step")%>
+        <p class="help">units? </p>
+        <div class="control">
+          <%= form.number_field :phosphorus, class:"input step  need-kit" %>
+        </div>
+      </div>
+      </div>
+
+    
+    <% elsif  survey.subtype == "physical" %> 
+      <!-- PHYSICAL --->
+
+      <div class="field">
+        <%= form.label(:width, "River width (m)", class: "label")%>
+        <p class="help"> What is the average width of the river? (Estimate in meters)</p>
+        <div class="control">
+          <%= form.number_field :width, class:"input step" %>
+        </div>
+        
+      </div>
+
+      <div class="field">
+        <%= form.label(:depth, "River depth (m)", class: "label")%>
+        <p class="help"> What is the average depth of the river? (Estimate in meters)</p>
+        <div class="control">
+          <%= form.number_field :depth, class:"input step" %>
+        </div>
+      </div>
+
+      <fieldset class="field">
+        <%= form.label(:manmade_structures, class: "label")%>
+        <p class="help">Are there any man-made structures present in the river or along its banks within close proximity of the sampling site? If yes, which and how many?</p>
+        <%= form.text_area :manmade_structures, class:"textarea step", placeholder: "E.g. modified river banks, weirs, dams, bypass channels, wells, water catchments/derivations, livestock, agriculture, towns, litter" %>
+      </fieldset>       
+    
+      <fieldset class="field">
+        <%= form.label(:flow_regime, class: "label")%>
+        <p class="help">What flow regimes can you identify? (<a class="js-modal-trigger" data-target="modal-flow-regime">more info</a>)</p>
+
+        <%= form.text_area :flow_regime, class:"textarea step", placeholder: "E.g. pools, ripples, waterfalls, rapids" %>
+      </fieldset>
+
+      <fieldset class="field">
+        <%= form.label(:flow_regime_choice, "Alternative Flow Regime Question" ,class: "label")%>
+        <p class="help">What flow regimes can you identify? (<a class="js-modal-trigger" data-target="modal-flow-regime">more info</a>)</p>
+
+        <%= form.select :flow_regime_choice,  [['Pool','pool'],['Ripples','ripples'],['Waterfalls','waterfalls'],['Rapids','rapids'],['Cascade','cascade'],['Other (please specify)', 'other']], { :prompt => "Select all you can see"},{ :multiple => true, :size => 6 ,class: "step pl-1 pr-1 select is-multiple"} %>
+        <p class="help">Other Flow regime</p>
+        <%= form.text_field :flow_regime, class:" input" %>
+      </fieldset>
+     
+      <fieldset class="field">
+        <%= form.label(:water_color, class: "label")%>
+        <p class="help"> What is the color of the river water? </p>
+
+        <%= form.select :water_color,  [['Clear','clear'],['Murky or cloudy','murky'],['Muddy or sediment-laden','muddy'],['Other (please specify)', 'other']], { :prompt => "Select one"},{class: "select step"} %>
+        <p class="help">Other colour</p>
+        <%= form.text_field :water_color_other, class:" input" %>
+      </fieldset>
+
+      <fieldset class="field">
+        <%= form.label(:turbulence,  class: "label")%>
+        <p class="help">  Is the river water calm or turbulent? </p>
+
+        <%= form.select :turbulence,  [['Calm','calm'],['Moderately turbulent','moderate'],['Highly turbulent','high']], { :prompt => "Select one"},{class: "select step"} %>
+
+      </fieldset>
+     
+      <fieldset class="field">
+        <%= form.label(:bank_description, class: "label")%>
+        <p class="help">Please briefly describe the river bank</p>
+        <%= form.text_area :bank_description, class:"textarea step", placeholder: "E.g. steep or flat; eroding etc" %>
+      </fieldset>
+
+    <% elsif  survey.subtype == "biological" %> 
+
+      <!-- BIOLOGICAL --->
+
+      <fieldset class="field">
+        <%= form.label(:riparian_description, class: "label")%>
+        <p class="help"> Please briefly describe the riparian vegetation. What proportion of the river is shaded?</p>
+        <%= form.text_area :riparian_description, class:"textarea step", placeholder: "E.g. trees, shrubs, reeds" %>
+      </fieldset>
+
+      <fieldset class="field">
+        <%= form.label(:abiotic_substrate, class: "label")%>
+        <p class="help">What type of abiotic substrate can you identify?</p>
+        <%= form.text_area :abiotic_substrate, class:"textarea step", placeholder:"E.g. Boulders, stones, gravel, clay, cemented bed" %>
+      </fieldset>
+
+      <fieldset class="field">
+        <%= form.label(:biotic_substrate, class: "label")%>
+        <p class="help">What type of biotic substrate can you identify?</p>
+        <%= form.text_area :biotic_substrate, class:"textarea step", placeholder:"E.g. algae, moss, leaf litter, submerged plants, dead wood" %>
+      </fieldset>
+
+      <fieldset class="field">
+        <%= form.label(:macroinvertebrates, class: "label")%>
+        <p class="help">Add which insects were found and the count (NOTE: Demo functionality)</p>
+        <div id="macroitems" class=" block control">
+          <div class="field  is-grouped is-horizontal">
+            <input class="input mr-2"  id="macrotype_1" type="text" placeholder="e.g. insect name" >   <input style="width:5em;" id="macronum_1"  class="text" type="number" placeholder="count"> 
+          </div>
+        </div>
+      
+        <a type="button" class="button is-link" id="addmacrobutton">Add Another Macroinverbrate</a>
+        <%= form.hidden_field :macroinvertebrates, class:"textarea step" %>
+      </fieldset>
+
+
+    <% end %>
+
+    <fieldset class="field">
+      <%= form.label(:comment, "Additional comments", class: "label")%>
+      <p class="help">Would you like to note anything that caught your eye?</p>
+      <%= form.text_area :comment, class:"textarea step" %>
+    </fieldset>
+    
+    <div class="field">
+      <label id="progress-label2" for="progress-bar"></label>
+      <progress id="progress-bar2" class="progress is-info" value="2" max="10"></progress>
+    </div>  
+
+    <div>
+      <% if survey.new_record? %>
+        <%= form.submit   class: 'button is-primary', value: 'Save Observations' %>
+      <% else %>
+        <%= form.submit   class: 'button is-primary', value: 'Update Survey' %>
+      <% end %>
+    </div>
+    <% end %>
+
+<!-- modals for extra help -->
+
+
+
+<div id="modal-flow-regime" class="modal">
+<div class="modal-background"></div>
+<div class="modal-content">
+  <div class="box">
+    <h4 class=" title is-6">Flow Regime</h4>
+    <p class="block">
+    In the context of a stream, the flow regime refers to the characteristic behavior and dynamics of water flow within the stream channel. It describes how water moves, interacts with its surroundings, and the patterns it forms. Flow regime is influenced by various factors such as the stream's slope, channel shape, roughness, and discharge. Different flow regimes can be observed, ranging from laminar flow, where water moves smoothly in parallel layers, to turbulent flow, characterized by chaotic motion with eddies and swirls. The flow regime of a stream impacts its ecological health, sediment transport, and channel morphology, and understanding and studying it is crucial for managing water resources and assessing the overall stream ecosystem.
+    </p>
+
+  </div>
+</div>
+
+<button class="modal-close is-large" aria-label="close"></button>
+</div>
+
+

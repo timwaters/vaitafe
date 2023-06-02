@@ -1,6 +1,7 @@
 class SurveysController < ApplicationController
 
   before_action :authenticate_user!
+  before_action :can_edit_survey?, :only => [:edit, :update, :destroy]
 
   def index
     @surveys = Survey.all.order("surveyed_at desc NULLS LAST" )
@@ -30,19 +31,6 @@ class SurveysController < ApplicationController
   end
 
 
-#common: comment, river, subtype, lonlat, surveyed at
-
- # ph phosphorus conductivity nitrogen temperature
- 
-
-  #width  depth manmade_structures flow_regime bank_description
-
-
-  #riparian_description abiotic_substrate abiotic_substrate biotic_substrate
-  #macroinvertebrates
-
-
-
   #save a completed survey
   def create
 
@@ -57,10 +45,36 @@ class SurveysController < ApplicationController
 
   end
 
+  def edit
+  end
+
+  def update
+    if @survey.update(survey_params)
+      redirect_to @survey
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+      @survey.destroy
+  
+      redirect_to surveys_path, status: :see_other
+
+  end
+
+
   private
   def survey_params
     params.require(:survey).permit(:lonlat, :river, :subtype, :comment, :surveyed_at, 
       :ph,:conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, :manmade_structures,  :flow_regime, :bank_description ,:riparian_description, :abiotic_substrate, :biotic_substrate ,:macroinvertebrates , :water_color, :water_color_other, :turbulence, flow_regime_choice: [] )
+  end
+
+  def can_edit_survey?
+    @survey = Survey.find(params[:id])
+    unless current_user == @survey.user
+      redirect_back_or_to :surveys
+    end
   end
 
 end
