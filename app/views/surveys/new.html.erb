@@ -131,9 +131,36 @@
         <fieldset class="field">
           <%= form.label(:flow_regime, class: "label")%>
           <p class="help">What flow regimes can you identify? (<a class="js-modal-trigger" data-target="modal-flow-regime">more info</a>)</p>
+
           <%= form.text_area :flow_regime, class:"textarea step", placeholder: "E.g. pools, ripples, waterfalls, rapids" %>
         </fieldset>
 
+        <fieldset class="field">
+          <%= form.label(:flow_regime_choice, "Alternative Flow Regime Question" ,class: "label")%>
+          <p class="help">What flow regimes can you identify? (<a class="js-modal-trigger" data-target="modal-flow-regime">more info</a>)</p>
+
+          <%= form.select :flow_regime_choice,  [['Pool','pool'],['Ripples','ripples'],['Waterfalls','waterfalls'],['Rapids','rapids'],['Cascade','cascade'],['Other (please specify)', 'other']], { :prompt => "Select all you can see"},{ :multiple => true, :size => 6 ,class: "step pl-1 pr-1 select is-multiple"} %>
+          <p class="help">Other Flow regime</p>
+          <%= form.text_field :flow_regime, class:" input" %>
+        </fieldset>
+       
+        <fieldset class="field">
+          <%= form.label(:water_color, class: "label")%>
+          <p class="help"> What is the color of the river water? </p>
+
+          <%= form.select :water_color,  [['Clear','clear'],['Murky or cloudy','murky'],['Muddy or sediment-laden','muddy'],['Other (please specify)', 'other']], { :prompt => "Select one"},{class: "select step"} %>
+          <p class="help">Other colour</p>
+          <%= form.text_field :water_color_other, class:" input" %>
+        </fieldset>
+
+        <fieldset class="field">
+          <%= form.label(:turbulence,  class: "label")%>
+          <p class="help">  Is the river water calm or turbulent? </p>
+
+          <%= form.select :turbulence,  [['Calm','calm'],['Moderately turbulent','moderate'],['Highly turbulent','high']], { :prompt => "Select one"},{class: "select step"} %>
+
+        </fieldset>
+       
         <fieldset class="field">
           <%= form.label(:bank_description, class: "label")%>
           <p class="help">Please briefly describe the river bank</p>
@@ -283,6 +310,7 @@
     var count = 0;
 
     Array.from(inputs).forEach(function(input) {
+    
      if (input.value !== ""){
        count++;
       }
@@ -304,6 +332,13 @@
   var formInputs = form.querySelectorAll("input, textarea");
   formInputs.forEach(function(input) {
     input.addEventListener("input", function() {
+      updateProgress();
+    });
+  });
+
+  var formSelects = form.querySelectorAll("select");
+  formSelects.forEach(function(select) {
+    select.addEventListener("change", function(){
       updateProgress();
     });
   });

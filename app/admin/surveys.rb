@@ -1,7 +1,14 @@
 ActiveAdmin.register Survey do
 
-  permit_params :lonlat, :river, :subtype, :comment, :surveyed_at, :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, :manmade_structures, :flow_regime, :bank_description, :riparian_description, :abiotic_substrate, :biotic_substrate, :macroinvertebrates, :user_id
-
+  permit_params :lonlat, :river, :subtype, :comment, :surveyed_at, :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, :manmade_structures, :flow_regime,  {flow_regime_choice: []}, :bank_description, :riparian_description, :abiotic_substrate, :biotic_substrate, :macroinvertebrates, :user_id,  :water_color, :water_color_other, :turbulence
+  
+  
+  controller do
+    def update
+      params[:survey][:flow_regime_choice] = params[:survey][:flow_regime_choice].split(' ')
+      super
+    end
+  end
 
   index do
     selectable_column
@@ -24,11 +31,16 @@ ActiveAdmin.register Survey do
     column :depth
     column :manmade_structures
     column :flow_regime
+    column :flow_regime_choice
+    column :water_color
+    column :water_color_other
+    column :turbulence
     column :bank_description
     column :riparian_description
     column :abiotic_substrate
     column :biotic_substrate
     column :macroinvertebrates
+  
     actions
   end
 
@@ -54,11 +66,16 @@ ActiveAdmin.register Survey do
       f.input :depth
       f.input :manmade_structures
       f.input :flow_regime
+      f.input :flow_regime_choice
+      f.input :water_color
+      f.input :water_color_other
+      f.input :turbulence
       f.input :bank_description
       f.input :riparian_description
       f.input :abiotic_substrate
       f.input :biotic_substrate
       f.input :macroinvertebrates
+      
       
     end
 

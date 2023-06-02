@@ -60,8 +60,7 @@ class SurveysController < ApplicationController
   private
   def survey_params
     params.require(:survey).permit(:lonlat, :river, :subtype, :comment, :surveyed_at, 
-      :ph,:conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth,
-      :manmade_structures,  :flow_regime, :bank_description ,:riparian_description,:abiotic_substrate, :biotic_substrate ,:macroinvertebrates  )
+      :ph,:conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, :manmade_structures,  :flow_regime, :bank_description ,:riparian_description, :abiotic_substrate, :biotic_substrate ,:macroinvertebrates , :water_color, :water_color_other, :turbulence, flow_regime_choice: [] )
   end
 
 end

@@ -16,7 +16,7 @@ ActiveAdmin.register_page "Dashboard" do
       column do
         panel "Recent Surveys" do
           ul do
-            Survey.order("created_at desc").last(10).map do |survey|
+            Survey.order("created_at asc").last(10).reverse.map do |survey|
               li link_to("#{survey.id} #{survey.subtype}", admin_survey_path(survey))
             end
           end
@@ -26,7 +26,7 @@ ActiveAdmin.register_page "Dashboard" do
       column do
         panel "Recent Users" do
           ul do
-            User.order("created_at desc").last(10).map do |user|
+            User.order("created_at asc").last(10).reverse.map do |user|
               li link_to("#{user.username} #{user.email}", admin_user_path(user))
             end
           end

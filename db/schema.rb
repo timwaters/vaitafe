@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_29_145952) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_02_105820) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -64,6 +64,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_29_145952) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.string "flow_regime_choice", default: [], array: true
+    t.string "water_color"
+    t.string "water_color_other"
+    t.string "turbulence"
     t.index ["user_id"], name: "index_surveys_on_user_id"
   end
 
