@@ -1,6 +1,6 @@
 <main>
 
-  <section class="section ">
+  <section class="section">
     <div class="box">
     <h2 class="title is-3"><span class="icon is-left">  <i class="fas fa-user"></i> </span> <%= @user.username %></h2>
     <% if current_user == @user %>
@@ -18,7 +18,7 @@
   </div>
   </section>
 
-  <section>
+  <section class=" section">
     <h3 class="title is-3">User's contributions </h3>
     <table class="table is-hoverable is-fullwidth ">
       <thead>
@@ -42,6 +42,7 @@
       <% end %>
       </tbody>
     </table>
+    <%= paginate @surveys,  window: 2, left: 1, right: 1 %>
 
   </section>
 </main>

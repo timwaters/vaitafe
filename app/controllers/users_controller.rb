@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @surveys = @user.surveys
+    @surveys = @user.surveys.order("created_at desc").page(params[:page])
   end
 
 end
