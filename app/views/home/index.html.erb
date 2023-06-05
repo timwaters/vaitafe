@@ -67,10 +67,10 @@
             </tr>
           </thead>
           <tbody>
-            <% @latest_surveys.each do | survey | %>
+            <% @active_users.each do | user | %>
               <tr>
-                <td><%= survey.user.username %></td>
-                <td><%= survey.user.surveys.count %> </td>
+                <td><%= user.username %></td>
+                <td><%= user.contribution_count %> </td>
               </tr>
             <% end %>
 
