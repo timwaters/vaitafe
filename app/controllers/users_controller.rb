@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   #TODO Pagination, sorting etc
   def index
-    @users = User.page(params[:page])
+    @users = User.order("contribution_count desc").page(params[:page])
   end
 
   def show
