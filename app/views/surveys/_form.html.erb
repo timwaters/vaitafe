@@ -355,13 +355,6 @@ document.addEventListener('DOMContentLoaded', () => {
       </fieldset>       
     
       <fieldset class="field">
-        <%= form.label(:flow_regime, class: "label")%>
-        <p class="help">What flow regimes can you identify? (<a class="js-modal-trigger" data-target="modal-flow-regime">more info</a>)</p>
-
-        <%= form.text_area :flow_regime, class:"textarea step", placeholder: "E.g. pools, ripples, waterfalls, rapids" %>
-      </fieldset>
-
-      <fieldset class="field">
         <%= form.label(:flow_regime_choice, "Alternative Flow Regime Question" ,class: "label")%>
         <p class="help">What flow regimes can you identify? (<a class="js-modal-trigger" data-target="modal-flow-regime">more info</a>)</p>
 
