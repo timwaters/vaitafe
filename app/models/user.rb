@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   has_many :surveys
 
+  validates :username, presence: true
+
   def update_contribution_count
     count = 0
     surveys.each do | survey |
