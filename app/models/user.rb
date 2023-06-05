@@ -8,6 +8,9 @@ class User < ApplicationRecord
 
   validates :username, presence: true
 
+  paginates_per 20
+  max_paginates_per 150
+
   def update_contribution_count
     count = 0
     surveys.each do | survey |

@@ -7,7 +7,8 @@
     <thead>
       <tr>
         <th>Username</th>
-        <th>Surveys contributed</th>
+        <th>Surveys created</th>
+        <th>Observations contributed</th>
         <th>Joined</th>
       </tr>
     </thead>
@@ -17,12 +18,14 @@
       <tr>
         <td><%= link_to user.username, user %> </td>
         <td> <%= user.surveys.count %> </td>
+        <td> <%= user.contribution_count %> </td>
         <td> <%= time_ago_in_words(user.created_at) %> ago </td>
       </tr>
     <% end %>
 
     </tbody>
   </table>
+  <%= paginate @users,  window: 2, left: 1, right: 1 %>
 
 
   </section>

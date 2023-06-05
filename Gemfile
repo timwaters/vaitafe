@@ -55,7 +55,7 @@ gem "sassc-rails"
 
 gem "devise"
 
-gem 'activeadmin'
+gem 'activeadmin'  #this includes kaminari which we use for pagination
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

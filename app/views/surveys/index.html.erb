@@ -2,7 +2,6 @@
   <section class="section">
 
   <h2 class="title is-3">All Surveys</h2>
-
   <table class="table is-hoverable is-fullwidth ">
     <thead>
       <tr>
@@ -27,8 +26,9 @@
     <% end %>
     </tbody>
   </table>
-
+  <%= paginate @surveys,  window: 2, left: 1, right: 1 %>
 </section>
 </main>
+
 
   
