@@ -1,5 +1,7 @@
 class Survey < ApplicationRecord
   belongs_to :user
+  has_many :macroinvertebrates
+  accepts_nested_attributes_for :macroinvertebrates, allow_destroy: true
 
   after_commit :update_user_contribution_count
 

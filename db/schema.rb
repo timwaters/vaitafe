@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_02_150409) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_05_133128) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -41,6 +41,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_02_150409) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "macroinvertebrates", force: :cascade do |t|
+    t.string "name"
+    t.string "latin_name"
+    t.string "observed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "survey_id"
+    t.index ["survey_id"], name: "index_macroinvertebrates_on_survey_id"
+  end
+
   create_table "surveys", force: :cascade do |t|
     t.geometry "lonlat", limit: {:srid=>0, :type=>"st_point"}
     t.string "river"
@@ -60,7 +70,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_02_150409) do
     t.text "riparian_description"
     t.text "abiotic_substrate"
     t.text "biotic_substrate"
-    t.text "macroinvertebrates"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"

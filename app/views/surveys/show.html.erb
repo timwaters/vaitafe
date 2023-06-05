@@ -58,7 +58,15 @@ crossorigin=""/>
         <tr><td> Riparian_description </td> <td> <%= @survey.riparian_description %></td> </tr>
         <tr><td> Abiotic_substrate</td> <td> <%= @survey.abiotic_substrate %> </td> </tr>
         <tr><td> Biotic_substrate</td> <td> <%= @survey.biotic_substrate %></td> </tr>
-        <tr><td> Macroinvertebrates</td> <td> <%= @survey. macroinvertebrates%></td> </tr>
+        <tr><td> Macroinvertebrates</td> <td> 
+          <ul>
+            <% @survey.macroinvertebrates.each do | macro | 
+              unless macro.name.blank? &&  macro.observed.blank? %>
+                <li><%= macro.name %> : <%= macro.observed %></li>
+         <%   end
+            end %>
+          </ul>
+        </td> </tr>
            
         <% end %>
 

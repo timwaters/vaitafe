@@ -1,6 +1,6 @@
 ActiveAdmin.register Survey do
 
-  permit_params :lonlat, :river, :subtype, :comment, :surveyed_at, :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, :manmade_structures, :flow_regime,  {flow_regime_choice: []}, :bank_description, :riparian_description, :abiotic_substrate, :biotic_substrate, :macroinvertebrates, :user_id,  :water_color, :water_color_other, :turbulence
+  permit_params :lonlat, :river, :subtype, :comment, :surveyed_at, :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, :manmade_structures, :flow_regime,  {flow_regime_choice: []}, :bank_description, :riparian_description, :abiotic_substrate, :biotic_substrate, :macroinvertebrates, :user_id,  :water_color, :water_color_other, :turbulence, macroinvertebrates_attributes: [:id, :name, :latin_name, :observed, :_destroy]
   
   
   controller do
@@ -73,13 +73,32 @@ ActiveAdmin.register Survey do
       f.input :bank_description
       f.input :riparian_description
       f.input :abiotic_substrate
-      f.input :biotic_substrate
-      f.input :macroinvertebrates
-      
-      
+      f.input :biotic_substrate      
+      f.inputs do
+        f.has_many :macroinvertebrates,  allow_destroy: true  do |t|
+          t.input :name
+          t.input :observed
+        end
+      end
     end
 
     f.actions
   end
+
+  show do
+
+    default_main_content
+
+    div do
+
+      h3 "macroinvertebrates"
+      attributes_table_for survey.macroinvertebrates do
+        rows  :name, :observed
+      end
+
+  
+  end
+  end
+  
   
 end

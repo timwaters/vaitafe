@@ -143,39 +143,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <% if survey.subtype == "biological" %>
       var addInputButton = document.getElementById("addmacrobutton");
-      var inputItemsContainer = document.getElementById("macroitems");
-      var inputIndex = 0;
+      var inputItemsContainer = document.querySelector(".macro-fields");
+      <% if survey.new_record? %>
+        var macroIndex = 1; //start at 0
+      <% else %>
+        var macroIndex = <%= survey.macroinvertebrates.count %>;
+      <% end  %>
 
-      //<input class="input mr-2 "  type="text" placeholder="e.g. insect name" >   <input style="width:5em;" class="text" type="number" placeholder="count">  
       addInputButton.addEventListener("click", function() {
 
+      var newfields = document.createElement("div");
+      newfields.classList.add("field")
+      newfields.classList.add("is-grouped")
+      newfields.classList.add("is-horizontal")
 
-        var characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        var randomString = "";
-        for (var i = 0; i < 5; i++) {
-          randomString += characters.charAt(Math.floor(Math.random() * characters.length));
-        }
+      newfields.innerHTML = `
+        <input type="text" id="survey_macroinvertebrates_attributes_${macroIndex}_name" name="survey[macroinvertebrates_attributes][${macroIndex}][name]" class="input mr-2" placeholder="e.g. insect name">
+        <input type="number" id="survey_macroinvertebrates_attributes_${macroIndex}_observed" name="survey[macroinvertebrates_attributes][${macroIndex}][observed]" class="input" style="width:5em;">
+      `;
 
-        var div =  document.createElement("div");
-   
-        div.setAttribute("class", "field  is-grouped  is-horizontal");
-
-        var inputItem = document.createElement("input");
-        inputItem.setAttribute("type", "text");
-        inputItem.setAttribute("id", "macrotype_"+randomString);
-        inputItem.setAttribute("class", "input mr-2");
-        inputItem.setAttribute("placeholder", "e.g. insect name");
-
-        var inputNum = document.createElement("input"); 
-        inputNum.setAttribute("type", "number");
-        inputItem.setAttribute("id", "macronum_"+randomString);
-        inputNum.setAttribute("class", "text");
-        inputNum.setAttribute("style", "width:5em;");
-        inputNum.setAttribute("placeholder", "count");
-
-        inputIndex++;
-        div.append(inputItem,inputNum)
-        inputItemsContainer.appendChild(div);
+      inputItemsContainer.appendChild(newfields);
+      macroIndex++;
  
       });
     <% end %>
@@ -410,15 +398,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <fieldset class="field">
         <%= form.label(:macroinvertebrates, class: "label")%>
-        <p class="help">Add which insects were found and the count (NOTE: Demo functionality)</p>
-        <div id="macroitems" class=" block control">
-          <div class="field  is-grouped is-horizontal">
-            <input class="input mr-2"  id="macrotype_1" type="text" placeholder="e.g. insect name" >   <input style="width:5em;" id="macronum_1"  class="text" type="number" placeholder="count"> 
+        <p class="help">Add which macroinvertebrates were found and the count </p>
+        <div class="containing-them">
+          <div class="macro-fields block control">
+            <%= form.fields_for :macroinvertebrates do |macro_form| %>
+              <div class="field is-grouped is-horizontal">
+                <%= macro_form.text_field :name , class: "input mr-2", placeholder: "e.g. insect name", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_name", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][name]" %>
+                <!-- latin name ?-->
+                <%= macro_form.number_field :observed, class: "input",  placeholder: "count",style: "width:5em;", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_observed", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][observed]" %>
+                <% unless survey.new_record? %>
+                  <%= macro_form.check_box :_destroy, class: "s",  placeholder: "count", id: "survey_macroinvertebrates_attributes_#{macro_form.index}__destroy", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][_destroy]" %>
+                  <%= macro_form.label :_destroy, 'Delete' %>
+                <% end  %>
+              </div>
+            <% end %>
           </div>
         </div>
       
         <a type="button" class="button is-link" id="addmacrobutton">Add Another Macroinverbrate</a>
-        <%= form.hidden_field :macroinvertebrates, class:"textarea step" %>
+      
       </fieldset>
 
 
