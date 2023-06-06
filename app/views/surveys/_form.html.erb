@@ -103,6 +103,14 @@
     progressLabel2.textContent = label;
   }
 
+  function deletemacro(e){
+    if (window.confirm("Are you sure?")) {
+      var hiddenField = e.previousElementSibling;
+      hiddenField.value =  "1";
+      var parent = e.parentNode;
+      e.parentNode.classList.add("is-hidden");
+    }
+  }
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -160,6 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
       newfields.innerHTML = `
         <input type="text" id="survey_macroinvertebrates_attributes_${macroIndex}_name" name="survey[macroinvertebrates_attributes][${macroIndex}][name]" class="input mr-2" placeholder="e.g. insect name">
         <input type="number" id="survey_macroinvertebrates_attributes_${macroIndex}_observed" name="survey[macroinvertebrates_attributes][${macroIndex}][observed]" class="input" style="width:5em;">
+        <input type="hidden"  id="survey_macroinvertebrates_attributes_${macroIndex}__destroy" name="survey[macroinvertebrates_attributes][${macroIndex}][_destroy]" >
+        <a class="button delete-macro" title="Delete" data-turbo="true" data-turbo-confirm="Are you sure?" onclick="deletemacro(this);"><span class="icon is-small"><i class="fas fa-trash-alt"></i></span></a>
       `;
 
       inputItemsContainer.appendChild(newfields);
@@ -406,10 +416,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <%= macro_form.text_field :name , class: "input mr-2", placeholder: "e.g. insect name", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_name", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][name]" %>
                 <!-- latin name ?-->
                 <%= macro_form.number_field :observed, class: "input",  placeholder: "count",style: "width:5em;", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_observed", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][observed]" %>
-                <% unless survey.new_record? %>
-                  <%= macro_form.check_box :_destroy, class: "s",  placeholder: "count", id: "survey_macroinvertebrates_attributes_#{macro_form.index}__destroy", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][_destroy]" %>
-                  <%= macro_form.label :_destroy, 'Delete' %>
-                <% end  %>
+             
+                <%= macro_form.hidden_field :_destroy, id: "survey_macroinvertebrates_attributes_#{macro_form.index}__destroy", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][_destroy]" %>
+                
+                <a class="button delete-macro" title="Delete" onclick="deletemacro(this);">
+                  <span class="icon is-small"><i class="fas fa-trash-alt"></i></span>
+                </a>
               </div>
             <% end %>
           </div>
