@@ -166,9 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
       newfields.classList.add("is-horizontal")
 
       newfields.innerHTML = `
-        <input type="text" id="survey_macroinvertebrates_attributes_${macroIndex}_name" name="survey[macroinvertebrates_attributes][${macroIndex}][name]" class="input mr-2" placeholder="e.g. insect name">
+        <input type="text" list="species" id="survey_macroinvertebrates_attributes_${macroIndex}_name" name="survey[macroinvertebrates_attributes][${macroIndex}][name]" class="input mr-2" placeholder="e.g. insect name">
         <input type="number" id="survey_macroinvertebrates_attributes_${macroIndex}_observed" name="survey[macroinvertebrates_attributes][${macroIndex}][observed]" class="input" style="width:5em;">
-        <input type="hidden"  id="survey_macroinvertebrates_attributes_${macroIndex}__destroy" name="survey[macroinvertebrates_attributes][${macroIndex}][_destroy]" >
+        <input type="hidden" id="survey_macroinvertebrates_attributes_${macroIndex}__destroy" name="survey[macroinvertebrates_attributes][${macroIndex}][_destroy]" >
         <a class="button delete-macro" title="Delete" data-turbo="true" data-turbo-confirm="Are you sure?" onclick="deletemacro(this);"><span class="icon is-small"><i class="fas fa-trash-alt"></i></span></a>
       `;
 
@@ -413,7 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="macro-fields block control">
             <%= form.fields_for :macroinvertebrates do |macro_form| %>
               <div class="field is-grouped is-horizontal">
-                <%= macro_form.text_field :name , class: "input mr-2", placeholder: "e.g. insect name", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_name", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][name]" %>
+                <%= macro_form.text_field :name , class: "input mr-2", placeholder: "e.g. insect name", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_name", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][name]", list: "species" %>
                 <!-- latin name ?-->
                 <%= macro_form.number_field :observed, class: "input",  placeholder: "count",style: "width:5em;", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_observed", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][observed]" %>
              
@@ -428,7 +428,20 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       
         <a type="button" class="button is-link" id="addmacrobutton">Add Another Macroinverbrate</a>
-      
+
+        <datalist id="species">
+          <option value="Cyclopoida">
+          <option value="Atyidae">
+          <option value="Macrobrachium">
+          <option value="Tanytarsini">
+          <option value="Orthocladiinae">
+          <option value="Ablabesmyia">
+          <option value="Clithon pritchardi ">
+          <option value="Polypedilum">
+          <option value="Cloeon">
+          <option value="Notonectidae">            
+        </datalist>
+
       </fieldset>
 
 
