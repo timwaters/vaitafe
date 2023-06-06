@@ -1,5 +1,53 @@
-<main>
+<% content_for :head do %>
+<script>
+  function nexttip(){
+    var tipscontainer = document.getElementById("tips-container");
+    var num_tips = tipscontainer.querySelectorAll('.tip').length;
+    var nextip = 1;
+    let skip = false;
+    tipscontainer.querySelectorAll('.tip').forEach((tip) => {
+      
+      if (!skip && !tip.classList.contains("is-hidden")){
+        
+        var nexttip_int = parseInt(tip.id.slice(4)) + 1 ;
+        var nexttip_id;
+        if (nexttip_int >= num_tips){
+          nexttip_id = "tip-0";
+        }else{
+          nexttip_id = "tip-"+nexttip_int;
+        }
+        
+        var nexttip = document.getElementById(nexttip_id)
+        nexttip.classList.remove("is-hidden");
 
+        tip.classList.add("is-hidden"); //hide original tip
+        skip = true;
+      }
+      
+    });
+  }
+  function hidetips(id){
+    var el =  document.getElementById(id)
+    el.classList.remove('is-active');
+    createCookie('tips', 'hide', 30)
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (readCookie("tips") != "hide"){
+      var el =  document.getElementById("modal-onboard")
+      if (el){
+        el.classList.add('is-active');
+      }
+     
+    }
+  });
+
+</script>
+
+<% end %>
+
+<main>
+  
   <section class="section">
     <div class="has-text-centered">
       Choose from either <%= link_to "Chemical" , subtype_survey_path(subtype: "chemical")  %> , <%= link_to "Physical" , subtype_survey_path(subtype: "physical")  %>
@@ -109,8 +157,45 @@
   </div>
 
 
-
-
-
-
 </main>
+
+
+<div id="modal-onboard" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+  
+    <div class="box">
+      <h4 class=" title is-6">Getting Started</h4>
+      <div id="tips-container" class="">
+        <div class="block">
+          <div id="tip-0" class="tip tip-0">
+            <p> <span class="icon is-small"><i class="fas fa-clipboard-check"></i></span> Choose physical, biological or chemical. </p>
+            <p> <span class="icon is-small"><i class="fas fa-clipboard-check"></i></span> Some questions require a kit or special equipment.</p>
+          </div>
+          <div id="tip-1" class="tip tip-1 is-hidden">
+            <p> <span class="icon is-small"><i class="fas fa-clipboard-check"></i></span> Collect data over a period of time to see how the water quality changes.</p>
+            <p> <span class="icon is-small"><i class="fas fa-clipboard-check"></i></span> Be sure to clean and sanitize your equipment after each use.</p>
+          </div>
+          <div id="tip-2" class="tip tip-2 is-hidden">
+            <p> <span class="icon is-small"><i class="fas fa-clipboard-check"></i></span> Any data is better than no data. It's okay if you don't answer everything. </p>
+            <p> <span class="icon is-small"><i class="fas fa-clipboard-check"></i></span> Have fun!</p>
+          </div>
+        </div>
+        <div class="level">
+          <div class="level-left">
+            <a onclick="nexttip();" class="button">&nbsp; Next Tip &nbsp;</a>
+          </div>
+          <div class="level-right">
+            <button class="button closemodalbutton is-primary">Got it</button>
+          </div>
+        </div>
+        <div class="block">
+          <a onclick="hidetips('modal-onboard');" class="">Don't show tips in future </a>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  
+  <button class="modal-close is-large" aria-label="close"></button>
+  </div>

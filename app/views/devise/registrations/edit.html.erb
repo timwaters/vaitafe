@@ -1,7 +1,39 @@
+
+<script>
+    document.addEventListener('turbo:load', () => {
+      var tipscheckbox = document.getElementById("tipscookie");
+      if (tipscheckbox){
+
+    
+      if(readCookie("tips") === "hide"){
+        tipscheckbox.checked = false;
+      }else {
+        tipscheckbox.checked = true;
+      }
+
+      tipscheckbox.addEventListener("click", () => {
+        if (!tipscheckbox.checked){
+          createCookie('tips', 'hide', 30);
+        }else{
+          eraseCookie('tips');
+        }
+      })
+    };
+    });
+</script>
+
+
 <main>
   <section class="container column is-one-quarter  ">
 
 <h2 class="title is-3">Edit <%= resource_name.to_s.humanize %></h2>
+
+<div class="block">
+  
+  <label for="tipscookie">Show tips</label>
+  <input type="checkbox" id="tipscookie" name="tipscookie">
+
+</div>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
