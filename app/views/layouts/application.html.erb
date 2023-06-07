@@ -32,7 +32,7 @@
 
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-          <%= link_to "Start Collecting", choose_path, class: "navbar-item" %>
+          <%= link_to "Start Collecting", choose_path, class: "navbar-item", 'data-turbo': 'false' %>
    
           <a class="navbar-item" href="/help">
             About & Help
@@ -157,7 +157,7 @@
   </script>
   
   <% if notice || alert %>
-    <div class="notification  is-info">
+    <div class="notification  is-info" data-turbo-cache="false">
       <button class="delete" onclick="closeNotification(this);"></button>
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>

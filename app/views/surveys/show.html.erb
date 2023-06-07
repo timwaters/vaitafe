@@ -1,9 +1,7 @@
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-crossorigin=""/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
- integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
- crossorigin=""></script>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "leaflet", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "leaflet", "data-turbo-track": "reload" %>
+<% end %>
 
 <main class="margin">
  
@@ -11,7 +9,7 @@ crossorigin=""/>
   <h2 class="title is-3">Survey</h2>
   <% if @survey.user == current_user %>
     <div class="block">
-      <%= link_to "Edit Survey", edit_survey_path(@survey), class: "button is-primary" %>
+      <%= link_to "Edit Survey", edit_survey_path(@survey), class: "button is-primary", 'data-turbo': 'false' %>
       <%= link_to "Delete", survey_path(@survey), data: {
         turbo_method: :delete,
         turbo_confirm: "Are you sure?"
@@ -104,7 +102,9 @@ crossorigin=""/>
       attribution: 'Map Tiles &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
     map.attributionControl.setPrefix(false);
-    L.marker(coords).addTo(map);
+    var icon = new L.Icon({iconAnchor:L.Icon.Default.prototype.options.iconAnchor,  iconUrl: '<%= image_path("images/marker-icon.png") %>'});
+    marker = L.marker(coords, {icon: icon})
+    marker.addTo(map);
   <% end %>
 
   </script>
