@@ -5,6 +5,7 @@
     var num_tips = tipscontainer.querySelectorAll('.tip').length;
     var nextip = 1;
     let skip = false;
+
     tipscontainer.querySelectorAll('.tip').forEach((tip) => {
       
       if (!skip && !tip.classList.contains("is-hidden")){
@@ -36,6 +37,10 @@
     if (readCookie("tips") != "hide"){
       var el =  document.getElementById("modal-onboard")
       if (el){
+        // open random tip
+        let tips = document.getElementById("tips-container").querySelectorAll('.tip');
+        tips[Math.floor(Math.random() * tips.length )].classList.remove("is-hidden")
+       
         el.classList.add('is-active');
       }
      
@@ -133,30 +138,6 @@
     </div>
   </div>
 
-
-  <div class="box">
-    Tips:
-    <ul class="">
-      <li>
-        Be sure to collect data from the same location and time each time.
-      </li>
-      <li>
-        Collect data over a period of time to see how the water quality changes.
-      </li>
-      <li>
-        Be careful not to contaminate the water sample.
-      </li>
-      <li>
-        Be sure to clean and sanitize your equipment after each use.
-      </li>
-      <li>
-        Have fun!
-      </li>
-    </ul>
-
-  </div>
-
-
 </main>
 
 
@@ -168,7 +149,7 @@
       <h4 class=" title is-6">Getting Started</h4>
       <div id="tips-container" class="">
         <div class="block">
-          <div id="tip-0" class="tip tip-0">
+          <div id="tip-0" class="tip tip-0 is-hidden">
             <p> <span class="icon is-small"><i class="fas fa-clipboard-check"></i></span> Choose physical, biological or chemical. </p>
             <p> <span class="icon is-small"><i class="fas fa-clipboard-check"></i></span> Some questions require a kit or special equipment.</p>
           </div>
@@ -178,7 +159,7 @@
           </div>
           <div id="tip-2" class="tip tip-2 is-hidden">
             <p> <span class="icon is-small"><i class="fas fa-clipboard-check"></i></span> Any data is better than no data. It's okay if you don't answer everything. </p>
-            <p> <span class="icon is-small"><i class="fas fa-clipboard-check"></i></span> Have fun!</p>
+            <p> <span class="icon is-small"><i class="fas fa-clipboard-check"></i></span> Have fun, and thank you for contributing!</p>
           </div>
         </div>
         <div class="level">
