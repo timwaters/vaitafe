@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <input type="text" list="species" id="survey_macroinvertebrates_attributes_${macroIndex}_name" name="survey[macroinvertebrates_attributes][${macroIndex}][name]" class="input mr-2" placeholder="e.g. insect name">
         <input type="number" id="survey_macroinvertebrates_attributes_${macroIndex}_observed" name="survey[macroinvertebrates_attributes][${macroIndex}][observed]" class="input" style="width:5em;">
         <input type="hidden" id="survey_macroinvertebrates_attributes_${macroIndex}__destroy" name="survey[macroinvertebrates_attributes][${macroIndex}][_destroy]" >
-        <a class="button delete-macro" title="Delete" data-turbo="true" data-turbo-confirm="Are you sure?" onclick="deletemacro(this);"><span class="icon is-small"><i class="fas fa-trash-alt"></i></span></a>
+        <a class="button delete-macro" title="Delete" onclick="deletemacro(this);"><span class="icon is-small"><i class="fas fa-trash-alt"></i></span></a>
       `;
 
       inputItemsContainer.appendChild(newfields);
