@@ -59,84 +59,58 @@
           or  <%= link_to "Biological" , subtype_survey_path(subtype: "biological"),  'data-turbo': 'false'  %> to start entering data.
     </div>
   </section>
-
+  <div class="container">
   <div class="columns is-centered">
     <div class="column is-two-thirds">
 
+      <section class="panel choose-panel ">
+        <div class="panel-heading choose-panelhead">
+          <%= link_to (image_tag "measure.jpg", class: "choose-image" ), subtype_survey_path(subtype: "physical"),  'data-turbo': 'false' %>
+        </div>
+        <div class="mr-2 ml-2 pb-2">           
+          <span class="title is-5">
+            <%= link_to "Physical" , subtype_survey_path(subtype: "physical"),  'data-turbo': 'false' %>
+          </span>
+          <p>Choose this for collecting data about the physical characteristics of the river and its surroundings. <br />
+            e.g. Width, depth, man made structures, the flow regime, and examinations of the river bank .</p>
+        </div>
+      </section>
 
-      <section class="top-card box">
-        <div class="columns is-mobile">
-
-          <div class="column is-narrow">
-            <figure class="">
-              <%= link_to (image_tag "measure.jpg" , width: 128, height: 128, class: "card-rounded" ), subtype_survey_path(subtype: "physical"),  'data-turbo': 'false' %>
-            </figure>
-          </div>
-
-          <div class="column  ">
-            <div class="top-hero">
-              <h1 class="title is-5">
-                <%= link_to "Physical" , subtype_survey_path(subtype: "physical"),  'data-turbo': 'false' %>
-              </h1>
-              <p>Choose this for collecting data about the physical characteristics of the river and its surroundings. <br />
-                e.g. Width, depth, man made structures, the flow regime, and examinations of the river bank .</p>
-            </div>
-          </div>
-
+      <section class="panel choose-panel">
+        <div class="panel-heading choose-panelhead">
+          <%= link_to (image_tag "kit2.jpg" , class: "choose-image" ), subtype_survey_path(subtype: "chemical"),  'data-turbo': 'false' %>
+        </div>
+        <div class="mr-2 ml-2 pb-2">           
+          <span class="title is-5">
+            <%= link_to "Chemical" ,  subtype_survey_path(subtype: "chemical"),  'data-turbo': 'false' %>
+          </span>
+          <p> Choose this for collecting data about the chemical characteristics of the river, with a focus on the water. pH (Acidity), Nitrogen (nitrates), Phosphorus (phosphates), Conductivity, Temperature <br />
         </div>
       </section>
 
 
-      <section class="top-card box">
-        <div class="columns  is-mobile">
-
-          <div class="column is-narrow">
-            <figure class="">
-              <%= link_to (image_tag "kit2.jpg" , width: 128, height: 128, class: "card-rounded" ), subtype_survey_path(subtype: "chemical"),  'data-turbo': 'false' %>
-            </figure>
-          </div>
-
-          <div class="column  ">
-            <div class="top-hero">
-              <h1 class="title is-5">
-                <%= link_to "Chemical" ,  subtype_survey_path(subtype: "chemical"),  'data-turbo': 'false' %>
-              </h1>
-              <p> Choose this for collecting data about the chemical characteristics of the river, with a focus on the water. pH (Acidity), Nitrogen (nitrates), Phosphorus (phosphates), Conductivity, Temperature <br />
-             
-              </p>
-            </div>
-          </div>
-
+      <section class="panel choose-panel">
+        <div class="panel-heading choose-panelhead">
+          <%= link_to (image_tag "stream.jpeg" , class: "choose-image" ),  subtype_survey_path(subtype: "biological"),  'data-turbo': 'false'  %>
+          
+        </div>
+        <div class="mr-2 ml-2 pb-2">           
+          <span class="title is-5">
+            <%= link_to "Biological" ,  subtype_survey_path(subtype: "biological"),  'data-turbo': 'false'  %>
+          
+          </span>
+          <p>Choose this for contributing observations about the biological characteristics of the river.  <br />
+            Describe the riparian vegetation growing on the river banks<br />
+            Observations about macroinvertebrats and the living things on the river bed such as algae, moss, leaf litter, submerged plants, dead wood or animals and non livings such as boulders, stones, gravel or clay.</p>
         </div>
       </section>
 
 
 
-      <section class="top-card box">
-        <div class="columns  is-mobile">
-
-          <div class="column is-narrow">
-            <figure class="">
-              <%= link_to (image_tag "stream.jpeg" , width: 128, height: 128, class: "card-rounded" ),  subtype_survey_path(subtype: "biological") %>
-            </figure>
-          </div>
-
-          <div class="column  ">
-            <div class="top-hero">
-              <h1 class="title is-5">
-                <%= link_to "Biological" ,  subtype_survey_path(subtype: "biological")  %>
-              </h1>
-              <p>Choose this for contributing observations about the biological characteristics of the river.  <br />
-                Describe the riparian vegetation growing on the river banks<br />
-                Observations about macroinvertebrats and the living things on the river bed such as algae, moss, leaf litter, submerged plants, dead wood or animals and non livings such as boulders, stones, gravel or clay.</p>
-            </div>
-          </div>
-
-        </div>
-      </section>
 
     </div>
   </div>
+</div>
 
 </main>
 
