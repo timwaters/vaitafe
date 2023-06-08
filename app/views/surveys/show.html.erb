@@ -50,6 +50,14 @@
         <tr><td> Other Water Color</td> <td> <%= @survey.water_color_other %></td> </tr>
         <tr><td> Turbulence</td> <td> <%= @survey.turbulence %></td> </tr>
         <tr><td> Bank_description</td> <td> <%= @survey.bank_description %></td> </tr>
+
+        <tr><td>Images</td><td>
+          <% if @survey.images.attached? %>
+            <% @survey.images.each do | image |  %>
+              <%= link_to image_tag(image.representation(resize_to_limit: [100, 100])), image %>
+            <% end %>
+          <% end %>
+        </td></tr>
           
         <% elsif @survey.subtype == "biological" %>
 

@@ -343,6 +343,28 @@ document.addEventListener('DOMContentLoaded', () => {
         <%= form.text_area :bank_description, class:"textarea step", placeholder: "E.g. steep or flat; eroding etc" %>
       </fieldset>
 
+      <fieldset class="field">
+        <% if survey.new_record? %>
+          <%= form.label(:images, "Image uploads", class: "label") %>
+          <p class="help">Upload any images</p>
+
+          <% else %>
+          <%= form.label(:images, "Replace image uploads", class: "label") %>
+          <p class="help">Replace existing images</p>
+          <% if survey.images.attached? %>
+              <% survey.images.each do | image |  %>
+                <%= link_to image_tag(image.representation(resize_to_limit: [100, 100])), image %>
+              <% end %>
+            <% end %>
+            <br />
+        <% end %>
+
+        <%= form.file_field :images, multiple: true %>
+      </fieldset>
+
+     
+
+
     <% elsif  survey.subtype == "biological" %> 
 
       <!-- BIOLOGICAL --->

@@ -1,7 +1,6 @@
 ActiveAdmin.register Survey do
 
-  permit_params :lonlat, :river, :subtype, :comment, :surveyed_at, :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, :manmade_structures, :flow_regime,  {flow_regime_choice: []}, :bank_description, :riparian_description, :abiotic_substrate, :biotic_substrate, :macroinvertebrates, :user_id,  :water_color, :water_color_other, :turbulence, macroinvertebrates_attributes: [:id, :name, :latin_name, :observed, :_destroy]
-  
+  permit_params :lonlat, :river, :subtype, :comment, :surveyed_at, {images:[]}, :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, :manmade_structures, :flow_regime,  {flow_regime_choice: []}, :bank_description, :riparian_description, :abiotic_substrate, :biotic_substrate, :macroinvertebrates, :user_id,  :water_color, :water_color_other, :turbulence, macroinvertebrates_attributes: [:id, :name, :latin_name, :observed, :_destroy]
   
   controller do
     def update
@@ -22,6 +21,16 @@ ActiveAdmin.register Survey do
     column :subtype
     column :surveyed_at
     column :comment
+
+    column :images do |survey|
+      survey.images.each do |image|
+        div do
+          image_tag(image.representation(resize_to_limit: [50, 50])) 
+        end
+      end
+      nil
+    end
+
     column :ph
     column :conductivity
     column :phosphorus
@@ -49,6 +58,8 @@ ActiveAdmin.register Survey do
   filter :surveyed_at
   filter :user_id
 
+
+    
   form do | f| 
 
     f.inputs do
@@ -57,6 +68,7 @@ ActiveAdmin.register Survey do
       f.input :subtype
       f.input :surveyed_at
       f.input :comment
+      f.input :images, as: :file, input_html: { multiple: true }
       f.input :ph
       f.input :conductivity
       f.input :phosphorus
@@ -88,6 +100,22 @@ ActiveAdmin.register Survey do
   show do
 
     default_main_content
+
+
+    div  do
+      h3 "images"
+      attributes_table do
+        row :images do
+          div do
+            survey.images.each do |img|
+              div do
+                link_to(image_tag(img.representation(resize_to_limit: [100, 100])), img)
+              end
+            end
+          end
+        end
+      end
+    end
 
     div do
 
