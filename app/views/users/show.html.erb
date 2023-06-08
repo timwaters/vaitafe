@@ -11,6 +11,9 @@
     <div class="block">
       Contributed <%= @user.surveys.count %> surveys
     </div>
+    <div class="block">
+      Added <%= @user.contribution_count %> observations
+    </div>
 
     <div class="block">
       Joined <%= time_ago_in_words(@user.created_at) %> ago
