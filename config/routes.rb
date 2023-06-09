@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   # get 'survey/new'
   # get 'survey/show'
   resources :surveys 
+  get '/surveys/:id/destroy_image/:image_id' => 'surveys#destroy_image', :as => "destroy_image"
 
   get 'surveys/new/:subtype', to: 'surveys#new', as: "subtype_survey"
 

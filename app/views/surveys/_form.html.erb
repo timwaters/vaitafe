@@ -21,16 +21,17 @@
 
   function toggleGeolocation(tab_id) {
     var tab = document.getElementById(tab_id);
+    if (tab) {
+      var tabs = document.querySelectorAll('.tabs li');
+      tabs.forEach(function (itab) {
+        itab.classList.remove('is-active');
+      });
 
-    var tabs = document.querySelectorAll('.tabs li');
-    tabs.forEach(function (itab) {
-      itab.classList.remove('is-active');
-    });
-
-    tab.classList.add('is-active');
-    if (tab_id == "man-tab"){ manualSelectionEnabled = true;   } else {  manualSelectionEnabled = false;  }
-   
-    findLocation();
+      tab.classList.add('is-active');
+      if (tab_id == "man-tab"){ manualSelectionEnabled = true;   } else {  manualSelectionEnabled = false;  }
+    
+      findLocation();
+    }
   }
 
   function findLocation(){
@@ -112,21 +113,26 @@
     }
   }
 
-
+  //document.addEventListener('turbo:load', () => {
 document.addEventListener('DOMContentLoaded', () => {
-
+ 
   const fileInput = document.querySelector('#survey_images');
-  fileInput.onchange = () => {
-    if (fileInput.files.length > 0) {
-      var fileNames = [];
-      for (var i = 0; i < fileInput.files.length; i++) {
-        fileNames.push(fileInput.files[i].name);
+  if (fileInput){
+    fileInput.onchange = () => {
+      if (fileInput.files.length > 0) {
+        var fileNames = [];
+        for (var i = 0; i < fileInput.files.length; i++) {
+          fileNames.push(fileInput.files[i].name);
+        }
+        const fileNameLabel = document.querySelector('.file .file-name');
+        fileNameLabel.innerHTML = fileNames.join(" <br />  ");
       }
-      const fileNameLabel = document.querySelector('.file .file-name');
-      fileNameLabel.innerHTML = fileNames.join(" <br />  ");
     }
   }
-
+  if (map != undefined){
+    map.off();
+    map.remove();
+  }
   map = L.map('formmap').setView([-13.8586, -171.7539], 13);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -202,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 
 
-  <%= form_with id: "surveyform", model: survey do | form | %>
+  <%= form_with id: "surveyform", turbo: false, model: survey do | form | %>
 
     <!-- COMMON FIELDS--->
 
@@ -358,19 +364,20 @@ document.addEventListener('DOMContentLoaded', () => {
       <fieldset class="field">
         <% if survey.new_record? %>
           <%= form.label(:images, "Upload images", class: "label") %>
-          <p class="help">Upload any images of the area</p>
-
-          <% else %>
-          <%= form.label(:images, "Upload images", class: "label") %>
           <p class="help">Upload images of the area</p>
+
+        <% else %>
+          <%= form.label(:images, "Upload images", class: "label") %>
+          
           <% if survey.images.attached? %>
               <% survey.images.each do | image |  %>
                 <%= link_to image_tag(image.representation(resize_to_limit: [100, 100])), image %>
+                <%= link_to "delete", destroy_image_path(id: survey.id, image_id: image.id), class: "button is-danger",  onclick: "return confirm('Are you sure?');", 'data-turbo': 'false' %>
               <% end %>
             <% end %>
             <br />
         <% end %>
-
+        <p class="help">Upload images of the area</p>
         <div class="file has-name is-boxed">
           <label class="file-label">
             <%= form.file_field :images, multiple: true, class:"file-input" %>

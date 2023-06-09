@@ -1,7 +1,7 @@
 class SurveysController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :can_edit_survey?, :only => [:edit, :update, :destroy]
+  before_action :can_edit_survey?, :only => [:edit, :update, :destroy, :destroy_image]
 
   def index
     @surveys = Survey.order("surveyed_at desc NULLS LAST").page(params[:page])
@@ -67,6 +67,14 @@ class SurveysController < ApplicationController
   
       redirect_to surveys_path, status: :see_other
 
+  end
+
+  def destroy_image
+    @image = @survey.images.find(params[:image_id])
+
+    @image.purge
+    redirect_back(fallback_location: edit_survey_path(@survey))  
+  
   end
 
 

@@ -103,6 +103,7 @@
 
 <script>
   <% if @survey.lonlat && @survey.lonlat.coordinates  %>
+
     var coords = <%= @survey.lonlat.coordinates.to_a.reverse %>;
     var map = L.map('map').setView(coords, 13);
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
