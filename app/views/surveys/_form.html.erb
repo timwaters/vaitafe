@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </fieldset>       
     
       <fieldset class="field">
-        <%= form.label(:flow_regime_choice, "Alternative Flow Regime Question" ,class: "label")%>
+        <%= form.label(:flow_regime_choice, "Flow Regime" ,class: "label")%>
         <p class="help">What flow regimes can you identify? (<a class="js-modal-trigger" data-target="modal-flow-regime">more info</a>)</p>
 
         <%= form.select :flow_regime_choice,  [['Pool','pool'],['Ripples','ripples'],['Waterfalls','waterfalls'],['Rapids','rapids'],['Cascade','cascade'],['Other (please specify)', 'other']], { :prompt => "Select all you can see"},{ :multiple => true, :size => 6 ,class: "step pl-1 pr-1 select is-multiple"} %>

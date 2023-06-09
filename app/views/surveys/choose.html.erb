@@ -33,6 +33,14 @@
     createCookie('tips', 'hide', 30)
   }
 
+  //hides for 0.24 of an hour 14 mins
+  function hidetips_temp(id){
+    var el =  document.getElementById(id)
+    el.classList.remove('is-active');
+    createCookie('tips', 'hide', 0.01)
+  }
+
+
   document.addEventListener('DOMContentLoaded', () => {
     if (readCookie("tips") != "hide"){
       var el =  document.getElementById("modal-onboard")
@@ -141,7 +149,7 @@
             <a onclick="nexttip();" class="button">&nbsp; Next Tip &nbsp;</a>
           </div>
           <div class="level-right">
-            <button class="button closemodalbutton is-primary">Got it</button>
+            <button class="button closemodalbutton is-primary" onclick="hidetips_temp('modal-onboard');" >Got it</button>
           </div>
         </div>
         <div class="block">
