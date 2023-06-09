@@ -5,6 +5,17 @@ ActiveAdmin.register Survey do
   controller do
     def update
       params[:survey][:flow_regime_choice] = params[:survey][:flow_regime_choice].split(' ')
+
+      #this will add images to the collection
+      @survey = Survey.find params[:id]
+   
+      if params[:survey][:images].present?
+        params[:survey][:images].each do | image |
+          @survey.images.attach(image)
+        end
+      end
+      params[:survey].reject! { |p| p["images"] }
+
       super
     end
   end
@@ -58,7 +69,11 @@ ActiveAdmin.register Survey do
   filter :surveyed_at
   filter :user_id
 
-
+  member_action :delete_image, method: :delete do
+    @image = ActiveStorage::Attachment.find(params[:id])
+    @image.purge_later
+    redirect_back(fallback_location: edit_admin_survey_path)   
+  end
     
   form do | f| 
 
@@ -68,7 +83,7 @@ ActiveAdmin.register Survey do
       f.input :subtype
       f.input :surveyed_at
       f.input :comment
-      f.input :images, as: :file, input_html: { multiple: true }
+      # f.input :images, as: :file, input_html: { multiple: true }
       f.input :ph
       f.input :conductivity
       f.input :phosphorus
@@ -91,6 +106,23 @@ ActiveAdmin.register Survey do
           t.input :name
           t.input :observed
         end
+      end
+
+      div class:"imagediv", style:"padding-left:1.5em;" do
+        h3 "Images"
+          f.object.images.each do |img|
+            
+            li class: "" do
+              figure do
+                img src: rails_representation_path(img.representation(resize_to_limit: [100, 100]))
+                figcaption img.filename
+              end
+              # delete_image_admin_survey DELETE     /admin/surveys/:id/delete_image(.:format)
+              a "Delete", class: "button", href: delete_image_admin_survey_path(img.id), "data-method": :delete, "data-confirm": "Are you sure?"
+            end
+          end
+          br
+        f.input :images, label: "Add images ", as: :file, allow_destroy: true, input_html: { multiple: true }
       end
     end
 

@@ -50,7 +50,12 @@ class SurveysController < ApplicationController
   end
 
   def update
-    if @survey.update(survey_params)
+    if @survey.update(survey_params.except(:images))
+      if survey_params[:images].present?
+        survey_params[:images].each do | image |
+          @survey.images.attach(image)
+        end
+      end
       redirect_to @survey
     else
       render :edit, status: :unprocessable_entity

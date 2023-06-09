@@ -115,6 +115,18 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  const fileInput = document.querySelector('#survey_images');
+  fileInput.onchange = () => {
+    if (fileInput.files.length > 0) {
+      var fileNames = [];
+      for (var i = 0; i < fileInput.files.length; i++) {
+        fileNames.push(fileInput.files[i].name);
+      }
+      const fileNameLabel = document.querySelector('.file .file-name');
+      fileNameLabel.innerHTML = fileNames.join(" <br />  ");
+    }
+  }
+
   map = L.map('formmap').setView([-13.8586, -171.7539], 13);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -345,12 +357,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <fieldset class="field">
         <% if survey.new_record? %>
-          <%= form.label(:images, "Image uploads", class: "label") %>
-          <p class="help">Upload any images</p>
+          <%= form.label(:images, "Upload images", class: "label") %>
+          <p class="help">Upload any images of the area</p>
 
           <% else %>
-          <%= form.label(:images, "Replace image uploads", class: "label") %>
-          <p class="help">Replace existing images</p>
+          <%= form.label(:images, "Upload images", class: "label") %>
+          <p class="help">Upload images of the area</p>
           <% if survey.images.attached? %>
               <% survey.images.each do | image |  %>
                 <%= link_to image_tag(image.representation(resize_to_limit: [100, 100])), image %>
@@ -359,7 +371,24 @@ document.addEventListener('DOMContentLoaded', () => {
             <br />
         <% end %>
 
-        <%= form.file_field :images, multiple: true %>
+        <div class="file has-name is-boxed">
+          <label class="file-label">
+            <%= form.file_field :images, multiple: true, class:"file-input" %>
+            <span class="file-cta">
+              <span class="file-icon">
+                <i class="fas fa-upload"></i>
+              </span>
+              <span class="file-label">
+                Choose images
+              </span>
+            </span>
+            <span class="file-name" style="height: auto;">
+              
+            </span>
+          </label>
+        </div>
+
+       
       </fieldset>
 
      
