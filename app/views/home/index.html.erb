@@ -37,7 +37,6 @@
           <thead>
             <tr>
               <th>Date</th>
-              <th>River</th>
               <th>User</th>
               <th>Observations</th>
             </tr>
@@ -46,7 +45,6 @@
             <% @latest_surveys.each do | survey | %>
               <tr>
                 <td><%= survey.surveyed_at.to_fs(:short) if survey.surveyed_at %> </td>
-                <td><%= survey.river %></td>
                 <td><%= survey.user.username %></td>
                 <td><%= survey.observation_count %></td>
               </tr>
