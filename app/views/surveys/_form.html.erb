@@ -56,73 +56,88 @@
     }
   }
 
-  //document.addEventListener('turbo:load', () => {
-document.addEventListener('DOMContentLoaded', () => {
- 
-  const fileInput = document.querySelector('#survey_images');
-  if (fileInput){
-    fileInput.onchange = () => {
-      if (fileInput.files.length > 0) {
-        var fileNames = [];
-        for (var i = 0; i < fileInput.files.length; i++) {
-          fileNames.push(fileInput.files[i].name);
+  window.addEventListener('pageshow',  imageSetup);
+  document.addEventListener('turbo:load', imageSetup);
+
+  function imageSetup(){
+    const fileInput = document.querySelector('#survey_images');
+    if (fileInput){
+      fileInput.onchange = () => {
+        if (fileInput.files.length > 0) {
+          var fileNames = [];
+          for (var i = 0; i < fileInput.files.length; i++) {
+            fileNames.push(fileInput.files[i].name);
+          }
+          const fileNameLabel = document.querySelector('.file .file-name');
+          fileNameLabel.innerHTML = fileNames.join(" <br />  ");
         }
-        const fileNameLabel = document.querySelector('.file .file-name');
-        fileNameLabel.innerHTML = fileNames.join(" <br />  ");
       }
     }
   }
 
+  window.addEventListener('pageshow',  fieldListener);
+  document.addEventListener('turbo:load', fieldListener);
+  var hasListener = false;
+  function fieldListener(){
+    // Call the updateProgress function whenever an input or textarea value changes
+    var form = document.getElementById("surveyform");
+    if (form != undefined){
+      var formInputs = form.querySelectorAll("input, textarea");
+      formInputs.forEach(function(input) {
+        input.addEventListener("input", function() {
+          updateProgress();
+        });
+      });
 
-  // Call the updateProgress function whenever an input or textarea value changes
-  var form = document.getElementById("surveyform");
-  var formInputs = form.querySelectorAll("input, textarea");
-  formInputs.forEach(function(input) {
-    input.addEventListener("input", function() {
-      updateProgress();
-    });
-  });
+      var formSelects = form.querySelectorAll("select");
+      formSelects.forEach(function(select) {
+        select.addEventListener("change", function(){
+          updateProgress();
+        });
+      });
 
-  var formSelects = form.querySelectorAll("select");
-  formSelects.forEach(function(select) {
-    select.addEventListener("change", function(){
-      updateProgress();
-    });
-  });
-
-    updateProgress(); // for progress bar
-
+      updateProgress(); // for progress bar
+    }
+ 
     <% if survey.subtype == "biological" %>
       var addInputButton = document.getElementById("addmacrobutton");
-      var inputItemsContainer = document.querySelector(".macro-fields");
-      <% if survey.new_record? %>
-        var macroIndex = 1; //start at 0
-      <% else %>
-        var macroIndex = <%= survey.macroinvertebrates.count %>;
-      <% end  %>
+      
+      if (addInputButton != undefined ){
 
-      addInputButton.addEventListener("click", function() {
+      
+        var inputItemsContainer = document.querySelector(".macro-fields");
+        <% if survey.new_record? %>
+          var macroIndex = 1; //start at 0
+        <% else %>
+          var macroIndex = <%= survey.macroinvertebrates.count %>;
+        <% end  %>
+  
+        if (!hasListener){
+      
+          addInputButton.addEventListener("click", function() {
+          
+          var newfields = document.createElement("div");
+          newfields.classList.add("field")
+          newfields.classList.add("is-grouped")
+          newfields.classList.add("is-horizontal")
 
-      var newfields = document.createElement("div");
-      newfields.classList.add("field")
-      newfields.classList.add("is-grouped")
-      newfields.classList.add("is-horizontal")
+          newfields.innerHTML = `
+            <input type="text" list="species" id="survey_macroinvertebrates_attributes_${macroIndex}_name" name="survey[macroinvertebrates_attributes][${macroIndex}][name]" class="input mr-2" placeholder="e.g. insect name">
+            <input type="number" id="survey_macroinvertebrates_attributes_${macroIndex}_observed" name="survey[macroinvertebrates_attributes][${macroIndex}][observed]" class="input" style="width:5em;" placeholder="count">
+            <input type="hidden" id="survey_macroinvertebrates_attributes_${macroIndex}__destroy" name="survey[macroinvertebrates_attributes][${macroIndex}][_destroy]" >
+            <a class="button delete-macro" title="Delete" onclick="deletemacro(this);"><span class="icon is-small"><i class="fas fa-trash-alt"></i></span></a>
+          `;
 
-      newfields.innerHTML = `
-        <input type="text" list="species" id="survey_macroinvertebrates_attributes_${macroIndex}_name" name="survey[macroinvertebrates_attributes][${macroIndex}][name]" class="input mr-2" placeholder="e.g. insect name">
-        <input type="number" id="survey_macroinvertebrates_attributes_${macroIndex}_observed" name="survey[macroinvertebrates_attributes][${macroIndex}][observed]" class="input" style="width:5em;">
-        <input type="hidden" id="survey_macroinvertebrates_attributes_${macroIndex}__destroy" name="survey[macroinvertebrates_attributes][${macroIndex}][_destroy]" >
-        <a class="button delete-macro" title="Delete" onclick="deletemacro(this);"><span class="icon is-small"><i class="fas fa-trash-alt"></i></span></a>
-      `;
-
-      inputItemsContainer.appendChild(newfields);
-      macroIndex++;
- 
-      });
+          inputItemsContainer.appendChild(newfields);
+          macroIndex++;
+    
+          }); 
+      }
+      hasListener = true;
+      }
     <% end %>
- 
+  }
 
-});
 
 </script>
 
