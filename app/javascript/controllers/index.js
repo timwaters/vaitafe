@@ -10,5 +10,8 @@ application.register("formmap", FormmapController)
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+import ShowmapController from "./showmap_controller"
+application.register("showmap", ShowmapController)
+
 import TipsController from "./tips_controller"
 application.register("tips", TipsController)

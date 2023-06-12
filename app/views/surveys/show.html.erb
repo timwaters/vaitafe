@@ -26,7 +26,13 @@
         <tr><td>River</td> <td><%= @survey.river %></td></tr>
         <tr><td colspan="2">
           <% if @survey.lonlat && @survey.lonlat.coordinates %>
-          <div id="map"></div>
+          <% coords = []
+          if @survey.lonlat && @survey.lonlat.coordinates
+            coords = @survey.lonlat.coordinates.to_a.reverse
+          end %>
+          <div id="map" data-controller="showmap" data-showmap-icon-value="<%= image_path("images/marker-icon.png") %>" 
+          data-showmap-coords-value="<%= coords %>" >
+
           <% end %>
         </td></tr>
         <tr><td colspan="2"><%= @survey.subtype %></td></tr>
@@ -101,19 +107,3 @@
 
 </main>
 
-<script>
-  <% if @survey.lonlat && @survey.lonlat.coordinates  %>
-
-    var coords = <%= @survey.lonlat.coordinates.to_a.reverse %>;
-    var map = L.map('map').setView(coords, 13);
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: 'Map Tiles &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-    map.attributionControl.setPrefix(false);
-    var icon = new L.Icon({iconAnchor:L.Icon.Default.prototype.options.iconAnchor,  iconUrl: '<%= image_path("images/marker-icon.png") %>'});
-    marker = L.marker(coords, {icon: icon})
-    marker.addTo(map);
-  <% end %>
-
-  </script>
