@@ -155,9 +155,12 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
      
     </fieldset>
+    <% coords = []
+    if survey.lonlat && survey.lonlat.coordinates
+    coords = survey.lonlat.coordinates.to_a.reverse
+    end %>
 
-
-    <div class="field" data-controller="formmap" data-formmap-icon-value="<%= image_path("images/marker-icon.png") %>" >
+    <div class="field" data-controller="formmap" data-formmap-icon-value="<%= image_path("images/marker-icon.png") %>" data-formmap-newrecord-value=<%= survey.new_record? %> data-formmap-coords-value="<%= coords %>" >
       <%= form.label(:lonlat,  "Survey Location", class: "label")%> 
 
       <div class="tabs is-small is-toggle is-toggle-rounded placebuttons">

@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = { icon: String, tabid: Number }
+  static values = { icon: String, tabid: Number, newrecord: Boolean, coords: Array }
  
   
   initialize() {
@@ -43,7 +43,6 @@ export default class extends Controller {
   }
 
   pageShow () {
-    console.log("page show", this.formmap)
 
     if (this.formmap == undefined){
         this.formmap = L.map('formmap').setView([-13.8586, -171.7539], 13);
@@ -55,7 +54,29 @@ export default class extends Controller {
 
       this.formmap.on('locationfound', (e) => { this.onLocationFound(e, this)});
       this.formmap.on('locationerror', (e) => { this.onLocationError(e, this)});
-      this.findLoc();
+      
+      if (this.newrecordValue){
+        this.findLoc();
+      }else{
+        //add the point
+        if (this.coordsValue && this.coordsValue.length > 0){
+          if(this.formmap.hasLayer(this.circle) && this.formmap.hasLayer(this.marker)) {
+            this.formmap.removeLayer(this.circle);
+            this.formmap.removeLayer(this.marker);
+          } 
+         
+          var icon = new L.Icon({iconAnchor:L.Icon.Default.prototype.options.iconAnchor,  iconUrl: this.iconValue});
+          this.marker = L.marker(this.coordsValue, {icon: icon})
+          this.marker.addTo(this.formmap)
+          this.circle = L.circle(this.coordsValue, 0.001)
+          this.circle.addTo(this.formmap);
+      
+          this.formmap.setView(this.coordsValue, 13);
+        }
+        this.toggleGeoloc({params:{tabid:"man-tab"}})
+        
+      }
+      
     }
    
   }
