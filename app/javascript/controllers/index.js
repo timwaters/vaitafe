@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import FormmapController from "./formmap_controller"
+application.register("formmap", FormmapController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 

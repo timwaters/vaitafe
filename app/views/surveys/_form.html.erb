@@ -1,10 +1,6 @@
 
 <script>
-  var map;
-  var circle;
-  var radius;
-  var marker;
-  var manualSelectionEnabled = false;
+
   function toggleSwitch(e){
     var form = document.getElementById("surveyform");
     var fields = form.getElementsByClassName("need-kit")
@@ -19,59 +15,6 @@
     }
   }
 
-  function toggleGeolocation(tab_id) {
-    var tab = document.getElementById(tab_id);
-    if (tab) {
-      var tabs = document.querySelectorAll('.tabs li');
-      tabs.forEach(function (itab) {
-        itab.classList.remove('is-active');
-      });
-
-      tab.classList.add('is-active');
-      if (tab_id == "man-tab"){ manualSelectionEnabled = true;   } else {  manualSelectionEnabled = false;  }
-    
-      findLocation();
-    }
-  }
-
-  function findLocation(){
-    map.off('click', onLocationFound);
-    if (navigator.geolocation && !manualSelectionEnabled) {
-        map.locate({watch: true,  enableHighAccuracy:true, setView: true, maxZoom: 18});
-      } else {
-       if (manualSelectionEnabled) {
-          map.on('click', onLocationFound);
-        } else {
-          map.off('click', onLocationFound);
-        }
-    }
-  }
-
-  function onLocationFound(e) {
-   
-   radius = e.accuracy;
-
-   if(map.hasLayer(circle) && map.hasLayer(marker)) {
-     map.removeLayer(circle);
-     map.removeLayer(marker);
-   } 
-
-   var icon = new L.Icon({iconAnchor:L.Icon.Default.prototype.options.iconAnchor,  iconUrl: '<%= image_path("images/marker-icon.png") %>'});
-   marker = L.marker(e.latlng, {icon: icon})
-   marker.addTo(map);
-   circle = L.circle(e.latlng, radius)
-   circle.addTo(map);
-
-   var lonlat = "POINT("+e.latlng.lng+ " " + e.latlng.lat+")";
-   document.getElementById("survey_lonlat").value = lonlat;
-
-   updateProgress();  // for progress bar
-  }
-
-  function onLocationError(error) {
-    console.log('Geolocation error:', error);
-    toggleGeolocation("man-tab");
-  }
 
    // Function to update the progress bars and labels
   function updateProgress() {
@@ -129,25 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
-  if (map != undefined){
-    map.off();
-    map.remove();
-  }
-  map = L.map('formmap').setView([-13.8586, -171.7539], 13);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: 'Map Tiles &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  }).addTo(map);
-  map.attributionControl.setPrefix(false);
 
-  marker = new L.marker();
-  circle = new L.marker();
-
-  map.on('locationfound', onLocationFound);
-  map.on('locationerror', onLocationError);
-
-
-  findLocation(); // call this at the beginning
 
   // Call the updateProgress function whenever an input or textarea value changes
   var form = document.getElementById("surveyform");
@@ -232,18 +157,19 @@ document.addEventListener('DOMContentLoaded', () => {
     </fieldset>
 
 
-    <div class="field">
+    <div class="field" data-controller="formmap" data-formmap-icon-value="<%= image_path("images/marker-icon.png") %>" >
       <%= form.label(:lonlat,  "Survey Location", class: "label")%> 
 
       <div class="tabs is-small is-toggle is-toggle-rounded placebuttons">
         <ul>
-          <li id="auto-tab" class="is-active" onclick="toggleGeolocation('auto-tab');" ><a>Automatic</a></li>
-          <li id="man-tab" class="" onclick="toggleGeolocation('man-tab');"> <a>Click on map</a> </li>
+          <li id="auto-tab" class="is-active" data-action="click->formmap#toggleGeoloc" data-formmap-tabid-param="auto-tab"  ><a>Automatic</a></li>
+          <li id="man-tab" class="" data-action="click->formmap#toggleGeoloc" data-formmap-tabid-param="man-tab" > <a>Click on map</a> </li>
         </ul>
       </div>
       
       <%= form.hidden_field :lonlat, class: "step" %>
       <div id="formmap"></div>
+   
     </div>
 
 
