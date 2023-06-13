@@ -2,8 +2,8 @@
   
   <section class="section">
     <div class="has-text-centered">
-      Choose from either <%= link_to "Chemical" , subtype_survey_path(subtype: "chemical"),  'data-turbo': 'false' %> , <%= link_to "Physical" , subtype_survey_path(subtype: "physical"),  'data-turbo': 'false' %>
-          or  <%= link_to "Biological" , subtype_survey_path(subtype: "biological"),  'data-turbo': 'false'  %> to start entering data.
+      Choose from either <%= link_to "Chemical" , subtype_survey_path(subtype: "chemical") %> , <%= link_to "Physical" , subtype_survey_path(subtype: "physical") %>
+          or  <%= link_to "Biological" , subtype_survey_path(subtype: "biological") %> to start entering data.
     </div>
   </section>
   <div class="container">
@@ -12,11 +12,11 @@
 
       <section class="panel choose-panel ">
         <div class="panel-heading choose-panelhead">
-          <%= link_to (image_tag "measure.jpg", class: "choose-image" ), subtype_survey_path(subtype: "physical"),  'data-turbo': 'false' %>
+          <%= link_to (image_tag "measure.jpg", class: "choose-image" ), subtype_survey_path(subtype: "physical")%>
         </div>
         <div class="mr-2 ml-2 pb-2">           
           <span class="title is-5">
-            <%= link_to "Physical" , subtype_survey_path(subtype: "physical"),  'data-turbo': 'false' %>
+            <%= link_to "Physical" , subtype_survey_path(subtype: "physical") %>
           </span>
           <p>Choose this for collecting data about the physical characteristics of the river and its surroundings. <br />
             e.g. Width, depth, man made structures, the flow regime, and examinations of the river bank .</p>
@@ -25,11 +25,11 @@
 
       <section class="panel choose-panel">
         <div class="panel-heading choose-panelhead">
-          <%= link_to (image_tag "kit2.jpg" , class: "choose-image" ), subtype_survey_path(subtype: "chemical"),  'data-turbo': 'false' %>
+          <%= link_to (image_tag "kit2.jpg" , class: "choose-image" ), subtype_survey_path(subtype: "chemical")%>
         </div>
         <div class="mr-2 ml-2 pb-2">           
           <span class="title is-5">
-            <%= link_to "Chemical" ,  subtype_survey_path(subtype: "chemical"),  'data-turbo': 'false' %>
+            <%= link_to "Chemical" ,  subtype_survey_path(subtype: "chemical")%>
           </span>
           <p> Choose this for collecting data about the chemical characteristics of the river, with a focus on the water. pH (Acidity), Nitrogen (nitrates), Phosphorus (phosphates), Conductivity, Temperature <br />
         </div>
@@ -38,12 +38,12 @@
 
       <section class="panel choose-panel">
         <div class="panel-heading choose-panelhead">
-          <%= link_to (image_tag "stream.jpeg" , class: "choose-image" ),  subtype_survey_path(subtype: "biological"),  'data-turbo': 'false'  %>
+          <%= link_to (image_tag "stream.jpeg" , class: "choose-image" ),  subtype_survey_path(subtype: "biological") %>
           
         </div>
         <div class="mr-2 ml-2 pb-2">           
           <span class="title is-5">
-            <%= link_to "Biological" ,  subtype_survey_path(subtype: "biological"),  'data-turbo': 'false'  %>
+            <%= link_to "Biological" ,  subtype_survey_path(subtype: "biological")  %>
           
           </span>
           <p>Choose this for contributing observations about the biological characteristics of the river.  <br />
