@@ -287,6 +287,45 @@
         <%= form.label(:manmade_structures, class: "label")%>
         <p class="help">Are there any man-made structures present in the river or along its banks within close proximity of the sampling site? If yes, which and how many?</p>
         <%= form.text_area :manmade_structures, class:"textarea step", placeholder: "E.g. modified river banks, weirs, dams, bypass channels, wells, water catchments/derivations, livestock, agriculture, towns, litter" %>
+      </fieldset>     
+      
+      <fieldset class="field">
+        <%= form.label("Manmade Structures (demo)", class: "label")%>
+        <p class="help">Which man-made structures can you see in the river or along its banks within close proximity of the sampling site.</p>
+        <label class="checkbox">
+          <input type="checkbox">
+          Modified river bank
+        </label> <br />
+        <label class="checkbox">
+          <input type="checkbox">
+          Weirs
+        </label><br />
+        <label class="checkbox">
+          <input type="checkbox">
+          Dams
+        </label><br />
+        <label class="checkbox">
+          <input type="checkbox">
+          Bypass Channels
+        </label><br />
+        <label class="checkbox">
+          <input type="checkbox">
+          Wells
+        </label><br />
+        <label class="checkbox">
+          <input type="checkbox">
+          Livestock
+        </label><br />
+        <label class="checkbox">
+          <input type="checkbox">
+          Towns
+        </label><br />
+        <label class="checkbox">
+          <input type="checkbox">
+          Litter
+        </label><br />
+        <p class="help">Other Manmade stuctures</p>
+        <input class="input" type="text" placeholder="e.g. water derivation">
       </fieldset>       
     
       <fieldset class="field">
