@@ -141,6 +141,22 @@
 
 </script>
 
+<% if survey.errors.any? %>
+  <div class="message is-danger" data-turbo-cache="false">
+    <div class="message-header">
+      <p> 
+        <%= I18n.t("errors.messages.not_saved",
+                   count: survey.errors.count,
+                   resource: survey.class.model_name.human.downcase)
+         %></p>
+    </div>
+    <div class="message-body">
+      <% survey.errors.full_messages.each do |message| %>
+        <p><%= message %></p>
+      <% end %>
+    </div>
+  </div>
+<% end %>
 
 <div class="field">
   <label id="progress-label" for="progress-bar"></label>
@@ -148,7 +164,7 @@
 </div>
 
 
-  <%= form_with id: "surveyform", turbo: false, model: survey do | form | %>
+  <%= form_with id: "surveyform", data: {turbo: false}, model: survey do | form | %>
 
     <!-- COMMON FIELDS--->
 
