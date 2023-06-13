@@ -254,7 +254,7 @@
         <%= form.label(:width, "River width (m)", class: "label")%>
         <p class="help"> What is the average width of the river? (Estimate in meters)</p>
         <div class="control">
-          <%= form.number_field :width, class:"input step" %>
+          <%= form.number_field :width, class:"input step", style: "width:10em;"  %>
         </div>
         
       </div>
@@ -263,7 +263,7 @@
         <%= form.label(:depth, "River depth (m)", class: "label")%>
         <p class="help"> What is the average depth of the river? (Estimate in meters)</p>
         <div class="control">
-          <%= form.number_field :depth, class:"input step" %>
+          <%= form.number_field :depth, class:"input step",  style: "width:10em;" %>
         </div>
       </div>
 
@@ -275,8 +275,7 @@
     
       <fieldset class="field">
         <%= form.label(:flow_regime_choice, "Flow Regime" ,class: "label")%>
-        <p class="help">What flow regimes can you identify? (<a class="js-modal-trigger" data-target="modal-flow-regime">more info</a>)</p>
-
+        <p class="help">What flow regimes can you identify? Choose all that you can see (<a class="js-modal-trigger" data-target="modal-flow-regime">more info</a>)</p>
         <%= form.select :flow_regime_choice,  [['Pool','pool'],['Ripples','ripples'],['Waterfalls','waterfalls'],['Rapids','rapids'],['Cascade','cascade'],['Other (please specify)', 'other']], { :prompt => "Select all you can see"},{ :multiple => true, :size => 6 ,class: "step pl-1 pr-1 select is-multiple"} %>
         <p class="help">Other Flow regime</p>
         <%= form.text_field :flow_regime, class:" input" %>
@@ -294,8 +293,10 @@
       <fieldset class="field">
         <%= form.label(:turbulence,  class: "label")%>
         <p class="help">  Is the river water calm or turbulent? </p>
-
-        <%= form.select :turbulence,  [['Calm','calm'],['Moderately turbulent','moderate'],['Highly turbulent','high']], { :prompt => "Select one"},{class: "select step"} %>
+        <%= form.radio_button :turbulence, 'calm', class: "radio" %> <%= form.label :turbulence_calm, "Calm" %> <br />
+        <%= form.radio_button :turbulence, 'moderate', class: "radio" %> <%= form.label :turbulence_moderate, "Moderately turbulent" %><br />
+        <%= form.radio_button :turbulence, 'high', class: "radio" %> <%= form.label :turbulence_high, "Highly turbulent" %>
+        <%# form.select :turbulence,  [['Calm','calm'],['Moderately turbulent','moderate'],['Highly turbulent','high']], { :prompt => "Select one"},{class: "select step"} %>
 
       </fieldset>
      
@@ -324,7 +325,7 @@
         <p class="help">Upload images of the area</p>
         <div class="file has-name is-boxed">
           <label class="file-label">
-            <%= form.file_field :images, multiple: true, class:"file-input" %>
+            <%= form.file_field :images, multiple: true, class:"file-input", accept: "image/*" %>
             <span class="file-cta">
               <span class="file-icon">
                 <i class="fas fa-upload"></i>
