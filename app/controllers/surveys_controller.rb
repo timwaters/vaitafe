@@ -81,7 +81,7 @@ class SurveysController < ApplicationController
   private
   def survey_params
     params.require(:survey).permit(:lonlat, :river, :subtype, :comment, :surveyed_at,  {images: []}, 
-      :ph,:conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, :manmade_structures,  :flow_regime, :bank_description ,:riparian_description, :abiotic_substrate, :biotic_substrate , :water_color, :water_color_other, :turbulence, {flow_regime_choice: []}, {macroinvertebrates_attributes: [:id, :name, :latin_name, :observed, :_destroy]} )
+      :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, {water_use: []}, :water_use_other, :raining, {structures: []}, :structures_other, {land_use: []}, :land_use_other, :surface,  :flow,  :flow_regime, :riparian_description, :abiotic_substrate, :biotic_substrate , :water_color, :water_color_other, :turbulence, {flow_regime_choice: []}, {macroinvertebrates_attributes: [:id, :name, :latin_name, :observed, :_destroy]} )
   end
 
   def can_edit_survey?

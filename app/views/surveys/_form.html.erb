@@ -277,51 +277,53 @@
         </div>
       </div>
 
-      <fieldset class="field">
-        <%= form.label(:manmade_structures, class: "label")%>
-        <p class="help">Are there any man-made structures present in the river or along its banks within close proximity of the sampling site? If yes, which and how many?</p>
-        <%= form.text_area :manmade_structures, class:"textarea step", placeholder: "E.g. modified river banks, weirs, dams, bypass channels, wells, water catchments/derivations, livestock, agriculture, towns, litter" %>
-      </fieldset>     
-      
-      <fieldset class="field">
-        <%= form.label("Manmade Structures (demo)", class: "label")%>
-        <p class="help">Which man-made structures can you see in the river or along its banks within close proximity of the sampling site.</p>
-        <label class="checkbox">
-          <input type="checkbox">
-          Modified river bank
-        </label> <br />
-        <label class="checkbox">
-          <input type="checkbox">
-          Weirs
-        </label><br />
-        <label class="checkbox">
-          <input type="checkbox">
-          Dams
-        </label><br />
-        <label class="checkbox">
-          <input type="checkbox">
-          Bypass Channels
-        </label><br />
-        <label class="checkbox">
-          <input type="checkbox">
-          Wells
-        </label><br />
-        <label class="checkbox">
-          <input type="checkbox">
-          Livestock
-        </label><br />
-        <label class="checkbox">
-          <input type="checkbox">
-          Towns
-        </label><br />
-        <label class="checkbox">
-          <input type="checkbox">
-          Litter
-        </label><br />
-        <p class="help">Other Manmade stuctures</p>
-        <input class="input" type="text" placeholder="e.g. water derivation">
-      </fieldset>       
+      <div class="field">
+        <%= form.label("has it been raining", "Has it been raining?", class: "label")%>
+        <p class="help">Has it been raining the day of or the day before sampling?</p>
+        <div class="control">
+          <%= form.label(:raining, "No") %>
+          <%= form.check_box :raining, class: "switch step" %>
+          <%= form.label(:raining, "Yes") %>
+        </div>
+      </div>
+
     
+      <fieldset class="field">
+        <%= form.label(:water_use, "Water use", class: "label")%>
+        <p class="help">Can you see evidence of water use?</p>
+        <% [['Fishing','fishing'],['Boats','boats'], [ 'Abstraction for irrigation','irrigation'], ['Domestic purposes','domestic'],['Other (please specify)', 'other'] ].each do | w | %>
+          <%= form.check_box :water_use, { multiple: true, class: "checkbox is-multiple" }, w[1], nil %> <%= form.label "water_use_#{w[1]}", w[0] %> <br />
+        <% end %>
+        <p class="help">Other water use</p>
+        <%= form.text_field :water_use_other, class:" input" %>
+      </fieldset>
+      </fieldset>
+
+      <fieldset class="field">
+        <%= form.label(:structures, "Manmade Structures", class: "label")%>
+        <p class="help">Which man-made structures can you see in the river or along its banks within close proximity of the sampling site.</p>
+        <% [['Modified river bank', 'modified_river_bank'], ['Weirs', 'weirs'], ['Dams', 'dams'], ['Bypass Channels', 'bypass_channels'], ['Wells', 'wells'], ['Litter', 'litter'], ['Artificial Inflow', 'artificial_inflow']].each do | w | %>
+          <%= form.check_box :structures, { multiple: true, class: "checkbox is-multiple" }, w[1], nil %> <%= form.label "structures_#{w[1]}", w[0] %> <br />
+        <% end %>
+        <p class="help">Other structures</p>
+        <%= form.text_field :structures_other, class:" input" %>
+      </fieldset>
+
+      <fieldset class="field">
+        <%= form.label(:surface, "On the surface", class: "label")%>
+        <p class="help"> Is there any of the following on the water surface? </p>
+        <%= form.select :surface,  [['Foam','foam'],['Litter','litter'],['Oily sheen','oily sheen']], { :prompt => "Select one"},{class: "select step"} %>
+      </fieldset>
+
+      <fieldset class="field">
+        <%= form.label(:land_use, class: "label")%>
+        <p class="help">  What types of land use are visible from the sampling site? </p>
+
+        <%= form.select :land_use,  [['Pasture','pasture'],['Agriculture','agriculture'],['Town','town'],['Industry','industry'], ['Forest','forest'], ['Grassland/shrub','grassland_shrub'],['Other (please specify)', 'other']], { :prompt => "Select all you see"},{ :multiple => true, class: "select step is-multiple pl-1 pr-1"} %>
+        <p class="help">Other land use</p>
+        <%= form.text_field :land_use_other, class:" input" %>
+      </fieldset>
+
       <fieldset class="field">
         <%= form.label(:flow_regime_choice, "Flow Regime" ,class: "label")%>
         <p class="help">What flow regimes can you identify? Choose all that you can see (<a class="js-modal-trigger" data-target="modal-flow-regime">more info</a>)</p>
@@ -339,6 +341,14 @@
         <%= form.text_field :water_color_other, class:" input" %>
       </fieldset>
 
+
+      <fieldset class="field">
+        <%= form.label(:flow, "Water flow", class: "label")%>
+        <p class="help"> Please estimate the water flow </p>
+        <%= form.select :flow,  [['Still: with no flow','still'],['Slow: slower than walking speed (<5 km/h)','slow'],['Steady: approximately walking speed','steady'],['Surging: when it is faster than walking speed (>5 km/h)', 'surging']], { :prompt => "Select one"},{class: "select step"} %>
+      </fieldset>
+
+
       <fieldset class="field">
         <%= form.label(:turbulence,  class: "label")%>
         <p class="help">  Is the river water calm or turbulent? </p>
@@ -349,19 +359,15 @@
 
       </fieldset>
      
-      <fieldset class="field">
-        <%= form.label(:bank_description, class: "label")%>
-        <p class="help">Please briefly describe the river bank</p>
-        <%= form.text_area :bank_description, class:"textarea step", placeholder: "E.g. steep or flat; eroding etc" %>
-      </fieldset>
+
 
       <fieldset class="field">
         <% if survey.new_record? %>
-          <%= form.label(:images, "Upload images", class: "label") %>
+          <%= form.label(:images, "Upload photos", class: "label") %>
          
 
         <% else %>
-          <%= form.label(:images, "Upload images", class: "label") %>
+          <%= form.label(:images, "Upload photos", class: "label") %>
           
           <% if survey.images.attached? %>
               <% survey.images.each do | image |  %>
@@ -371,7 +377,7 @@
             <% end %>
             <br />
         <% end %>
-        <p class="help">Upload images of the area</p>
+        <p class="help">Please take a photo of the survey area looking downstream. Try to show both river banks in the photo.</p>
         <div class="file has-name is-boxed">
           <label class="file-label">
             <%= form.file_field :images, multiple: true, class:"file-input", accept: "image/*" %>

@@ -1,6 +1,6 @@
 ActiveAdmin.register Survey do
 
-  permit_params :lonlat, :river, :subtype, :comment, :surveyed_at, {images:[]}, :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, :manmade_structures, :flow_regime,  {flow_regime_choice: []}, :bank_description, :riparian_description, :abiotic_substrate, :biotic_substrate, :macroinvertebrates, :user_id,  :water_color, :water_color_other, :turbulence, macroinvertebrates_attributes: [:id, :name, :latin_name, :observed, :_destroy]
+  permit_params :lonlat, :river, :subtype, :comment, :surveyed_at, {images:[]}, :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, {water_use: []}, :water_use_other, :raining, {structures: []}, :structures_other, {land_use: []}, :land_use_other, :surface,  :flow, :flow_regime,  {flow_regime_choice: []},  :riparian_description, :abiotic_substrate, :biotic_substrate, :macroinvertebrates, :user_id,  :water_color, :water_color_other, :turbulence, macroinvertebrates_attributes: [:id, :name, :latin_name, :observed, :_destroy]
   
   controller do
     def update
@@ -49,13 +49,20 @@ ActiveAdmin.register Survey do
     column :temperature
     column :width
     column :depth
-    column :manmade_structures
+    column :raining
+    column :water_use
+    column :water_use_other
+    column :structures 
+    column :structures_other
+    column :land_use
+    column :land_use_other
+    column :surface
+    column :flow
     column :flow_regime
     column :flow_regime_choice
     column :water_color
     column :water_color_other
     column :turbulence
-    column :bank_description
     column :riparian_description
     column :abiotic_substrate
     column :biotic_substrate
@@ -91,13 +98,21 @@ ActiveAdmin.register Survey do
       f.input :temperature
       f.input :width
       f.input :depth
-      f.input :manmade_structures
+      f.input :raining
+      f.input :water_use
+      f.input :water_use_other
+      f.input :structures 
+      f.input :structures_other
+      f.input :land_use
+      f.input :land_use_other
+      f.input :surface
+      f.input :flow
+ 
       f.input :flow_regime
       f.input :flow_regime_choice
       f.input :water_color
       f.input :water_color_other
       f.input :turbulence
-      f.input :bank_description
       f.input :riparian_description
       f.input :abiotic_substrate
       f.input :biotic_substrate      
@@ -174,13 +189,20 @@ ActiveAdmin.register Survey do
     column :temperature
     column :width
     column :depth
-    column :manmade_structures
+    column :raining
+    column :water_use
+    column :water_use_other
+    column :structures 
+    column :structures_other
+    column :land_use
+    column :land_use_other
+    column :surface
+    column :flow
     column :flow_regime
     column :flow_regime_choice
     column :water_color
     column :water_color_other
     column :turbulence
-    column :bank_description
     column :riparian_description
     column :abiotic_substrate
     column :biotic_substrate

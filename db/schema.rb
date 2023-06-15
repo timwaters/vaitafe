@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_15_135253) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_15_152129) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -105,6 +105,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_15_135253) do
     t.string "water_color"
     t.string "water_color_other"
     t.string "turbulence"
+    t.boolean "raining"
+    t.string "water_use", default: [], array: true
+    t.string "surface", default: [], array: true
+    t.string "land_use", default: [], array: true
+    t.string "flow"
+    t.string "aquatic_life", default: [], array: true
+    t.string "substrates", default: [], array: true
+    t.string "main_substrate"
+    t.string "structures", default: [], array: true
+    t.string "structures_other"
+    t.string "water_use_other"
+    t.string "land_use_other"
     t.index ["user_id"], name: "index_surveys_on_user_id"
   end
 

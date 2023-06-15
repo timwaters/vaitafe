@@ -49,14 +49,22 @@
 
         <tr><td> Width</td> <td><%= @survey.width %> </td> </tr>
         <tr><td> Depth</td> <td> <%= @survey.depth %></td> </tr>
-        <tr><td> Manmade_structures</td> <td> <%= @survey.manmade_structures %></td> </tr>
-        <tr><td> Flow_regime</td> <td> <%= @survey.flow_regime_choice %></td> </tr>
+        <tr><td> Raining? </td> <td> <%= @survey.raining %></td> </tr>
+        <tr><td> Water use </td> <td> <%= @survey.water_use %></td> </tr>
+        <tr><td> Other water use </td> <td> <%= @survey.water_use_other %></td> </tr>
+        <tr><td> Manmade structures</td> <td> <%= @survey.structures %></td> </tr>
+        <tr><td> Other Manmade structures</td> <td> <%= @survey.structures_other %></td> </tr>
+        
+        <tr><td> On the surface</td> <td> <%= @survey.surface %></td> </tr>
+        <tr><td> Land use</td> <td> <%= @survey.land_use %></td> </tr>
+        <tr><td> Other land use</td> <td> <%= @survey.land_use_other %></td> </tr>
+        <tr><td> Flow regime</td> <td> <%= @survey.flow_regime_choice %></td> </tr>
         <tr><td> Other Flow_regime</td> <td> <%= @survey.flow_regime %></td> </tr>
         <tr><td> Water Color</td> <td> <%= @survey.water_color %></td> </tr>
         <tr><td> Other Water Color</td> <td> <%= @survey.water_color_other %></td> </tr>
+        <tr><td> Water flow</td> <td> <%= @survey.flow %></td> </tr>
         <tr><td> Turbulence</td> <td> <%= @survey.turbulence %></td> </tr>
-        <tr><td> Bank_description</td> <td> <%= @survey.bank_description %></td> </tr>
-
+       
         <tr><td>Images</td><td>
           <% if @survey.images.attached? %>
             <% @survey.images.each do | image |  %>
