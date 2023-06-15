@@ -178,14 +178,8 @@
       </div>
     </div>
 
-    <fieldset class="field">
-      <%= form.label(:river,  "River", class: "label")%>
-      <p class="help">Which river is this survey about?</p>
-      <div class="control">
-        <%= form.text_field :river, class:"input", :readonly => true%>
-      </div>
-     
-    </fieldset>
+    <%= form.hidden_field :river %>
+  
     <% coords = []
     if survey.lonlat && survey.lonlat.coordinates
     coords = survey.lonlat.coordinates.to_a.reverse
