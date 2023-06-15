@@ -155,9 +155,44 @@ ActiveAdmin.register Survey do
       attributes_table_for survey.macroinvertebrates do
         rows  :name, :observed
       end
+    end
+  end #show
 
-  
-  end
+  csv do
+    column :id
+    column(:user_id) { | s | s.user.id }
+    column(:username){ | s | s.user.username}
+    column :lonlat
+    column :river
+    column :subtype
+    column :surveyed_at
+    column :comment
+    column :ph
+    column :conductivity
+    column :phosphorus
+    column :nitrogen
+    column :temperature
+    column :width
+    column :depth
+    column :manmade_structures
+    column :flow_regime
+    column :flow_regime_choice
+    column :water_color
+    column :water_color_other
+    column :turbulence
+    column :bank_description
+    column :riparian_description
+    column :abiotic_substrate
+    column :biotic_substrate
+    column(:macroinvertebrates){| s | s.macroinvertebrates.pluck( :name, :observed).flatten  if s.macroinvertebrates.size > 0 }
+    column :images do |survey|
+      filenames = []
+      survey.images.each do |image|
+        filenames << image.filename.to_s
+      end
+      filenames.join(", ")
+    end
+   
   end
   
   
