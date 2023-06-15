@@ -47,7 +47,7 @@
               <span class="icon-text mr-2 ">
                 <a href="<%= user_path(current_user) %>" class="profile-link ">
                   <span class="icon"><i class="fas fa-user"></i> </span>
-                  <span><%= current_user.username %></span>
+                  <span><%= current_user.username %> </span><span class="score">(<%= current_user.contribution_count %>)</span> 
                 </a>
               </span> 
             <% end %>

@@ -43,6 +43,9 @@ a.navbar-item:hover {
   color: #23a9e1;
 }
 
+span.score {
+  font-size: small;
+}
 .card-rounded {
  /* top-left | top-right | bottom-right | bottom-left */
   border-radius: 1rem ;

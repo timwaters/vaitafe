@@ -22,7 +22,7 @@
       <table class="table is-hoverable is-fullwidth ">
       <tbody>
         <tr><td>Surveyed At</td> <td><%= @survey.surveyed_at.to_fs(:short) if @survey.surveyed_at %></td> </tr>
-        <tr><td>User</td> <td><%= link_to @survey.user.username, @survey.user %> </td> </tr>
+        <tr><td>User</td> <td><%= link_to @survey.user.username, @survey.user %> <span class="score">(<%= current_user.contribution_count %>)</span> </td> </tr>
         <tr><td>River</td> <td><%= @survey.river %></td></tr>
         <tr><td colspan="2">
           <% if @survey.lonlat && @survey.lonlat.coordinates %>
