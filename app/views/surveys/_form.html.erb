@@ -225,7 +225,7 @@
 
       <div class="field ">
         <%= form.label(:temperature, "Water temperature", class: "label")%>
-        <p class="help">Water temperature (Centrigade?) </p>
+        <p class="help">units: Centrigade (C) </p>
         <div class="control">
           <%= form.number_field :temperature, class:"input step" %>
         </div>
@@ -233,23 +233,23 @@
 
       <div class="field is-hidden">
         <%= form.label(:conductivity, class: "label")%>
-        <p class="help">units? </p>
+        <p class="help">units: µS (microsiemens)</p>
         <div class="control">
           <%= form.number_field :conductivity, class:"input step  need-kit" %>
         </div>
       </div>
 
       <div class="field is-hidden">
-        <%= form.label(:nitrogen, class: "label")%>
-        <p class="help">units? </p>
+        <%= form.label(:nitrogen, "Nitrate", class: "label")%>
+        <p class="help">units: mg/L </p>
         <div class="control">
           <%= form.number_field :nitrogen, class:"input step  need-kit" %>
         </div>
       </div>
 
       <div class="field is-hidden">
-        <%= form.label(:phosphorus, class: "label step")%>
-        <p class="help">units? </p>
+        <%= form.label(:phosphorus, "Phosphate", class: "label step")%>
+        <p class="help">units: mg/L </p>
         <div class="control">
           <%= form.number_field :phosphorus, class:"input step  need-kit" %>
         </div>
