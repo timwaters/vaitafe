@@ -76,6 +76,8 @@
         <% elsif @survey.subtype == "biological" %>
 
         <tr><td> Bank Description </td> <td> <%= @survey.riparian_description %></td> </tr>
+        <tr><td> Aquatic Life</td> <td> <%= @survey.aquatic_life %> </td> </tr>
+        <tr><td> Other Aquatic Life</td> <td> <%= @survey.aquatic_life_other %></td> </tr>
         <tr><td> Substrates</td> <td> <%= @survey.substrates %> </td> </tr>
         <tr><td> Main Substrate</td> <td> <%= @survey.main_substrate %></td> </tr>
         <tr><td> Macroinvertebrates</td> <td> 
