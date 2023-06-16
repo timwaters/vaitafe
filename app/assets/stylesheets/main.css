@@ -135,3 +135,62 @@ main.margin {
   z-index: 1000;
 }
 
+.ph-0, input[type=range].ph-0::-webkit-slider-thumb {  background: #ec3831  ; }
+input[type=range].ph-0::-moz-range-thumb {      background: #ec3831  ; }
+input[type=range].ph-0::-ms-thumb {             background: #ec3831  ; }
+
+.ph-1, input[type=range].ph-1::-webkit-slider-thumb {  background: #fe2600  ; }
+input[type=range].ph-1::-moz-range-thumb {      background: #fe2600  ; }
+input[type=range].ph-1::-ms-thumb {             background: #fe2600  ; }
+
+.ph-2, input[type=range].ph-2::-webkit-slider-thumb {  background: #fd5300  ; }
+input[type=range].ph-2::-moz-range-thumb {      background: #fd5300  ; }
+input[type=range].ph-2::-ms-thumb {             background: #fd5300  ; }
+
+.ph-3, input[type=range].ph-3::-webkit-slider-thumb {  background: #ff9100  ; }
+input[type=range].ph-3::-moz-range-thumb {      background: #ff9100  ; }
+input[type=range].ph-3::-ms-thumb {             background: #ff9100  ; }
+
+.ph-4, input[type=range].ph-4::-webkit-slider-thumb {  background: #ffc500  ; }
+input[type=range].ph-4::-moz-range-thumb {      background: #ffc500  ; }
+input[type=range].ph-4::-ms-thumb {             background: #ffc500  ; }
+
+.ph-5, input[type=range].ph-5::-webkit-slider-thumb {  background: #fcfa00  ; }
+input[type=range].ph-5::-moz-range-thumb {      background: #fcfa00  ; }
+input[type=range].ph-5::-ms-thumb {             background: #fcfa00  ; }
+
+.ph-6, input[type=range].ph-6::-webkit-slider-thumb {  background: #93f700  ; }
+input[type=range].ph-6::-moz-range-thumb {      background: #93f700  ; }
+input[type=range].ph-6::-ms-thumb {             background: #93f700  ; }
+
+.ph-7, input[type=range].ph-7::-webkit-slider-thumb {  background: #00cb02  ; }
+input[type=range].ph-7::-moz-range-thumb {      background: #00cb02  ; }
+input[type=range].ph-7::-ms-thumb {             background: #00cb02  ; }
+
+.ph-8, input[type=range].ph-8::-webkit-slider-thumb {  background: #2ebd7e  ; }
+input[type=range].ph-8::-moz-range-thumb {      background: #2ebd7e  ; }
+input[type=range].ph-8::-ms-thumb {             background: #2ebd7e  ; }
+
+.ph-9, input[type=range].ph-9::-webkit-slider-thumb {  background: #00c3c0  ; }
+input[type=range].ph-9::-moz-range-thumb {      background: #00c3c0  ; }
+input[type=range].ph-9::-ms-thumb {             background: #00c3c0  ; }
+
+.ph-10, input[type=range].ph-10::-webkit-slider-thumb {  background: #54a3d8  ; }
+input[type=range].ph-10::-moz-range-thumb {      background: #54a3d8  ; }
+input[type=range].ph-10::-ms-thumb {             background: #54a3d8  ; }
+
+.ph-11, input[type=range].ph-11::-webkit-slider-thumb {  background: #466bb4  ; }
+input[type=range].ph-11::-moz-range-thumb {      background: #466bb4  ; }
+input[type=range].ph-11::-ms-thumb {             background: #466bb4  ; }
+
+.ph-12, input[type=range].ph-12::-webkit-slider-thumb {  background: #6866af  ; }
+input[type=range].ph-12::-moz-range-thumb {      background: #6866af  ; }
+input[type=range].ph-12::-ms-thumb {             background: #6866af  ; }
+
+.ph-13, input[type=range].ph-13::-webkit-slider-thumb {  background: #775cad  ; }
+input[type=range].ph-13::-moz-range-thumb {      background: #775cad  ; }
+input[type=range].ph-13::-ms-thumb {             background: #775cad  ; }
+
+.ph-14, input[type=range].ph-14::-webkit-slider-thumb {  background: #584194  ; }
+input[type=range].ph-14::-moz-range-thumb {      background: #584194  ; }
+input[type=range].ph-14::-ms-thumb {             background: #584194  ; }

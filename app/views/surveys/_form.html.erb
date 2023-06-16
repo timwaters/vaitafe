@@ -1,6 +1,24 @@
 
 <script>
 
+  function phrange(e){
+    const output  = document.getElementById("phoutput");
+    output.textContent = e.value;
+    let phclass = "ph-"+e.value;
+
+    for (var i=0, l=e.classList.length; i<l; ++i) {
+     const regex = new RegExp('ph-*');
+     var regexmatch = regex.exec(e.classList[i])
+      if(regexmatch !== null) {
+        e.classList.remove(regexmatch.input)
+       // output.classList.remove(regexmatch.input)
+        break;
+      }
+    }
+    //output.classList.add(phclass)
+    e.classList.add(phclass)
+  }
+
   function toggleSwitch(e){
     var form = document.getElementById("surveyform");
     var fields = form.getElementsByClassName("need-kit")
@@ -222,15 +240,18 @@
       </div>
 
 
-      <div class="field is-grouped is-grouped-multiline ">
-
       <div class="field is-hidden step">
         <%= form.label(:ph, "Water acidity", class: "label")%>
-        <p class="help">(pH level)</p>
+        <p class="help">pH level</p>
         <div class="control">
-          <%= form.number_field :ph, class:"input step need-kit" %>
+          <%= form.range_field :ph, class:"input step need-kit slider is-fullwidth mb-1 mt-1", step:1, min:0, max:14, oninput: "phrange(this);" %>
+          pH: <span id="phoutput"></span>
         </div>
       </div>
+
+      <div class="field is-grouped is-grouped-multiline ">
+
+
 
       <div class="field step ">
         <%= form.label(:temperature, "Water temperature", class: "label")%>
