@@ -11,6 +11,7 @@ class Survey < ApplicationRecord
   validates :ph, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 14 }, allow_nil: true
  
   after_commit :update_user_contribution_count
+  before_save  :change_image_filenames
 
   paginates_per 20
   max_paginates_per 150
@@ -24,6 +25,27 @@ class Survey < ApplicationRecord
     user.update_contribution_count
   end
 
+
+
+  def change_image_filenames
+    if self.images.attached?
+
+      self.images.attachments.each do | attachment |
+  
+        if attachment.new_record?
+          base =  attachment.blob.filename.base
+          ext = attachment.blob.filename.extension_with_delimiter
+
+          new_base = base + '_'+('a'..'z').to_a.shuffle[0,8].join
+          new_filename = new_base + ext
+          # attachment.blob.filename = new_filename
+          attachment.blob.update(filename: new_filename)
+        end
+      
+      end
+
+    end
+  end
 
   
 end
