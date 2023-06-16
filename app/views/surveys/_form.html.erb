@@ -76,7 +76,7 @@
 
   function deletemacro(e){
     if (window.confirm("Are you sure?")) {
-      var hiddenField = e.previousElementSibling;
+      var hiddenField = e.nextElementSibling;
       hiddenField.value =  "1";
       var parent = e.parentNode;
       e.parentNode.classList.add("is-hidden");
@@ -149,10 +149,15 @@
           newfields.classList.add("is-horizontal")
 
           newfields.innerHTML = `
-            <input type="text" list="species" id="survey_macroinvertebrates_attributes_${macroIndex}_name" name="survey[macroinvertebrates_attributes][${macroIndex}][name]" class="input mr-2" placeholder="e.g. insect name">
-            <input type="number" id="survey_macroinvertebrates_attributes_${macroIndex}_observed" name="survey[macroinvertebrates_attributes][${macroIndex}][observed]" class="input" style="width:5em;" placeholder="count">
+            <input type="text" list="species" id="survey_macroinvertebrates_attributes_${macroIndex}_name" name="survey[macroinvertebrates_attributes][${macroIndex}][name]" class="input mr-2" style="min-width: 150px;" placeholder="e.g. insect name">
+            <input type="number" id="survey_macroinvertebrates_attributes_${macroIndex}_observed" name="survey[macroinvertebrates_attributes][${macroIndex}][observed]" class="input" style="width:5em;" placeholder="count">`+
+            <%# if survey.new_record? %>
+            `<div class="file "><label class="file-label">
+            <input multiple="multiple" class="file-input" accept="image/*" type="file" name="survey[macroinvertebrates_attributes][${macroIndex}][animal_images][]" id="survey_macroinvertebrates_attributes_${macroIndex}_animal_images">
+            <span class="file-cta"><span class="file-icon"><i class="fas fa-upload"></i></span><span class="file-label">Images</span></span></label></div>`+
+            <%# end %>
+            `<a class="button delete-macro" title="Delete" onclick="deletemacro(this);"><span class="icon is-small"><i class="fas fa-trash-alt"></i></span></a>
             <input type="hidden" id="survey_macroinvertebrates_attributes_${macroIndex}__destroy" name="survey[macroinvertebrates_attributes][${macroIndex}][_destroy]" >
-            <a class="button delete-macro" title="Delete" onclick="deletemacro(this);"><span class="icon is-small"><i class="fas fa-trash-alt"></i></span></a>
           `;
 
           inputItemsContainer.appendChild(newfields);
@@ -191,7 +196,7 @@
 </div>
 
 
-  <%= form_with id: "surveyform", data: {turbo: false}, model: survey do | form | %>
+  <%= form_with id: "surveyform", multipart: true, data: {turbo: false}, model: survey do | form | %>
 
     <!-- COMMON FIELDS--->
 
@@ -407,7 +412,7 @@
           <% if survey.images.attached? %>
               <% survey.images.each do | image |  %>
                 <%= link_to image_tag(image.representation(resize_to_limit: [100, 100])), image %>
-                <%= link_to "delete", destroy_image_path(id: survey.id, image_id: image.id), class: "button is-danger",  onclick: "return confirm('Are you sure?');", 'data-turbo': 'false' %>
+                <%= link_to "delete", destroy_image_path(id: survey.id, image_id: image.id), class: "button is-danger is-small", style:"vertical-align: text-bottom;" , onclick: "return confirm('Are you sure?');", 'data-turbo': 'false' %>
               <% end %>
             <% end %>
             <br />
@@ -471,26 +476,58 @@
 
       <fieldset class="field step">
         <%= form.label(:macroinvertebrates, class: "label")%>
-        <p class="help">Add which macroinvertebrates were found and the count </p>
+        <p class="help ">Add which macroinvertebrates were found and the count </p>
+
+        <% if !survey.new_record? %>
+        <div class="">
+          Images
+        <% survey.macroinvertebrates.each do | animal |  %>
+              <% if animal.animal_images.attached? %>
+             
+              <div class="box">
+                <%= animal.name %>
+                <% animal.animal_images.each do | image | %>  
+                    <%= link_to image_tag(image.representation(resize_to_limit: [100, 100])), image %>
+                    <%= link_to "delete", destroy_animal_image_path(id: survey.id, image_id: image.id,  animal_id: animal.id), class: "button is-danger is-small",  style: "vertical-align: text-bottom;", onclick: "return confirm('Are you sure?');", 'data-turbo': 'false' %>
+                <% end %>
+              </div>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+
         <div class="containing-them">
           <div class="macro-fields block control">
             <%= form.fields_for :macroinvertebrates do |macro_form| %>
               <div class="field is-grouped is-horizontal">
-                <%= macro_form.text_field :name , class: "input mr-2 step", placeholder: "e.g. insect name", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_name", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][name]", list: "species" %>
-                <!-- latin name ?-->
-                <%= macro_form.number_field :observed, class: "input",  placeholder: "count",style: "width:5em;", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_observed", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][observed]" %>
-             
-                <%= macro_form.hidden_field :_destroy, id: "survey_macroinvertebrates_attributes_#{macro_form.index}__destroy", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][_destroy]" %>
+                <%= macro_form.text_field :name , class: "input mr-2 step", style: "min-width: 150px;", placeholder: "e.g. insect name", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_name", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][name]", list: "species" %>
                 
+                <%= macro_form.number_field :observed, class: "input",  placeholder: "count",style: "width:5em;", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_observed", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][observed]" %>
+                <% if survey.new_record? %>
+                  <div class="file ">
+                  <label class="file-label">
+                    <%= macro_form.file_field :animal_images, multiple: true, class:"file-input", accept: "image/*" %>
+                    <span class="file-cta">
+                      <span class="file-icon">
+                        <i class="fas fa-upload"></i>
+                      </span>
+                      <span class="file-label">
+                        Images
+                      </span>
+                    </span>
+                  </label>
+                  </div>
+                <% end %>
                 <a class="button delete-macro" title="Delete" onclick="deletemacro(this);">
                   <span class="icon is-small"><i class="fas fa-trash-alt"></i></span>
                 </a>
+                <%= macro_form.hidden_field :_destroy, id: "survey_macroinvertebrates_attributes_#{macro_form.index}__destroy", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][_destroy]" %>
               </div>
             <% end %>
           </div>
         </div>
       
-        <a type="button" class="button is-link" id="addmacrobutton">Add Another Macroinverbrate</a>
+        <a type="button" class="button is-link" id="addmacrobutton">Add Another</a>
 
         <datalist id="species">
           <option value="Cyclopoida">

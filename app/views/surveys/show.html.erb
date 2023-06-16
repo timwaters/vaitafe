@@ -84,7 +84,13 @@
           <ul>
             <% @survey.macroinvertebrates.each do | macro | 
               unless macro.name.blank? &&  macro.observed.blank? %>
-                <li><%= macro.name %> ( <%= macro.observed %>) </li>
+                <li><%= macro.name %> (count: <%= macro.observed %>)
+                <% if macro.animal_images.attached? %>
+                  <% macro.animal_images.each do | image |  %>
+                    <%= link_to image_tag(image.representation(resize_to_limit: [100, 100])), image %>
+                  <% end %>
+                <% end %>
+              </li>
             <% end
             end %>
           </ul>

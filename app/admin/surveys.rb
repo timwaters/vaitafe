@@ -181,6 +181,7 @@ ActiveAdmin.register Survey do
     column :river
     column :subtype
     column :surveyed_at
+    column :created_at
     column :comment
     column :ph
     column :conductivity
