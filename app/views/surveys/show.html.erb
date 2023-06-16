@@ -75,9 +75,9 @@
           
         <% elsif @survey.subtype == "biological" %>
 
-        <tr><td> Riparian_description </td> <td> <%= @survey.riparian_description %></td> </tr>
-        <tr><td> Abiotic_substrate</td> <td> <%= @survey.abiotic_substrate %> </td> </tr>
-        <tr><td> Biotic_substrate</td> <td> <%= @survey.biotic_substrate %></td> </tr>
+        <tr><td> Bank Description </td> <td> <%= @survey.riparian_description %></td> </tr>
+        <tr><td> Substrates</td> <td> <%= @survey.substrates %> </td> </tr>
+        <tr><td> Main Substrate</td> <td> <%= @survey.main_substrate %></td> </tr>
         <tr><td> Macroinvertebrates</td> <td> 
           <ul>
             <% @survey.macroinvertebrates.each do | macro | 

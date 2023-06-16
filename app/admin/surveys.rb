@@ -1,6 +1,6 @@
 ActiveAdmin.register Survey do
 
-  permit_params :lonlat, :river, :subtype, :comment, :surveyed_at, {images:[]}, :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, {water_use: []}, :water_use_other, :raining, {structures: []}, :structures_other, {land_use: []}, :land_use_other, :surface,  :flow, :flow_regime,  {flow_regime_choice: []},  :riparian_description, :abiotic_substrate, :biotic_substrate, :macroinvertebrates, :user_id,  :water_color, :water_color_other, :turbulence, macroinvertebrates_attributes: [:id, :name, :latin_name, :observed, :_destroy]
+  permit_params :lonlat, :river, :subtype, :comment, :surveyed_at, {images:[]}, :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, {water_use: []}, :water_use_other, :raining, {structures: []}, :structures_other, {land_use: []}, :land_use_other, :surface,  :flow, :flow_regime,  {flow_regime_choice: []},  :riparian_description, {substrates: []}, :main_substrate, :macroinvertebrates, :user_id,  :water_color, :water_color_other, :turbulence, macroinvertebrates_attributes: [:id, :name, :latin_name, :observed, :_destroy]
   
   controller do
     def update
@@ -64,8 +64,8 @@ ActiveAdmin.register Survey do
     column :water_color_other
     column :turbulence
     column :riparian_description
-    column :abiotic_substrate
-    column :biotic_substrate
+    column :substrates
+    column :main_substrate
     column :macroinvertebrates
   
     actions
@@ -114,8 +114,8 @@ ActiveAdmin.register Survey do
       f.input :water_color_other
       f.input :turbulence
       f.input :riparian_description
-      f.input :abiotic_substrate
-      f.input :biotic_substrate      
+      f.input :substrates
+      f.input :main_substrate      
       f.inputs do
         f.has_many :macroinvertebrates,  allow_destroy: true  do |t|
           t.input :name
@@ -204,8 +204,8 @@ ActiveAdmin.register Survey do
     column :water_color_other
     column :turbulence
     column :riparian_description
-    column :abiotic_substrate
-    column :biotic_substrate
+    column :substrates
+    column :main_substrate
     column(:macroinvertebrates){| s | s.macroinvertebrates.pluck( :name, :observed).flatten  if s.macroinvertebrates.size > 0 }
     column :images do |survey|
       filenames = []

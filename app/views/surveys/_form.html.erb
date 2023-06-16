@@ -297,7 +297,6 @@
         <p class="help">Other water use</p>
         <%= form.text_field :water_use_other, class:" input" %>
       </fieldset>
-      </fieldset>
 
       <fieldset class="field">
         <%= form.label(:structures, "Manmade Structures", class: "label")%>
@@ -312,7 +311,10 @@
       <fieldset class="field">
         <%= form.label(:surface, "On the surface", class: "label")%>
         <p class="help"> Is there any of the following on the water surface? </p>
-        <%= form.select :surface,  [['Foam','foam'],['Litter','litter'],['Oily sheen','oily sheen']], { :prompt => "Select one"},{class: "select step"} %>
+        <% [['Foam','foam'],['Litter','litter'],['Oily sheen','oily_sheen']].each do | w | %>
+          <%= form.check_box :surface, { multiple: true, class: "checkbox is-multiple" }, w[1], nil %> <%= form.label "surface_#{w[1]}", w[0] %> <br />
+        <% end %>
+      
       </fieldset>
 
       <fieldset class="field">
@@ -406,21 +408,32 @@
       <!-- BIOLOGICAL --->
 
       <fieldset class="field">
-        <%= form.label(:riparian_description, class: "label")%>
-        <p class="help"> Please briefly describe the riparian vegetation. What proportion of the river is shaded?</p>
+        <%= form.label(:riparian_description, "Bank description", class: "label")%>
+        <p class="help"> Please briefly describe the bank and its vegetation. What proportion of the river is shaded?</p>
         <%= form.text_area :riparian_description, class:"textarea step", placeholder: "E.g. trees, shrubs, reeds" %>
       </fieldset>
 
       <fieldset class="field">
-        <%= form.label(:abiotic_substrate, class: "label")%>
-        <p class="help">What type of abiotic substrate can you identify?</p>
-        <%= form.text_area :abiotic_substrate, class:"textarea step", placeholder:"E.g. Boulders, stones, gravel, clay, cemented bed" %>
+        <%= form.label(:aquatic_life, "Aquatic Life", class: "label")%>
+        <p class="help">What aquatic life is there evidence of?</p>
+      
+        <% [['Plants below surface','plants_below'],['Plants emerging from water','plants_emerging'], [ 'Floating plants','plants_floating'], ['Fish','fish'], ['Flying insects','flying_insects'], ['Other (please specify', 'other'] ].each do | w | %>
+          <%= form.check_box :aquatic_life, { multiple: true, class: "checkbox is-multiple" }, w[1], nil %> <%= form.label "aquatic_life_#{w[1]}", w[0] %> <br />
+        <% end %>
+        <p class="help">Other aquatic life seen</p>
+        <%= form.text_field :aquatic_life_other, class:" input" %>
       </fieldset>
 
       <fieldset class="field">
-        <%= form.label(:biotic_substrate, class: "label")%>
-        <p class="help">What type of biotic substrate can you identify?</p>
-        <%= form.text_area :biotic_substrate, class:"textarea step", placeholder:"E.g. algae, moss, leaf litter, submerged plants, dead wood" %>
+        <%= form.label(:substrates, "Substrates", class: "label")%>
+        <p class="help">Which types of substrates/habitats can you identify in your sampling area?</p>
+        <%  substrate_array =  [ ['Large boulders','large_boulders'], ['Stones','stones'], ['Pebbles and gravel','pebbles_gravel'], ['Sand','sand'],['Clay','clay'],['Fine organic matter','fine_organic_matter'],['Coarse organic matter','coarse_organic_matter'],['Submerged plants','submerged_plants'],['Algae covered stones','algae_covered_stones'] ]
+        
+        substrate_array.each do | w | %>
+          <%= form.check_box :substrates, { multiple: true, class: "checkbox is-multiple" }, w[1], nil %> <%= form.label "substrates_#{w[1]}", w[0] %> <br />
+        <% end %>
+        <p class="help">In case one of the above substrates covers more than 75% of the observed area, please indicate which one.</p>
+        <%= form.select :main_substrate,  substrate_array.unshift(['None','none']), { :prompt => "Select one"},{class: "select step"} %>
       </fieldset>
 
       <fieldset class="field">
