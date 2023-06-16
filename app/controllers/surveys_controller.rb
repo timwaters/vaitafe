@@ -1,7 +1,7 @@
 class SurveysController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :can_edit_survey?, :only => [:edit, :update, :destroy, :destroy_image]
+  before_action :can_edit_survey?, :only => [:edit, :update, :destroy, :destroy_image, :destroy_animal_image]
 
   def index
     @surveys = Survey.order("surveyed_at desc NULLS LAST").page(params[:page])
@@ -77,11 +77,23 @@ class SurveysController < ApplicationController
   
   end
 
+  def destroy_animal_image
+    
+    @image = @survey.macroinvertebrates.find(params[:animal_id]).animal_images.find(params[:image_id])
+    
+    unless current_user == @survey.user
+      redirect_back_or_to :surveys
+    end
+
+    @image.purge
+    redirect_back(fallback_location: edit_survey_path(@survey))  
+  end
+
 
   private
   def survey_params
     params.require(:survey).permit(:lonlat, :river, :subtype, :comment, :surveyed_at,  {images: []}, 
-      :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, {water_use: []}, :water_use_other, :raining, {structures: []}, :structures_other, {land_use: []}, :land_use_other, {surface: []},  :flow,  :flow_regime, :riparian_description, {substrates: []}, :main_substrate , :water_color, :water_color_other, :turbulence, {flow_regime_choice: []}, {macroinvertebrates_attributes: [:id, :name, :latin_name, :observed, :_destroy]} )
+      :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, {water_use: []}, :water_use_other, :raining, {structures: []}, :structures_other, {land_use: []}, :land_use_other, {surface: []},  :flow,  :flow_regime, :riparian_description, {substrates: []}, :main_substrate , :water_color, :water_color_other, :turbulence, {flow_regime_choice: []}, {aquatic_life: []}, :aquatic_life_other, {macroinvertebrates_attributes: [:id, :name, :latin_name, :observed, :_destroy, {animal_images:[]}]} )
   end
 
   def can_edit_survey?
