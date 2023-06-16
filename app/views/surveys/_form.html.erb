@@ -359,7 +359,7 @@
       <fieldset class="field step">
         <%= form.label(:flow, "Water flow", class: "label")%>
         <p class="help"> Please estimate the water flow </p>
-        <%= form.select :flow,  [['Still: with no flow','still'],['Slow: slower than walking speed (<5 km/h)','slow'],['Steady: approximately walking speed','steady'],['Surging: when it is faster than walking speed (>5 km/h)', 'surging']], { :prompt => "Select one"},{class: "select step"} %>
+        <%= form.select :flow,  [['Still: with no flow','still'],['Slow: slower than walking (<5 km/h)','slow'],['Steady: around walking speed','steady'],['Surging: faster than walking (>5 km/h)', 'surging']], { :prompt => "Select one"},{class: "select step"} %>
       </fieldset>
 
 
