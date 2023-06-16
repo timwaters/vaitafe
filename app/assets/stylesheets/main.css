@@ -1,13 +1,13 @@
 
 .navbar-menu {
-  background-color: #056839;
+  background-color: #2f803f;
 }
 
 .navbar {
-  background-color: #056839;
+  background-color: #2f803f;
 }
 a.navbar-item:hover {
-  color: #23a9e1;
+  color: #20a9e1;
 
 }
 .navbar-item img {
@@ -32,15 +32,15 @@ a.navbar-item:hover {
 }
 
 .navbar-item {
-  color: #b7d98c;
+  color: #c2f87c;
 }
 
 .profile-link {
-  color: #b7d98c;
+  color: #c2f87c;
 }
 
 .profile-link:hover {
-  color: #23a9e1;
+  color: #20a9e1;
 }
 
 span.score {
@@ -83,11 +83,11 @@ table.mini th {
   color: grey;
 }
 .footer {
-  background-color: #0f74b2;
+  background-color: #365c94;
 }
 .footer a {
   padding-left: 1rem;
-  color: #b7d98c;
+  color: #c2f87c;
 }
 .footer .copy {
   color: white;
@@ -123,11 +123,11 @@ main.margin {
 }
 
 .is-primary {
-  background-color: #0f74b2 !important;
+  background-color: #2a92c7 !important;
 }
 
 .is-primary:hover {
-  background-color: #23a9e1 !important;
+  background-color: #20a9e1 !important;
   
 }
 
