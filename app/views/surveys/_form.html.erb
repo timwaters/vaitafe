@@ -24,21 +24,30 @@
     var progressLabel2 = document.getElementById("progress-label2");
     var form = document.getElementById("surveyform");
 
-    // Get all form inputs
-    var totalInputs = form.getElementsByClassName("step").length;
-    var inputs = form.getElementsByClassName("step");
-    var count = 0;
+    var fields = form.getElementsByClassName("field step");
+    var totalInputs  = fields.length;
+    progressBar1.max = totalInputs;
+    progressBar2.max = totalInputs;
 
-    Array.from(inputs).forEach(function(input) {
-    
-     if (input.value !== ""){
-       count++;
-      }
+    var count = 0;
+    Array.from(fields).forEach(function(field){
+      let fieldinputs = field.getElementsByClassName("step");
+      let hasValue = false;
+      Array.from(fieldinputs).forEach(function(input) {
+        if (!hasValue){
+          if (input.type == "checkbox" || input.type == "radio" ){
+            if (input.checked){
+              count++;
+              hasValue = true;
+            }
+          }else if(input.value !== ""){
+            count++;
+            hasValue = true;
+          }
+        } 
+      });
     });
 
-
-    // Update the first progress bar and label
-    //totalInputs = totalInputs ;  // minus authenticity, submit and subtype 
     progressBar1.value =  count;
     var label = count  + "/" + totalInputs + " Completed";
     progressLabel1.textContent = label;
@@ -170,11 +179,11 @@
 
     <%= form.hidden_field :subtype %>
 
-    <div class="field">
+    <div class="field step">
       <%= form.label(:surveyed_at,  class: "label")%>
       <p class="help">When was this taken? (defaults to now)</p>
       <div class="control">
-        <%= form.datetime_field :surveyed_at, class:"input" %>
+        <%= form.datetime_field :surveyed_at, class:"input step" %>
       </div>
     </div>
 
@@ -185,7 +194,7 @@
     coords = survey.lonlat.coordinates.to_a.reverse
     end %>
 
-    <div class="field" data-controller="formmap" data-formmap-icon-value="<%= image_path("images/marker-icon.png") %>" data-formmap-newrecord-value=<%= survey.new_record? %> data-formmap-coords-value="<%= coords %>" >
+    <div class="field step" data-controller="formmap" data-formmap-icon-value="<%= image_path("images/marker-icon.png") %>" data-formmap-newrecord-value=<%= survey.new_record? %> data-formmap-coords-value="<%= coords %>" >
       <%= form.label(:lonlat,  "Survey Location", class: "label")%> 
 
       <div class="tabs is-small is-toggle is-toggle-rounded placebuttons">
@@ -208,14 +217,14 @@
       <!-- CHEMICAL --->
 
       <div class="field">
-        <input id="kitswitch" type="checkbox" name="kitswitch" class="switch is-rounded" onchange="toggleSwitch(this);">
+        <input id="kitswitch" type="checkbox" name="kitswitch" class="switch is-rounded" onchange="toggleSwitch(this);" autocomplete="off">
         <label for="kitswitch">I have a kit</label>
       </div>
 
 
       <div class="field is-grouped is-grouped-multiline ">
 
-      <div class="field is-hidden">
+      <div class="field is-hidden step">
         <%= form.label(:ph, "Water acidity", class: "label")%>
         <p class="help">(pH level)</p>
         <div class="control">
@@ -223,7 +232,7 @@
         </div>
       </div>
 
-      <div class="field ">
+      <div class="field step ">
         <%= form.label(:temperature, "Water temperature", class: "label")%>
         <p class="help">units: Centrigade (C) </p>
         <div class="control">
@@ -231,7 +240,7 @@
         </div>
       </div>
 
-      <div class="field is-hidden">
+      <div class="field is-hidden step">
         <%= form.label(:conductivity, class: "label")%>
         <p class="help">units: µS (microsiemens)</p>
         <div class="control">
@@ -239,7 +248,7 @@
         </div>
       </div>
 
-      <div class="field is-hidden">
+      <div class="field is-hidden step">
         <%= form.label(:nitrogen, "Nitrate", class: "label")%>
         <p class="help">units: mg/L </p>
         <div class="control">
@@ -247,8 +256,8 @@
         </div>
       </div>
 
-      <div class="field is-hidden">
-        <%= form.label(:phosphorus, "Phosphate", class: "label step")%>
+      <div class="field is-hidden step">
+        <%= form.label(:phosphorus, "Phosphate", class: "label")%>
         <p class="help">units: mg/L </p>
         <div class="control">
           <%= form.number_field :phosphorus, class:"input step  need-kit" %>
@@ -260,7 +269,7 @@
     <% elsif  survey.subtype == "physical" %> 
       <!-- PHYSICAL --->
 
-      <div class="field">
+      <div class="field step">
         <%= form.label(:width, "River width (m)", class: "label")%>
         <p class="help"> What is the average width of the river? (Estimate in meters)</p>
         <div class="control">
@@ -269,7 +278,7 @@
         
       </div>
 
-      <div class="field">
+      <div class="field step">
         <%= form.label(:depth, "River depth (m)", class: "label")%>
         <p class="help"> What is the average depth of the river? (Estimate in meters)</p>
         <div class="control">
@@ -277,7 +286,7 @@
         </div>
       </div>
 
-      <div class="field">
+      <div class="field step">
         <%= form.label("has it been raining", "Has it been raining?", class: "label")%>
         <p class="help">Has it been raining the day of or the day before sampling?</p>
         <div class="control">
@@ -288,53 +297,56 @@
       </div>
 
     
-      <fieldset class="field">
+      <fieldset class="field step">
         <%= form.label(:water_use, "Water use", class: "label")%>
         <p class="help">Can you see evidence of water use?</p>
         <% [['Fishing','fishing'],['Boats','boats'], [ 'Abstraction for irrigation','irrigation'], ['Domestic purposes','domestic'],['Other (please specify)', 'other'] ].each do | w | %>
-          <%= form.check_box :water_use, { multiple: true, class: "checkbox is-multiple" }, w[1], nil %> <%= form.label "water_use_#{w[1]}", w[0] %> <br />
+          <%= form.check_box :water_use, { multiple: true, class: "step checkbox is-multiple" }, w[1], nil %> <%= form.label "water_use_#{w[1]}", w[0] %> <br />
         <% end %>
         <p class="help">Other water use</p>
         <%= form.text_field :water_use_other, class:" input" %>
       </fieldset>
 
-      <fieldset class="field">
+      <fieldset class="field step">
         <%= form.label(:structures, "Manmade Structures", class: "label")%>
         <p class="help">Which man-made structures can you see in the river or along its banks within close proximity of the sampling site.</p>
         <% [['Modified river bank', 'modified_river_bank'], ['Weirs', 'weirs'], ['Dams', 'dams'], ['Bypass Channels', 'bypass_channels'], ['Wells', 'wells'], ['Litter', 'litter'], ['Artificial Inflow', 'artificial_inflow']].each do | w | %>
-          <%= form.check_box :structures, { multiple: true, class: "checkbox is-multiple" }, w[1], nil %> <%= form.label "structures_#{w[1]}", w[0] %> <br />
+          <%= form.check_box :structures, { multiple: true, class: "checkbox is-multiple step" }, w[1], nil %> <%= form.label "structures_#{w[1]}", w[0] %> <br />
         <% end %>
         <p class="help">Other structures</p>
         <%= form.text_field :structures_other, class:" input" %>
       </fieldset>
 
-      <fieldset class="field">
+      <fieldset class="field step">
         <%= form.label(:surface, "On the surface", class: "label")%>
         <p class="help"> Is there any of the following on the water surface? </p>
         <% [['Foam','foam'],['Litter','litter'],['Oily sheen','oily_sheen']].each do | w | %>
-          <%= form.check_box :surface, { multiple: true, class: "checkbox is-multiple" }, w[1], nil %> <%= form.label "surface_#{w[1]}", w[0] %> <br />
+          <%= form.check_box :surface, { multiple: true, class: "checkbox is-multiple step" }, w[1], nil %> <%= form.label "surface_#{w[1]}", w[0] %> <br />
         <% end %>
       
       </fieldset>
 
-      <fieldset class="field">
+      <fieldset class="field step">
         <%= form.label(:land_use, class: "label")%>
         <p class="help">  What types of land use are visible from the sampling site? </p>
-
-        <%= form.select :land_use,  [['Pasture','pasture'],['Agriculture','agriculture'],['Town','town'],['Industry','industry'], ['Forest','forest'], ['Grassland/shrub','grassland_shrub'],['Other (please specify)', 'other']], { :prompt => "Select all you see"},{ :multiple => true, class: "select step is-multiple pl-1 pr-1"} %>
+        <% [['Pasture','pasture'],['Agriculture','agriculture'],['Town','town'],['Industry','industry'], ['Forest','forest'], ['Grassland/shrub','grassland_shrub'],['Other (please specify)', 'other']].each do | w | %>
+          <%= form.check_box :land_use, { multiple: true, class: "checkbox is-multiple step" }, w[1], nil %> <%= form.label "land_use_#{w[1]}", w[0] %> <br />
+        <% end %>
         <p class="help">Other land use</p>
         <%= form.text_field :land_use_other, class:" input" %>
       </fieldset>
 
-      <fieldset class="field">
+      <fieldset class="field step">
         <%= form.label(:flow_regime_choice, "Flow Regime" ,class: "label")%>
         <p class="help">What flow regimes can you identify? Choose all that you can see (<a class="js-modal-trigger" data-target="modal-flow-regime">more info</a>)</p>
-        <%= form.select :flow_regime_choice,  [['Pool','pool'],['Ripples','ripples'],['Waterfalls','waterfalls'],['Rapids','rapids'],['Cascade','cascade'],['Other (please specify)', 'other']], { :prompt => "Select all you can see"},{ :multiple => true, :size => 6 ,class: "step pl-1 pr-1 select is-multiple"} %>
+        <% [['Pool','pool'],['Ripples','ripples'],['Waterfalls','waterfalls'],['Rapids','rapids'],['Cascade','cascade'],['Other (please specify)', 'other']].each do | w | %>
+          <%= form.check_box :flow_regime_choice, { multiple: true, class: "checkbox is-multiple step" }, w[1], nil %> <%= form.label "flow_regime_choice_#{w[1]}", w[0] %> <br />
+        <% end %>
         <p class="help">Other Flow regime</p>
         <%= form.text_field :flow_regime, class:" input" %>
       </fieldset>
      
-      <fieldset class="field">
+      <fieldset class="field step">
         <%= form.label(:water_color, class: "label")%>
         <p class="help"> What is the color of the river water? </p>
 
@@ -344,20 +356,20 @@
       </fieldset>
 
 
-      <fieldset class="field">
+      <fieldset class="field step">
         <%= form.label(:flow, "Water flow", class: "label")%>
         <p class="help"> Please estimate the water flow </p>
         <%= form.select :flow,  [['Still: with no flow','still'],['Slow: slower than walking speed (<5 km/h)','slow'],['Steady: approximately walking speed','steady'],['Surging: when it is faster than walking speed (>5 km/h)', 'surging']], { :prompt => "Select one"},{class: "select step"} %>
       </fieldset>
 
 
-      <fieldset class="field">
+      <fieldset class="field step">
         <%= form.label(:turbulence,  class: "label")%>
         <p class="help">  Is the river water calm or turbulent? </p>
-        <%= form.radio_button :turbulence, 'calm', class: "radio" %> <%= form.label :turbulence_calm, "Calm" %> <br />
-        <%= form.radio_button :turbulence, 'moderate', class: "radio" %> <%= form.label :turbulence_moderate, "Moderately turbulent" %><br />
-        <%= form.radio_button :turbulence, 'high', class: "radio" %> <%= form.label :turbulence_high, "Highly turbulent" %>
-        <%# form.select :turbulence,  [['Calm','calm'],['Moderately turbulent','moderate'],['Highly turbulent','high']], { :prompt => "Select one"},{class: "select step"} %>
+        <%= form.radio_button :turbulence, 'calm', class: "radio step" %> <%= form.label :turbulence_calm, "Calm" %> <br />
+        <%= form.radio_button :turbulence, 'moderate', class: "radio step" %> <%= form.label :turbulence_moderate, "Moderately turbulent" %><br />
+        <%= form.radio_button :turbulence, 'high', class: "radio step" %> <%= form.label :turbulence_high, "Highly turbulent" %>
+    
 
       </fieldset>
      
@@ -407,43 +419,43 @@
 
       <!-- BIOLOGICAL --->
 
-      <fieldset class="field">
+      <fieldset class="field step">
         <%= form.label(:riparian_description, "Bank description", class: "label")%>
         <p class="help"> Please briefly describe the bank and its vegetation. What proportion of the river is shaded?</p>
         <%= form.text_area :riparian_description, class:"textarea step", placeholder: "E.g. trees, shrubs, reeds" %>
       </fieldset>
 
-      <fieldset class="field">
+      <fieldset class="field step">
         <%= form.label(:aquatic_life, "Aquatic Life", class: "label")%>
         <p class="help">What aquatic life is there evidence of?</p>
       
         <% [['Plants below surface','plants_below'],['Plants emerging from water','plants_emerging'], [ 'Floating plants','plants_floating'], ['Fish','fish'], ['Flying insects','flying_insects'], ['Other (please specify', 'other'] ].each do | w | %>
-          <%= form.check_box :aquatic_life, { multiple: true, class: "checkbox is-multiple" }, w[1], nil %> <%= form.label "aquatic_life_#{w[1]}", w[0] %> <br />
+          <%= form.check_box :aquatic_life, { multiple: true, class: "checkbox is-multiple step" }, w[1], nil %> <%= form.label "aquatic_life_#{w[1]}", w[0] %> <br />
         <% end %>
         <p class="help">Other aquatic life seen</p>
         <%= form.text_field :aquatic_life_other, class:" input" %>
       </fieldset>
 
-      <fieldset class="field">
+      <fieldset class="field step">
         <%= form.label(:substrates, "Substrates", class: "label")%>
         <p class="help">Which types of substrates/habitats can you identify in your sampling area?</p>
         <%  substrate_array =  [ ['Large boulders','large_boulders'], ['Stones','stones'], ['Pebbles and gravel','pebbles_gravel'], ['Sand','sand'],['Clay','clay'],['Fine organic matter','fine_organic_matter'],['Coarse organic matter','coarse_organic_matter'],['Submerged plants','submerged_plants'],['Algae covered stones','algae_covered_stones'] ]
         
         substrate_array.each do | w | %>
-          <%= form.check_box :substrates, { multiple: true, class: "checkbox is-multiple" }, w[1], nil %> <%= form.label "substrates_#{w[1]}", w[0] %> <br />
+          <%= form.check_box :substrates, { multiple: true, class: "checkbox is-multiple step" }, w[1], nil %> <%= form.label "substrates_#{w[1]}", w[0] %> <br />
         <% end %>
         <p class="help">In case one of the above substrates covers more than 75% of the observed area, please indicate which one.</p>
-        <%= form.select :main_substrate,  substrate_array.unshift(['None','none']), { :prompt => "Select one"},{class: "select step"} %>
+        <%= form.select :main_substrate,  substrate_array.unshift(['None','none']), { :prompt => "Select one"},{class: "select"} %>
       </fieldset>
 
-      <fieldset class="field">
+      <fieldset class="field step">
         <%= form.label(:macroinvertebrates, class: "label")%>
         <p class="help">Add which macroinvertebrates were found and the count </p>
         <div class="containing-them">
           <div class="macro-fields block control">
             <%= form.fields_for :macroinvertebrates do |macro_form| %>
               <div class="field is-grouped is-horizontal">
-                <%= macro_form.text_field :name , class: "input mr-2", placeholder: "e.g. insect name", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_name", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][name]", list: "species" %>
+                <%= macro_form.text_field :name , class: "input mr-2 step", placeholder: "e.g. insect name", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_name", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][name]", list: "species" %>
                 <!-- latin name ?-->
                 <%= macro_form.number_field :observed, class: "input",  placeholder: "count",style: "width:5em;", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_observed", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][observed]" %>
              
@@ -477,7 +489,7 @@
 
     <% end %>
 
-    <fieldset class="field">
+    <fieldset class="field step">
       <%= form.label(:comment, "Additional comments", class: "label")%>
       <p class="help">Would you like to note anything that caught your eye?</p>
       <%= form.text_area :comment, class:"textarea step" %>
