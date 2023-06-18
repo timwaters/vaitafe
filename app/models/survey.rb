@@ -1,7 +1,7 @@
 class Survey < ApplicationRecord
   belongs_to :user
   has_many_attached :images
-  has_many :macroinvertebrates
+  has_many :macroinvertebrates, dependent: :destroy
   accepts_nested_attributes_for :macroinvertebrates, allow_destroy: true, reject_if: :all_blank
 
   validates :images, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg']}
@@ -10,7 +10,7 @@ class Survey < ApplicationRecord
   validates :depth, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :ph, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 14 }, allow_nil: true
  
-  after_commit :update_user_contribution_count
+  after_save_commit :update_user_contribution_count
   before_save  :change_image_filenames
 
   paginates_per 20
