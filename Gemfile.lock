@@ -312,6 +312,7 @@ DEPENDENCIES
   rails (~> 7.0.4, >= 7.0.4.3)
   redis (~> 4.0)
   ruby-vips
+  rubyzip
   sassc-rails
   selenium-webdriver
   sprockets-rails
