@@ -1,4 +1,7 @@
 ActiveAdmin.register Macroinvertebrate do
+  require 'zip'
+  require 'tempfile'
+
   permit_params :name, :latin_name, :observed, :survey_id, {animal_images:[]}
  
   controller do
@@ -121,6 +124,39 @@ ActiveAdmin.register Macroinvertebrate do
     end
   end
   
+
+  action_item :download_all_images do
+    link_to 'Download All Images (zip)', download_all_images_admin_macroinvertebrates_path() 
+  end
+
+  collection_action :download_all_images, method: [:get] do
+    
+    filename = 'macro_images.zip'
+    zip_file = Tempfile.new(filename)
+    begin
+      Zip::OutputStream.open(zip_file.path) do |zipfile|
+    
+        Macroinvertebrate.all.each do |macro|
+          if macro.animal_images.attached?
+            macro.animal_images.each do |image|
+              blob = image.blob
+              next unless blob
+
+              file_data = blob.download
+              zipfile.put_next_entry(blob.filename.to_s)
+              zipfile.write(file_data)
+            end
+          end
+        end
+      end
+
+      zip_data = File.read(zip_file.path)
+      send_data(zip_data, type: 'application/zip', disposition: 'attachment', filename:  filename)
+    ensure 
+      zip_file.close
+      zip_file.unlink
+    end
+  end
 
 
 end

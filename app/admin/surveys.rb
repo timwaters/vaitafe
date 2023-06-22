@@ -1,4 +1,6 @@
 ActiveAdmin.register Survey do
+  require 'zip'
+  require 'tempfile'
 
   permit_params :lonlat, :river, :subtype, :comment, :surveyed_at, {images:[]}, :ph, :conductivity, :phosphorus, :nitrogen, :temperature, :width, :depth, {water_use: []}, :water_use_other, :raining, {structures: []}, :structures_other, {land_use: []}, :land_use_other, :surface,  :flow, :flow_regime,  {flow_regime_choice: []},  :riparian_description, {substrates: []}, :main_substrate, :macroinvertebrates, :user_id,  :water_color, :water_color_other, :turbulence, macroinvertebrates_attributes: [:id, :name, :latin_name, :observed, :_destroy]
   
@@ -216,6 +218,39 @@ ActiveAdmin.register Survey do
       filenames.join(", ")
     end
    
+  end
+
+  action_item :download_all_images do
+    link_to 'Download All Images (zip)', download_all_images_admin_surveys_path() 
+  end
+
+  collection_action :download_all_images, method: [:get] do
+    
+    filename = 'survey_images.zip'
+    zip_file = Tempfile.new(filename)
+    begin
+      Zip::OutputStream.open(zip_file.path) do |zipfile|
+    
+        Survey.all.each do |survey|
+          if survey.images.attached?
+            survey.images.each do |image|
+              blob = image.blob
+              next unless blob
+
+              file_data = blob.download
+              zipfile.put_next_entry(blob.filename.to_s)
+              zipfile.write(file_data)
+            end
+          end
+        end
+      end
+
+      zip_data = File.read(zip_file.path)
+      send_data(zip_data, type: 'application/zip', disposition: 'attachment', filename:  filename)
+    ensure 
+      zip_file.close
+      zip_file.unlink
+    end
   end
   
   
