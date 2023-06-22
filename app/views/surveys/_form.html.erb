@@ -79,7 +79,7 @@
       var hiddenField = e.nextElementSibling;
       hiddenField.value =  "1";
       var parent = e.parentNode;
-      e.parentNode.classList.add("is-hidden");
+      e.parentNode.parentNode.classList.add("is-hidden");
     }
   }
 
@@ -87,6 +87,7 @@
   document.addEventListener('turbo:load', imageSetup);
 
   function imageSetup(){
+    // physical image upload file input
     const fileInput = document.querySelector('#survey_images');
     if (fileInput){
       fileInput.onchange = () => {
@@ -100,6 +101,21 @@
         }
       }
     }
+
+  }
+
+  function animalFileListUpdate(ele){
+    const animalfileInput = ele;
+    if (animalfileInput.files.length > 0) {
+      var fileNames = [];
+      for (var i = 0; i < animalfileInput.files.length; i++) {
+        fileNames.push(animalfileInput.files[i].name);
+      }
+      
+      const animalfileNameLabel = animalfileInput.closest('.box').querySelector('.image-file-info');
+      animalfileNameLabel.innerHTML = fileNames.join(" <br />  ");
+    }
+
   }
 
   window.addEventListener('pageshow',  fieldListener);
@@ -142,7 +158,8 @@
         if (!hasListener){
       
           addInputButton.addEventListener("click", function() {
-          
+          var box = document.createElement("div");
+          box.classList.add("box");
           var newfields = document.createElement("div");
           newfields.classList.add("field")
           newfields.classList.add("is-grouped")
@@ -153,14 +170,17 @@
             <input type="number" id="survey_macroinvertebrates_attributes_${macroIndex}_observed" name="survey[macroinvertebrates_attributes][${macroIndex}][observed]" class="input" style="width:5em;" placeholder="count">`+
             <%# if survey.new_record? %>
             `<div class="file "><label class="file-label">
-            <input multiple="multiple" class="file-input" accept="image/*" type="file" name="survey[macroinvertebrates_attributes][${macroIndex}][animal_images][]" id="survey_macroinvertebrates_attributes_${macroIndex}_animal_images">
+            <input multiple="multiple" class="file-input animal-images" accept="image/*" type="file" name="survey[macroinvertebrates_attributes][${macroIndex}][animal_images][]" id="survey_macroinvertebrates_attributes_${macroIndex}_animal_images" onchange="animalFileListUpdate(this);">
             <span class="file-cta"><span class="file-icon"><i class="fas fa-upload"></i></span><span class="file-label">Images</span></span></label></div>`+
             <%# end %>
             `<a class="button delete-macro" title="Delete" onclick="deletemacro(this);"><span class="icon is-small"><i class="fas fa-trash-alt"></i></span></a>
             <input type="hidden" id="survey_macroinvertebrates_attributes_${macroIndex}__destroy" name="survey[macroinvertebrates_attributes][${macroIndex}][_destroy]" >
           `;
-
-          inputItemsContainer.appendChild(newfields);
+          box.appendChild(newfields);
+          var fileinfo = document.createElement("div");
+          fileinfo.classList.add("image-file-info")
+          box.appendChild(fileinfo);
+          inputItemsContainer.appendChild(box);
           macroIndex++;
     
           }); 
@@ -478,27 +498,10 @@
         <%= form.label(:macroinvertebrates, class: "label")%>
         <p class="help ">What macroinvertebrates were found with a count. Images are optional. </p>
 
-        <% if !survey.new_record? %>
-        <div class="">
-          Images
-        <% survey.macroinvertebrates.each do | animal |  %>
-              <% if animal.animal_images.attached? %>
-             
-              <div class="box">
-                <%= animal.name %>
-                <% animal.animal_images.each do | image | %>  
-                    <%= link_to image_tag(image.representation(resize_to_limit: [100, 100])), image %>
-                    <%= link_to "delete", destroy_animal_image_path(id: survey.id, image_id: image.id,  animal_id: animal.id), class: "button is-danger is-small",  style: "vertical-align: text-bottom;", onclick: "return confirm('Are you sure?');", 'data-turbo': 'false' %>
-                <% end %>
-              </div>
-              <% end %>
-            <% end %>
-          </div>
-        <% end %>
-
         <div class="containing-them">
           <div class="macro-fields block control">
             <%= form.fields_for :macroinvertebrates do |macro_form| %>
+            <div class="box">
               <div class="field is-grouped is-horizontal">
                 <%= macro_form.text_field :name , class: "input mr-2 step", style: "min-width: 150px;", placeholder: "e.g. insect name", id: "survey_macroinvertebrates_attributes_#{macro_form.index}_name", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][name]", list: "species" %>
                 
@@ -506,7 +509,7 @@
                 <% if survey.new_record? %>
                   <div class="file ">
                   <label class="file-label">
-                    <%= macro_form.file_field :animal_images, multiple: true, class:"file-input", accept: "image/*" %>
+                    <%= macro_form.file_field :animal_images, multiple: true, class:"file-input animal-images", accept: "image/*", onchange: "animalFileListUpdate(this);" %>
                     <span class="file-cta">
                       <span class="file-icon">
                         <i class="fas fa-upload"></i>
@@ -522,6 +525,16 @@
                   <span class="icon is-small"><i class="fas fa-trash-alt"></i></span>
                 </a>
                 <%= macro_form.hidden_field :_destroy, id: "survey_macroinvertebrates_attributes_#{macro_form.index}__destroy", name: "survey[macroinvertebrates_attributes][#{macro_form.index}][_destroy]" %>
+              </div>
+              <div class="image-file-info">
+              <% if  macro_form.object.animal_images.attached? %>
+            
+                <% macro_form.object.animal_images.each do | image | %>  
+                      <%= link_to image_tag(image.representation(resize_to_limit: [100, 100])), image %>
+                      <%= link_to "delete", destroy_animal_image_path(id: survey.id, image_id: image.id,  animal_id: macro_form.object.id), class: "button is-danger is-small",  style: "vertical-align: text-bottom;", onclick: "return confirm('Are you sure?');", 'data-turbo': 'false' %>
+                  <% end %>
+                <% end %>
+              </div>
               </div>
             <% end %>
           </div>
