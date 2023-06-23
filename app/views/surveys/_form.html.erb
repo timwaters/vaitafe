@@ -126,14 +126,14 @@
     var form = document.getElementById("surveyform");
     if (form != undefined){
       var formInputs = form.querySelectorAll("input, textarea");
-      formInputs.forEach(function(input) {
+      Array.from(formInputs).forEach(function(input) {
         input.addEventListener("input", function() {
           updateProgress();
         });
       });
 
       var formSelects = form.querySelectorAll("select");
-      formSelects.forEach(function(select) {
+      Array.from(formSelects).forEach(function(select) {
         select.addEventListener("change", function(){
           updateProgress();
         });

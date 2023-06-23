@@ -27,7 +27,7 @@ export default class extends Controller {
     var tab = document.getElementById(tabid);
     if (tab) {
       var tabs = document.querySelectorAll('.tabs li');
-      tabs.forEach(function (itab) {
+      Array.from(tabs).forEach(function (itab) {
         itab.classList.remove('is-active');
       });
 
@@ -99,7 +99,7 @@ export default class extends Controller {
     var tab = document.getElementById("man-tab");
     if (tab) {
       var tabs = document.querySelectorAll('.tabs li');
-      tabs.forEach(function (itab) {
+      Array.from(tabs).forEach(function (itab) {
         itab.classList.remove('is-active');
       });
 
