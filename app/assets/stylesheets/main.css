@@ -92,6 +92,9 @@ table.mini th {
 .footer .copy {
   color: white;
 }
+.footer .icon {
+  color: white;
+}
 
 .image-file-info, .file-name {
   font-size: smaller;
