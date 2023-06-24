@@ -83,7 +83,8 @@ export default class extends Controller {
 
   findLoc() {
     this.formmap.off('click');
-    if (navigator.geolocation && !this.manualSelectionEnabled) {
+    this.formmap.stopLocate();
+    if (("geolocation" in navigator) && !this.manualSelectionEnabled) {
         this.formmap.locate({watch: true,  enableHighAccuracy:true, setView: true, maxZoom: 18});
       } else {
 
@@ -96,6 +97,7 @@ export default class extends Controller {
   }
 
   onLocationError(e){
+  //  console.log("geolocation error", e)
     var tab = document.getElementById("man-tab");
     if (tab) {
       var tabs = document.querySelectorAll('.tabs li');
